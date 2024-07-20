@@ -1,4 +1,5 @@
 import mongoose, {Schema, Document} from "mongoose";
+import bcrypt from 'bcrypt';
 
 interface CartObj {
     productId:string;
@@ -100,6 +101,29 @@ const UserSchema:Schema<User> = new Schema({
         default:Date.now
     },
 })
+
+UserSchema.pre('save', async function(next){
+    const user = this;
+    if(user.isModified('user')) return next();
+    try{
+        const salt = await bcrypt.genSalt(5);
+        const hashedPassword = await bcrypt.hash(user.password, salt);
+        user.password = hashedPassword;
+        next();
+    }catch(err:any){
+        return next(err);
+    }
+})
+
+UserSchema.methods.comparePassword = async function(candidatePassword:string):Promise<string|boolean>{
+    try{
+        const isMatch = await bcrypt.compare(candidatePassword, this.password);
+        return isMatch;
+    }catch(err){
+        throw err
+    }
+}
+
 
 const UserModel = (mongoose.models.User as mongoose.Model<User>) || mongoose.model<User>("User", UserSchema);
 export default UserModel;
