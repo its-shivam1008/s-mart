@@ -16,14 +16,14 @@ async function dbConnect():Promise<void>{
                 const db = await mongoose.connect(process.env.MONGO_URI);
                 connection.isConnected = db.connections[0].readyState;
                 console.log("DB connected successfully");
-                console.log("db")
-                console.log(db)
-                console.log("db.connections")
-                console.log(db.connections)
-                console.log("db.connections[0]")
-                console.log(db.connections[0])
-                console.log("db.connections[0].readyState");
-                console.log(db.connections[0].readyState);
+                // console.log("db")
+                // console.log(db)
+                // console.log("db.connections")
+                // console.log(db.connections)
+                // console.log("db.connections[0]")
+                // console.log(db.connections[0])
+                // console.log("db.connections[0].readyState");
+                // console.log(db.connections[0].readyState);
               } else {
                 throw new Error("MONGO_URI environment variable is not set")
               }
