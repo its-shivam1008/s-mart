@@ -1,5 +1,6 @@
 import mongoose, {Schema, Document} from "mongoose";
 import bcrypt from 'bcrypt';
+import { NextResponse } from "next/server";
 
 interface CartObj {
     productId:string;
@@ -22,6 +23,9 @@ export interface User extends Document{
     }
     contact:string;
     isAdmin:boolean;
+    verifyCode:string;
+    verifyCodeExpiry:Date;
+    isVerified:boolean;
     cart:CartObj[];
     createdAt:Date;
     updatedAt:Date;
@@ -73,7 +77,20 @@ const UserSchema:Schema<User> = new Schema({
         type:String,
     },
     isAdmin:{
-        type:Boolean
+        type:Boolean,
+        default:false
+    },
+    verifyCode:{
+        type:String,
+        required:[true, "code is required"]
+    },
+    verifyCodeExpiry:{
+        type:Date,
+        required:[true, "Code expiry is required"]
+    },
+    isVerified:{
+        type:Boolean,
+        default:false
     },
     cart:[
         {
@@ -102,16 +119,16 @@ const UserSchema:Schema<User> = new Schema({
     },
 })
 
-UserSchema.pre('save', async function(next){
+UserSchema.pre('save', async function(){
     const user = this;
-    if(user.isModified('user')) return next();
+    if(user.isModified('user')) return NextResponse.next();
     try{
         const salt = await bcrypt.genSalt(5);
         const hashedPassword = await bcrypt.hash(user.password, salt);
         user.password = hashedPassword;
-        next();
+        NextResponse.next();
     }catch(err:any){
-        return next(err);
+        return NextResponse.next(err);
     }
 })
 

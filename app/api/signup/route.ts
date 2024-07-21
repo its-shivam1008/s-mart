@@ -16,7 +16,12 @@ export async function POST(req:Request, res:Response){
         if(!validation.success){
             return NextResponse.json({message:validation.error.issues[0].message},{status:400})
         }
-        const newUser = new UserModel(res);
+        const verifyCode = Math.floor(100000 + Math.random() * 900000).toString();
+        const expiryDate = new Date();
+        expiryDate.setHours(expiryDate.getHours()+1);
+        const newData = {...data, verifyCode, verifyCodeExpiry:expiryDate}
+        console.log(verifyCode, expiryDate, newData);
+        const newUser = new UserModel(newData);
         const response = await newUser.save();
         return NextResponse.json({response},{status:200});
     }catch(err){
