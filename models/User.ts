@@ -1,9 +1,9 @@
-import mongoose, {Schema, Document} from "mongoose";
+import mongoose, {Schema, Document, Types} from "mongoose";
 import bcrypt from 'bcrypt';
 import { NextResponse } from "next/server";
 
 interface CartObj {
-    productId:string;
+    productId:Types.ObjectId;
     price:number;
     quantity:number;
 }
