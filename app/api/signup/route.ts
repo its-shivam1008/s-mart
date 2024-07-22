@@ -25,6 +25,7 @@ export async function POST(req:Request){
             if(userByEmail.isVerified){
                 return NextResponse.json({success:false, message:"User with this email already exists"}, {status:400});
             }else{
+                // user with the email exist but not verified so we take user's new password and generate new otp 
                 userByEmail.password = data.password;
                 userByEmail.verifyCode = verifyCode;
                 userByEmail.verifyCodeExpiry = new Date(Date.now() + 3600000);
