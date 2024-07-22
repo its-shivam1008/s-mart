@@ -20,7 +20,6 @@ export async function POST(req:Request, res:Response){
         const expiryDate = new Date();
         expiryDate.setHours(expiryDate.getHours()+1);
         const newData = {...data, verifyCode, verifyCodeExpiry:expiryDate}
-        console.log(verifyCode, expiryDate, newData);
         const newUser = new UserModel(newData);
         const response = await newUser.save();
         return NextResponse.json({response},{status:200});
