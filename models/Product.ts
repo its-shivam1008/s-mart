@@ -12,6 +12,7 @@ interface Product extends Document{
     specification:string;
     quantity:number;
     categoryId:Types.ObjectId;
+    storeId:Types.ObjectId;
     price:number;
     discount:number;
     shippingCharge:number;
@@ -42,6 +43,10 @@ const ProductSchema:Schema<Product> = new Schema({
         type:Schema.Types.ObjectId,
         ref:'Category',
         default:"Miscelleneous"
+    },
+    storeId:{
+        type:Schema.Types.ObjectId,
+        ref:'Store',
     },
     price:{
         type:Number,
@@ -87,3 +92,6 @@ const ProductSchema:Schema<Product> = new Schema({
         default:Date.now
     },
 })
+
+const ProductModel = (mongoose.models.Product as mongoose.Model<Product>) || mongoose.model<Product>("Product", ProductSchema);
+export default ProductModel;
