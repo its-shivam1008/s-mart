@@ -1,3 +1,4 @@
+"use client"
 import React from 'react'
 import { useSession, signIn, signOut } from "next-auth/react";
 import { useRouter } from 'next/navigation';
@@ -6,7 +7,7 @@ import { useRouter } from 'next/navigation';
 const page = () => {
     const { data: session, status } = useSession()
     const router = useRouter();
-    const loginAndRedirecting = (method:string) : void=> {
+    const loginAndRedirecting = (method:string) : void => {
         signIn(method);
     }
     if(session){

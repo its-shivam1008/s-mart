@@ -4,6 +4,7 @@ import GoogleProvider from "next-auth/providers/google";
 import dbConnect from "@/Db/Db";
 import UserModel from "@/models/User";
 
+
 export const authOptions:NextAuthOptions = {
     providers: [
         GitHubProvider({
@@ -45,8 +46,13 @@ export const authOptions:NextAuthOptions = {
           }
           return true;
       },
+      async jwt({ token, user}) {
+        
+        return token
+      },
       async session({ session, user, token }) {
         // const dbUser = await UserModel.findOne({email: session.user.email})
+
         session.user.username = user.username
         session.user._id = user._id
         session.user.isVerified = user.isVerified

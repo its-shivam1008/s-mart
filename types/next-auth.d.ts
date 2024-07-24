@@ -20,4 +20,12 @@ declare module 'next-auth'{
             username?:string;
         } & DefaultSession['user']
     }
+    interface JWT{
+        _id?:string;
+        isVerified?:boolean;
+        verifyCode?:string;
+        email?:string;
+        imageLogo?:string;
+        username?:string;
+    }
 }
