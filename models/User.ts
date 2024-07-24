@@ -26,6 +26,7 @@ export interface User extends Document{
     verifyCode:string;
     verifyCodeExpiry:Date;
     isVerified:boolean;
+    signUpWith:string;
     cart:CartObj[];
     createdAt:Date;
     updatedAt:Date;
@@ -93,6 +94,12 @@ const UserSchema:Schema<User> = new Schema({
         type:Boolean,
         default:false
     },
+    signUpWith:{
+        type:String,
+        enum:['google', 'github', 'username or email password'],
+        required:[true, "which oauthProvider is used is necessary to disclose"],
+        default:'username or email'
+    },
     cart:[
         {
             productId:{
@@ -124,10 +131,14 @@ UserSchema.pre('save', async function(){
     const user = this;
     if(user.isModified('user')) return NextResponse.next();
     try{
-        const salt = await bcrypt.genSalt(5);
-        const hashedPassword = await bcrypt.hash(user.password, salt);
-        user.password = hashedPassword;
-        NextResponse.next();
+        if(user.password){
+            const salt = await bcrypt.genSalt(5);
+            const hashedPassword = await bcrypt.hash(user.password, salt);
+            user.password = hashedPassword;
+            NextResponse.next();
+        }else{
+            NextResponse.next();
+        }
     }catch(err:any){
         return NextResponse.next(err);
     }

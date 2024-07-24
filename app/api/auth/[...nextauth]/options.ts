@@ -19,18 +19,29 @@ export const authOptions:NextAuthOptions = {
       async signIn({ user, account, profile, email, credentials}){
         if(account?.provider == 'github' || account?.provider == 'google'){
             await dbConnect();
+            // checks if the user is present in the db or not 
             // const client = mongoose.connect("mongodb://localhost:27017/GetMeATip");
             const currentUser = await UserModel.findOne({email:user.email});
             // console.log(currentUser);
             if(!currentUser){
+              // if the user is not present create a new user.
+              
+              // now also generate the verifyCode and verifyCodeExpiry
+              const verifyCode = Math.floor(100000 + Math.random() * 900000).toString();
+              const expiryDate = new Date();
+              expiryDate.setHours(expiryDate.getHours()+1);
               const newUser = new UserModel({
                 email:user.email,
                 name:user.name,
                 imageLogo:user.image,
                 username:user.email?.split('@')[0],
-                isVerified:true
-              })       
+                verifyCode:verifyCode,
+                verifyCodeExpiry:expiryDate,
+                signUpWith:account.provider
+              })      
+              
               await newUser.save();
+
               // user.name = newUser.username
             }else{
               user.username = currentUser.username
