@@ -8,7 +8,7 @@ export async function POST(req:Request){
     await dbConnect();
     try{
         const data = await req.json();
-        const userByEmail = await UserModel.findOne({email:data.email});
+        const userByEmail = await UserModel.findOne({email:data.session.user.email});
         if(!userByEmail){
             return NextResponse.json({message: "user not saved try to sign up again", success:false},{ status:400});
         }
@@ -25,7 +25,7 @@ export async function POST(req:Request){
         await userByEmail.save();
 
         //send verification email
-        const emailResponse = await sendVerificationEmail(data.email,data.username,verifyCode)
+        const emailResponse = await sendVerificationEmail(data.session.user.email,data.session.user.username,verifyCode)
         if(!emailResponse.success){
             return NextResponse.json({message:emailResponse.message, success:false},{status:500})
         }

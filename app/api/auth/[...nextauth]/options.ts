@@ -47,15 +47,20 @@ export const authOptions:NextAuthOptions = {
           return true;
       },
       async jwt({ token, user}) {
-        
+        if(user){
+          token.username = user.username
+          token._id = user._id
+          token.isVerified = user.isVerified
+        }
         return token
       },
       async session({ session, user, token }) {
         // const dbUser = await UserModel.findOne({email: session.user.email})
-
-        session.user.username = user.username
-        session.user._id = user._id
-        session.user.isVerified = user.isVerified
+        if(token){
+          session.user.username = token.username
+          session.user._id = token._id
+          session.user.isVerified = token.isVerified
+        }
         return session;
       }
     }
