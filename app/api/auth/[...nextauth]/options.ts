@@ -27,16 +27,16 @@ export const authOptions:NextAuthOptions = {
               // if the user is not present create a new user.
               
               // now also generate the verifyCode and verifyCodeExpiry
-              const verifyCode = Math.floor(100000 + Math.random() * 900000).toString();
-              const expiryDate = new Date();
-              expiryDate.setHours(expiryDate.getHours()+1);
+              // const verifyCode = Math.floor(100000 + Math.random() * 900000).toString();
+              // const expiryDate = new Date();
+              // expiryDate.setHours(expiryDate.getHours()+1);
               const newUser = new UserModel({
                 email:user.email,
                 name:user.name,
                 imageLogo:user.image,
                 username:user.email?.split('@')[0],
-                verifyCode:verifyCode,
-                verifyCodeExpiry:expiryDate,
+                // verifyCode:verifyCode,
+                // verifyCodeExpiry:expiryDate,
                 signUpWith:account.provider
               })      
               
