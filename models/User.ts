@@ -50,11 +50,12 @@ const UserSchema:Schema<User> = new Schema({
     },
     password:{
         type:String,
-        required:[true, "password is required"]
+        // required:[true, "password is required"]
     },
     imageLogo:{
         type:String,
-        required:[true, "icon is required"]
+        required:[true, "icon is required"],
+        default:"no url is specified"
     },
     address:{
         address:{
