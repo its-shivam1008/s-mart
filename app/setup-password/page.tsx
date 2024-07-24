@@ -10,7 +10,7 @@ const page = () => {
     const submitThePass = ()=>{
         // todo:
         // fetch to password saving route  to save the password
-        
+
         // redirecting the user to verify itself
     }
   return (
@@ -18,7 +18,7 @@ const page = () => {
         <form action={submitThePass}>
             <label htmlFor="password">Enter password:</label>
             <input type="password" name="password" id="password" value={textValue} onChange={handleChange}/>
-            <button type="submit">Save password</button>
+            <button type="submit" className='bg-blue-500 text-white rounded-full px-3 py-2 cursor-pointer'>Save password</button>
         </form>
     </div>
   )
