@@ -6,6 +6,32 @@ import { useRouter } from 'next/navigation';
 const page = () => {
   const [textValue, setTextValue] = useState('');
   const { data: session, status } = useSession()
+  const [toggleDisable, setToggleDisable] = useState(true);
+
+  setTimeout(() => {
+    setToggleDisable(false);
+  }, 35000);
+
+  const enableCount = () =>{
+    setTimeout(() => {
+      setToggleDisable(false);
+    }, 35000);
+  }
+
+  const handleClick = async() =>{
+    setToggleDisable(true);
+    const res = await fetch('http://localhost:3000/api/generateOtp',{
+      method:'PUT',
+      headers:{
+        'Content-type': 'application/json'
+      },
+      body:JSON.stringify({session})
+    })
+    const data = await res.json();
+    alert(data.message)
+    enableCount()
+  }
+
   const router = useRouter();
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>):void =>{
@@ -39,6 +65,7 @@ const page = () => {
             <input type="text" name="verifyCode" id="verifyCode" value={textValue} onChange={handleChange}/>
             <button type="submit" className='bg-blue-500 text-white rounded-full px-3 py-2 cursor-pointer m-5'>Verify</button>
         </form>
+        <button type="button" onClick={handleClick} className='bg-blue-500 text-white rounded-full px-3 py-2 cursor-pointer m-5 disabled:bg-gray-500' disabled={toggleDisable}>Resend new otp</button>
     </div>
   )
 }
