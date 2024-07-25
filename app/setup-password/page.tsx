@@ -9,11 +9,11 @@ const page = () => {
     const { data: session, status } = useSession()
     const router = useRouter();
     const handleChange = (e: React.ChangeEvent<HTMLInputElement>): void  =>{
+        //handle the change in the password field
         setTextValue(e.target.value)
     }
     const submitThePass =async(e: React.FormEvent<HTMLFormElement>)=>{
         e.preventDefault();
-        // todo:
         // fetch to password saving route  to save the password
         const res = await fetch('http://localhost:3000/api/setup-password',{
             method: 'POST',
@@ -24,8 +24,12 @@ const page = () => {
         })
         const data = await res.json();
         console.log(data);
-        // redirecting the user to verify itself
-        router.push('/verify');
+        // redirecting the user to verify itself if the verification email has been sent to the user
+        if(data.success){
+            router.push('/verify');
+        }else{
+            alert("cannot sent the email");
+        }
     }
   return (
     <div>

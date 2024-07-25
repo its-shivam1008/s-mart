@@ -19,6 +19,7 @@ export async function POST(req:Request){
 
         // saving password, verifyCode, verifyExpiryDate in user
         userByEmail.password = data.password;
+        userByEmail.updatedAt = new Date();
         userByEmail.verifyCode = verifyCode;
         userByEmail.verifyCodeExpiry = expiryDate;
 
