@@ -18,7 +18,12 @@ export async function POST(req:Request){
                 // userByEmail.updatedAt = new Date();
                 // userByEmail.isVerified = true;
                 await UserModel.findByIdAndUpdate(userByEmail._id, {updatedAt:new Date(), isVerified:true})
-                return NextResponse.json({message:"User verified successfully", success:true},{status:200})
+                // if user role is StoreOwner then also return the isStoreOwner true
+                if(userByEmail.role === 'StoreOwner'){
+                    return NextResponse.json({message:"User verified successfully", success:true, isStoreOwner:true},{status:200})
+                }else{
+                    return NextResponse.json({message:"User verified successfully", success:true, isStoreOwner:false},{status:200})
+                }
             }else{
                 return NextResponse.json({message:"Verification code has been expired", success:false},{status:400})
             }

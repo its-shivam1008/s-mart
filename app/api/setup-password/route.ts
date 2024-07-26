@@ -22,6 +22,7 @@ export async function POST(req:Request){
         userByEmail.updatedAt = new Date();
         userByEmail.verifyCode = verifyCode;
         userByEmail.verifyCodeExpiry = expiryDate;
+        userByEmail.role = data.role;
 
         await userByEmail.save();
 

@@ -23,6 +23,7 @@ export interface User extends Document{
     }
     contact:string;
     isAdmin:boolean;
+    role:string;
     verifyCode:string;
     verifyCodeExpiry:Date;
     isVerified:boolean;
@@ -81,6 +82,11 @@ const UserSchema:Schema<User> = new Schema({
     isAdmin:{
         type:Boolean,
         default:false
+    },
+    role:{
+        type:String,
+        enum:["Admin", "User", "StoreOwner"],
+        default:"User"
     },
     verifyCode:{
         type:String,

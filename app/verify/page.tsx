@@ -28,8 +28,8 @@ const page = () => {
       body:JSON.stringify({session})
     })
     const data = await res.json();
-    alert(data.message)
-    enableCount()
+    alert(data.message);
+    enableCount();
   }
 
   const router = useRouter();
@@ -51,9 +51,11 @@ const page = () => {
       body:JSON.stringify({session, verifyCode:textValue})
     })
     const data = await res.json();
-    // redirecting the user to home page if verified successfully
-    if(data.success){
+    // redirecting the user to home page if it is a user or pushing it to store for more store information if it is a store owner
+    if(data.success && !data.isStoreOwner){
       router.push('/');
+    }else if(data.isStoreOwner){
+      router.push('/store');
     }else{
       alert(data.message);
     }
