@@ -7,6 +7,7 @@ interface Products {
 
 interface Store extends Document {
     owner_name:string;
+    userId:Types.ObjectId;
     contact:string;
     email:string;
     password:string;
@@ -48,6 +49,10 @@ const StoreSchema:Schema<Store> = new Schema({
         type:String,
         required:[true, "Name of the store owner is required"]
     },
+    userId:{
+        type:Schema.Types.ObjectId,
+        ref:'User'
+    },
     contact:{
         type:String,
         required:[true, "Contact number of the store owner is required"]
@@ -81,7 +86,8 @@ const StoreSchema:Schema<Store> = new Schema({
     product:[
         {
             productName:String,
-            productId:Types.ObjectId
+            productId:Types.ObjectId,
+            ref:'Product'
         }
     ],
     businessAddress:{
