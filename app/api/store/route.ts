@@ -18,7 +18,7 @@ export async function POST(req:Request){
         // todo:
 
         // saving the store information 
-        const newData = {...data.payload, userId:userByEmail._id}
+        const newData = {...data.payload, associatedUser:{userEmail:userByEmail.email, userId:userByEmail._id}}
         const newStore = new StoreModel(newData);
         await newStore.save();
 
@@ -26,7 +26,8 @@ export async function POST(req:Request){
         // todo :
         return NextResponse.json({message:"Saved the store data", success:true},{status:201})
     }catch(err){
-        return NextResponse.json({message: "Internal server error", success:false},{ status:500});
+        console.log(err);
+        return NextResponse.json({message: "Internal server error", success:false, error:err},{ status:500});
     }
 }
 
@@ -34,18 +35,19 @@ export async function PUT(req:Request){
     await dbConnect();
     try{
         const data = await req.json();
-        const userByEmail = await UserModel.findOne({email:data.session.user.email});
-        // checking the user is present in the db or not, if yes is he signed up as a store owner or not 
-        if(!userByEmail){
-            return NextResponse.json({message: "user not saved try to sign up again", success:false},{ status:404});
-        }else if(userByEmail?.role !== 'StoreOwner'){
-            return NextResponse.json({message:"please SignUp as a Store Owner to continue.", success:false}, {status:404});
-        }
+        // const userByEmail = await UserModel.findOne({email:data.session.user.email});
+        // // checking the user is present in the db or not, if yes is he signed up as a store owner or not 
+        // if(!userByEmail){
+        //     return NextResponse.json({message: "user not saved try to sign up again", success:false},{ status:404});
+        // }else if(userByEmail?.role !== 'StoreOwner'){
+        //     return NextResponse.json({message:"please SignUp as a Store Owner to continue.", success:false}, {status:404});
+        // }
+
         //validating the data using zod
         // todo:
 
         // updating the store information 
-        await StoreModel.findOneAndUpdate({userId:userByEmail._id}, data.payload);
+        const store = await StoreModel.findByIdAndUpdate(data.id, data.payload)
 
         // send a welcome email
         // todo :

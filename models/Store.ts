@@ -7,10 +7,11 @@ export interface Products extends Document{
 
 interface Store extends Document {
     owner_name:string;
-    userId:Types.ObjectId;
+    associatedUser:{
+        userEmail:string;
+        userId:Types.ObjectId;
+    }
     contact:string;
-    email:string;
-    password:string;
     businessName:string;
     storeName:string;
     storeLogo:string;
@@ -49,23 +50,16 @@ const StoreSchema:Schema<Store> = new Schema({
         type:String,
         required:[true, "Name of the store owner is required"]
     },
-    userId:{
-        type:Schema.Types.ObjectId,
-        ref:'User'
+    associatedUser:{
+        userEmail:String,
+        userId:{
+            type:Schema.Types.ObjectId,
+            ref:'User'
+        }
     },
     contact:{
         type:String,
         required:[true, "Contact number of the store owner is required"]
-    },
-    email:{
-        type:String,
-        required:[true, "email is required"],
-        unique:true,
-        match:[/.+\@.+\..+/, "Please provide a valid email address"]
-    },
-    password:{
-        type:String,
-        required:[true, "password is required"]
     },
     businessName:{
         type:String,
@@ -86,8 +80,11 @@ const StoreSchema:Schema<Store> = new Schema({
     product:[
         {
             productName:String,
-            productId:Types.ObjectId,
-            ref:'Product'
+            productId:{
+                type:Types.ObjectId,
+                ref:'Product'
+            }
+            
         }
     ],
     businessAddress:{
