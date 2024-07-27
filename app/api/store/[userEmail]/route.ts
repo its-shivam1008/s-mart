@@ -1,7 +1,9 @@
 import StoreModel from "@/models/Store";
 import UserModel from "@/models/User";
 import dbConnect from "@/Db/Db";
-import { NextResponse } from "next/server";
+import { NextRequest, NextResponse } from "next/server";
+import { NextApiRequest } from "next";
+import { PathParamsContext } from "next/dist/shared/lib/hooks-client-context.shared-runtime";
 
 export async function POST(req:Request){
     await dbConnect();
@@ -54,5 +56,25 @@ export async function PUT(req:Request){
         return NextResponse.json({message:"Updated the store data", success:true},{status:201})
     }catch(err){
         return NextResponse.json({message: "Internal server error", success:false},{ status:500});
+    }
+}
+
+export async function GET(req:NextRequest, context:{params:{email:string}}){
+    await dbConnect();
+    try{
+        const {email} =context.params;
+        const getUser = await UserModel.findOne({email:email, role:"StoreOwner"});
+        if(!getUser){
+            return NextResponse.json({message: "user not saved try to sign up again", success:false},{ status:404});
+        }else if(getUser?.role !== 'StoreOwner'){
+            return NextResponse.json({message:"please SignUp as a Store Owner to continue.", success:false}, {status:404});
+        }
+        
+        const associatedUser = {userEmail:getUser.email, userId:getUser._id}
+        const getStoreData = await StoreModel.findOne({associatedUser:associatedUser});
+        return NextResponse.json({getUser, getStoreData, success:true},{status:201})
+    }catch(err){
+        console.log(err)
+        return NextResponse.json({message: "Internal server error", success:false, err},{ status:500});
     }
 }

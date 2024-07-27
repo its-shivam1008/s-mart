@@ -10,15 +10,15 @@ export async function POST(req:Request){
     await dbConnect();
     try{
         const data = await req.json();
-        //saving the data in product
-        const productData = new ProductModel(data.payload);
-        const saveProduct = await productData.save();
-
         const userByUserId = await StoreModel.findOne({userId:data.session.user.userId});
         // checking the user is present in the db or not, if yes is he signed up as a store oner of not 
         if(!userByUserId){
             return NextResponse.json({message: "user not saved try to sign up again", success:false},{ status:404});
         }
+        //saving the data in product
+        const productData = new ProductModel(data.payload);
+        const saveProduct = await productData.save();
+
 
         // saving the product information in the store product array to the store's product list
         if(saveProduct){
