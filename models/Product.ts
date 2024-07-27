@@ -42,7 +42,6 @@ const ProductSchema:Schema<Product> = new Schema({
     categoryId:{
         type:Schema.Types.ObjectId,
         ref:'Category',
-        default:"Miscelleneous"
     },
     storeId:{
         type:Schema.Types.ObjectId,
