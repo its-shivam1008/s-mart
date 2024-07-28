@@ -11,7 +11,7 @@ export async function POST(req:Request){
         // checking the user is present in the db or not, if yes is he signed up as a store oner of not 
         if(!userByEmail){
             return NextResponse.json({message: "user not saved try to sign up again", success:false},{ status:404});
-        }else if(userByEmail?.role !== 'StoreOwner'){
+        }else if(data.session.user.role !== 'StoreOwner'){
             return NextResponse.json({message:"please SignUp as a Store Owner to continue.", success:false}, {status:404});
         }
         //validating the data using zod
@@ -35,11 +35,8 @@ export async function PUT(req:Request){
     await dbConnect();
     try{
         const data = await req.json();
-        // // checking the user is present in the db or not, if yes is he signed up as a store owner or not 
-        const getUser = await UserModel.findOne({email:data.session.user.email, role:"StoreOwner"});
-        if(!getUser){
-            return NextResponse.json({message: "user not saved try to sign up again", success:false},{ status:404});
-        }else if(getUser?.role !== 'StoreOwner'){
+        // 
+        if(data.session.user.role !== 'StoreOwner'){
             return NextResponse.json({message:"please SignUp as a Store Owner to continue.", success:false}, {status:404});
         }
 
@@ -57,13 +54,16 @@ export async function PUT(req:Request){
     }
 }
 
-export async function GET(req:NextRequest, context:{params:{email:string}}){
+export async function GET(req:NextRequest){
     await dbConnect();
     try{
         // gettng the email from the parameter 
-        const {email} =context.params;
+        const {searchParams } = new URL(req.url);
+        const queryParam = {
+            email : searchParams.get('email')
+        }
         // getting the user whose role is a store owner else returning the error.
-        const getUser = await UserModel.findOne({email:email, role:"StoreOwner"});
+        const getUser = await UserModel.findOne({email:queryParam.email, role:"StoreOwner"});
         if(!getUser){
             return NextResponse.json({message: "user not saved try to sign up again", success:false},{ status:404});
         }else if(getUser?.role !== 'StoreOwner'){
