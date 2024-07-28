@@ -9,6 +9,7 @@ interface Order extends Document{
         productName:string;
         productId:Types.ObjectId;
     },
+    storeId:Types.ObjectId;
     status:string;
     orderDate:Date;
     shippingDate:Date;
@@ -22,22 +23,35 @@ interface Order extends Document{
     quantity:Number;
     totalPrice:Number;
     trackingNumber:String;
+    payment:{
+        paymentId:Types.ObjectId;
+        isVerified:boolean;   
+    }
 }
 
 const OrderSchema:Schema<Order> = new Schema({
     user:{
         username:String,
-        userId:Schema.Types.ObjectId,
-        ref:"User"
+        userId:{
+            type:Schema.Types.ObjectId,
+            ref:'User'
+        }
     },
     product:{
         productName:String,
-        productId:Schema.Types.ObjectId,
-        ref:"Product"
+        productId:{
+            type:Schema.Types.ObjectId,
+            ref:'Product'
+        }
+    },
+    storeId:{
+        type:Schema.Types.ObjectId,
+        ref:'Store'
     },
     status:{
         type:String,
-        enum:["Pending", "Confirmed", "Shipped", "Deliverd", "Cancelled"]
+        enum:["Pending", "Confirmed", "Shipped", "Deliverd", "Cancelled"],
+        default:"Pending"
     },
     orderDate:{
         type:Date,
@@ -70,7 +84,14 @@ const OrderSchema:Schema<Order> = new Schema({
         type:Number
     },
     trackingNumber:{
-        type:String
+        type:String,
+    },
+    payment:{
+        paymentId:{
+            type:Schema.Types.ObjectId,
+            ref:'Payments'
+        },
+        isVerified:Boolean
     }
 })
 
