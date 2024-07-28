@@ -93,16 +93,42 @@ export async function PUT(req:Request){
     }
 }
 
-export async function GET(req:NextRequest, context:{params:{storeId:string}}){
+export async function GET(req:NextRequest){
     await dbConnect();
     try{
-        //getting the storeId
-        const {storeId} = context.params;
-        const products = await ProductModel.find({storeId:storeId});
-        if (products) {
-            return NextResponse.json({message:"All products fetched", products, success:true}, {status:200});
+        // getting the url
+        const { searchParams } = new URL(req.url);
+        // extracting the value from the queries
+        const queryParam = {
+            productId: searchParams.get('productId'),
+            storeId: searchParams.get('storeId'),
+            allProducts: searchParams.get('allProducts'),
+            email: searchParams.get('email')
+        }
+        const userByEmail = await UserModel.findOne({email:queryParam.email});
+        // checking the user is present in the db or not, if yes is he signed up as a store oner of not 
+        if(!userByEmail){
+            return NextResponse.json({message: "user not saved try to sign up again", success:false},{ status:404});
+        }else if(userByEmail?.role !== 'StoreOwner'){
+            return NextResponse.json({message:"please SignUp as a Store Owner to continue.", success:false}, {status:404});
+        }
+        // if storeOwner  wants all the products of the store
+        if(queryParam.allProducts){
+            // obtaining all the products related to a store. api call looks like => http://localhost:3000/api/store/product/?storeId=66a5128d2ee095f27a5f5d90&email=abc@example.com&allProducts=true allProducts=true is necessary parameter to pass to get all the products
+            const products = await ProductModel.find({storeId:queryParam.storeId});
+            if (products) {
+                return NextResponse.json({message:"All products fetched", products, success:true}, {status:200});
+            }else{
+                return NextResponse.json({message:"unable to find any product of your store", success:false}, {status:404});
+            }
         }else{
-            return NextResponse.json({message:"unable to find any product of your store", success:false}, {status:404});
+            // else storeOwner  wants only one product. api call looks like => http://localhost:3000/api/store/product?productId=66a5fd8ac96764d1687ff36a&email=abc@example.com
+            const product = await ProductModel.findById(queryParam.productId);
+            if (product) {
+                return NextResponse.json({message:"All products fetched", product, success:true}, {status:200});
+            }else{
+                return NextResponse.json({message:"unable to find any product of your store", success:false}, {status:404});
+            }
         }
     }catch(err){
         console.log(err);
@@ -118,7 +144,15 @@ export async function DELETE(req:Request){
         // extracting the value from the queries
         const queryParam = {
             productId: searchParams.get('productId'),
-            storeId: searchParams.get('storeId')
+            storeId: searchParams.get('storeId'),
+            email: searchParams.get('email')
+        }
+        const userByEmail = await UserModel.findOne({email:queryParam.email});
+        // checking the user is present in the db or not, if yes is he signed up as a store oner of not 
+        if(!userByEmail){
+            return NextResponse.json({message: "user not saved try to sign up again", success:false},{ status:404});
+        }else if(userByEmail?.role !== 'StoreOwner'){
+            return NextResponse.json({message:"please SignUp as a Store Owner to continue.", success:false}, {status:404});
         }
         // deleting the product from products
         const deletedProduct = await ProductModel.findByIdAndDelete(queryParam.productId);
