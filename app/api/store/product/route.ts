@@ -2,7 +2,7 @@ import StoreModel from "@/models/Store";
 import ProductModel from "@/models/Product";
 import UserModel from "@/models/User";
 import dbConnect from "@/Db/Db";
-import { NextResponse } from "next/server";
+import { NextResponse, NextRequest } from "next/server";
 import { Products } from "@/models/Store";
 import { ObjectId, Types } from "mongoose";
 
@@ -86,6 +86,52 @@ export async function PUT(req:Request){
             return NextResponse.json({message:"Product Updated", success:true}, {status:201})
         }else{
             return NextResponse.json({message:"Product is NOT updated", success:false}, {status:400});
+        }
+    }catch(err){
+        console.log(err);
+        return NextResponse.json({message: "Internal server error", success:false},{ status:500});
+    }
+}
+
+export async function GET(req:NextRequest, context:{params:{storeId:string}}){
+    await dbConnect();
+    try{
+        //getting the storeId
+        const {storeId} = context.params;
+        const products = await ProductModel.find({storeId:storeId});
+        if (products) {
+            return NextResponse.json({message:"All products fetched", products, success:true}, {status:200});
+        }else{
+            return NextResponse.json({message:"unable to find any product of your store", success:false}, {status:404});
+        }
+    }catch(err){
+        console.log(err);
+        return NextResponse.json({message: "Internal server error", success:false},{ status:500});
+    }
+}
+
+export async function DELETE(req:Request){
+    await dbConnect();
+    try{
+        // getting the url
+        const { searchParams } = new URL(req.url);
+        // extracting the value from the queries
+        const queryParam = {
+            productId: searchParams.get('productId'),
+            storeId: searchParams.get('storeId')
+        }
+        // deleting the product from products
+        const deletedProduct = await ProductModel.findByIdAndDelete(queryParam.productId);
+        if(deletedProduct){
+            // if it is deleted from products also updating the list of products in the store
+            const updatedStore = await StoreModel.findByIdAndUpdate(queryParam.storeId, {$pull:{product:{productId:queryParam.productId}}})
+            if(updatedStore){
+                return NextResponse.json({message:"Deleted the product successfully", success:true}, {status:200})
+            }else{
+                return NextResponse.json({message:"CANNOT Delete the product successfully", success:false}, {status:400})
+            }
+        }else{
+            return NextResponse.json({message:"CANNOT Delete the product successfully", success:false}, {status:400})
         }
     }catch(err){
         console.log(err);
