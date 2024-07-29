@@ -70,3 +70,5 @@ export async function PUT(req:Request){
         return NextResponse.json({message:'Internal Server Error', success:false}, {status:500})
     }
 }
+
+// get all the orders according to the user
