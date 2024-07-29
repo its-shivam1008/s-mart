@@ -11,6 +11,7 @@ declare module 'next-auth'{
         email?:string;
         imageLogo?:string;
         username?:string;
+        role?:string;
     }
     interface Session{
         user:{
@@ -22,6 +23,7 @@ declare module 'next-auth'{
             email?:string;
             imageLogo?:string;
             username?:string;
+            role?:string;
         } & DefaultSession['user']
     }
 }
@@ -36,5 +38,6 @@ declare module 'next-auth/jwt'{
         email?:string;
         imageLogo?:string;
         username?:string;
+        role?:string;
     }
 }

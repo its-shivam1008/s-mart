@@ -20,9 +20,8 @@ interface Order extends Document{
         state:string;
         city:string;
     }
-    quantity:Number;
-    totalPrice:Number;
-    trackingNumber:String;
+    quantity:number;
+    totalPrice:number;
     payment:{
         paymentId:Types.ObjectId;
         isVerified:boolean;   
@@ -82,9 +81,6 @@ const OrderSchema:Schema<Order> = new Schema({
     },
     totalPrice:{
         type:Number
-    },
-    trackingNumber:{
-        type:String,
     },
     payment:{
         paymentId:{

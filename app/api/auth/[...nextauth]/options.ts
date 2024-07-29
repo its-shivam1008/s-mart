@@ -42,6 +42,7 @@ export const authOptions:NextAuthOptions = {
               user.username = currentUser.username
               user._id = currentUser._id?.toString()
               user.isVerified = currentUser.isVerified
+              user.role = currentUser.role
             }
           }
           return true;
@@ -51,6 +52,7 @@ export const authOptions:NextAuthOptions = {
           token.username = user.username
           token._id = user._id
           token.isVerified = user.isVerified
+          token.role = user.role
         }
         return token
       },
@@ -60,6 +62,7 @@ export const authOptions:NextAuthOptions = {
           session.user.username = token.username
           session.user._id = token._id
           session.user.isVerified = token.isVerified
+          session.user.role = token.role
         }
         return session;
       }
