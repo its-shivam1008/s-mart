@@ -2,7 +2,7 @@
 import React, { InputHTMLAttributes } from 'react'
 import { useSession, signIn, signOut } from "next-auth/react";
 import { useRouter } from 'next/navigation';
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 
 
 const page = () => {
@@ -15,6 +15,12 @@ const page = () => {
         //handle the change in the password field
         setTextValue(e.target.value)
     }
+
+    // if user is present already push it to the homepage
+    // useEffect(() => {
+      
+    // }, [])
+    
 
     const submitThePass =async(e: React.FormEvent<HTMLFormElement>)=>{
         e.preventDefault();

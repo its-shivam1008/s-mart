@@ -3,44 +3,44 @@ import { getServerSession, User } from "next-auth";
 import { authOptions } from "../../auth/[...nextauth]/options";
 import OrderModel from "@/models/Order";
 // import ProductModel from "@/models/Product";
-import { NextResponse } from "next/server";
+import { NextResponse, NextRequest } from "next/server";
+import { NextApiRequest, NextApiResponse } from "next";
+import { getToken } from "next-auth/jwt";
 
 export async function POST(req:Request){
     await dbConnect();
-    // getting the session 
-    const session = await getServerSession(authOptions);
-    // extracting the user from the session 
-    const userSes:User = session?.user as User
-    if(!session || !session.user){
-        return NextResponse.json({message:"Not authenticated", success:false}, {status:401});
-    }
-    // extracting the id and username from the user
-    const userId = userSes._id;
-    const username = userSes.username;
     try{
         const data = await req.json();
+        // getting the query 
+        const {searchParams} = new URL(req.url);
+        // exptracting the username and userId from the queryParams
+        const queryParam = {
+            username: searchParams.get('username'),
+            userId: searchParams.get('userId')
+        }
         const user = {
-            username:username,
-            userId:userId
+            username:queryParam.username,
+            userId:queryParam.userId
         }
         const product = {
             productName:data.payload.product.name,
             productId:data.payload.product._id
         }
         const storeId = data.payload.product.storeId
-        const status = data.status
+        const status = data.payload.status
         const today = new Date();
         today.setDate(today.getDate() + 7); // shipping date is 7 days after the the order date 
         const shippingDate = today;
-        const quantity = data.quantity
-        const totalPrice = data.payload.product.price
+        const quantity = data.payload.quantity
+        const totalPrice = data.payload.product.price*quantity + data.payload.product.shippingCharge - ((data.payload.product.price*(data.payload.product.discount/100))*quantity)
         const order =  new OrderModel({
             user, product, storeId, status, shippingDate, quantity, totalPrice
         })
+        await order.save();
         if(!order){
             return NextResponse.json({message:"Unable to Create order", success:false}, {status:400})
         }
-        return NextResponse.json({message:"Created the order", success:true}, {status:200})
+        return NextResponse.json({message:"Created the order", order, success:true}, {status:200})
     }catch(err){
         return NextResponse.json({message:'Internal Server Error', success:false}, {status:500})
     }

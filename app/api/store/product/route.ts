@@ -76,11 +76,9 @@ export async function PUT(req:Request){
 
         }
 
-        if(updateProduct){
-            return NextResponse.json({message:"Product Updated", success:true}, {status:201})
-        }else{
-            return NextResponse.json({message:"Product is NOT updated", success:false}, {status:400});
-        }
+       
+        return NextResponse.json({message:"Product Updated", success:true}, {status:201})
+        
     }catch(err){
         console.log(err);
         return NextResponse.json({message: "Internal server error", success:false},{ status:500});

@@ -11,7 +11,7 @@ export async function POST(req:Request){
         // checking the user is present in the db or not, if yes is he signed up as a store oner of not 
         if(!userByEmail){
             return NextResponse.json({message: "user not saved try to sign up again", success:false},{ status:404});
-        }else if(data.session.user.role !== 'StoreOwner'){
+        }else if(userByEmail.role !== 'StoreOwner'){
             return NextResponse.json({message:"please SignUp as a Store Owner to continue.", success:false}, {status:404});
         }
         //validating the data using zod
@@ -35,7 +35,6 @@ export async function PUT(req:Request){
     await dbConnect();
     try{
         const data = await req.json();
-        // 
         if(data.session.user.role !== 'StoreOwner'){
             return NextResponse.json({message:"please SignUp as a Store Owner to continue.", success:false}, {status:404});
         }
@@ -48,6 +47,9 @@ export async function PUT(req:Request){
 
         // send a welcome email
         // todo :
+        if(!store){
+            return NextResponse.json({message:"Store data not updated", success:false}, {status:400});
+        }
         return NextResponse.json({message:"Updated the store data", success:true},{status:201})
     }catch(err){
         return NextResponse.json({message: "Internal server error", success:false},{ status:500});
