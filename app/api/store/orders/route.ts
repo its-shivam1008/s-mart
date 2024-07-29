@@ -59,3 +59,24 @@ export async function PUT(req:Request){
     }
 }
 
+// store owner can only delete the order if it is been cancelled by the user
+
+export async function DELETE(req:Request){
+    await dbConnect();
+    try{
+        // getting the search params
+        const {searchParams} = new URL(req.url);
+        // extracting the params from the query
+        const queryParam = {
+            orderId:searchParams.get('orderId'),
+        }
+        // finding the order by Id and deleteing it
+        const deleteOrder = await OrderModel.findByIdAndDelete(queryParam.orderId);
+        if(!deleteOrder){
+            return NextResponse.json({message:"Unable to delete order", success:false}, {status:400})
+        }
+        return NextResponse.json({message:"Order deleted", success:true}, {status:200})
+    }catch(err){
+        return NextResponse.json({message:"Internal server error", success:false}, {status:500})
+    }
+}
