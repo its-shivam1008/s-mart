@@ -72,3 +72,20 @@ export async function PUT(req:Request){
 }
 
 // get all the orders according to the user
+export async function GET(req:Request){
+    await dbConnect();
+    try{
+        const {searchParams} = new URL(req.url)
+        const queryParam = {
+            username:searchParams.get('username'),
+        }
+        const orders = await OrderModel.find({"user.username":queryParam.username})
+        console.log(orders)
+        if(!orders){
+            return NextResponse.json({message:'Cannot get orders', success:false}, {status:400})
+        }
+        return NextResponse.json({message:'Orders are fetched', orders:orders, success:true}, {status:200})
+    }catch(err){
+        return NextResponse.json({message:'Internal Server Error', success:false}, {status:500})
+    }
+}
