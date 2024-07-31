@@ -11,7 +11,10 @@ interface Product extends Document{
     description:string;
     specification:string;
     quantity:number;
-    categoryId:Types.ObjectId;
+    category:{
+        parentCategory:string;
+        subCategory:string;
+    };
     storeId:Types.ObjectId;
     price:number;
     discount:number;
@@ -39,9 +42,9 @@ const ProductSchema:Schema<Product> = new Schema({
         type:Number,
         required:[true, "quantity of items is required"]
     },
-    categoryId:{
-        type:Schema.Types.ObjectId,
-        ref:'Category',
+    category:{
+        parentCategory:String,
+        subCategory:String
     },
     storeId:{
         type:Schema.Types.ObjectId,
