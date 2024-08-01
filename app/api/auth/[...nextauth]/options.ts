@@ -1,6 +1,7 @@
 import { NextAuthOptions } from "next-auth";
 import GitHubProvider from "next-auth/providers/github";
 import GoogleProvider from "next-auth/providers/google";
+import CredentialsProvider from "next-auth/providers/credentials";
 import dbConnect from "@/Db/Db";
 import UserModel from "@/models/User";
 
@@ -14,8 +15,48 @@ export const authOptions:NextAuthOptions = {
         GoogleProvider({
             clientId: process.env.GOOGLE_CLIENT_ID?process.env.GOOGLE_CLIENT_ID:"abc",
             clientSecret: process.env.GOOGLE_CLIENT_SECRET?process.env.GOOGLE_CLIENT_SECRET:"abc"
+        }),
+        CredentialsProvider({
+          id:"credentials",
+          name:"Credentials",
+          credentials:{
+            email:{ label:"Email", type:"text", placeholder:"jsmith"},
+            password:{ label:"Password", type: "password"}
+          },
+          async authorize(credentials:any):Promise<any>{
+            await dbConnect();
+            try{
+              const user = await UserModel.findOne({
+                $or:[
+                  {email: credentials.identifier},
+                  {username: credentials.identifier},
+                ]
+              })
+              if(!user){
+                throw new Error('No user found with this email or username');
+              }
+              if(!user.isVerified){
+                throw new Error('please verify yourself');
+              }
+              const isPasswordCorrect = await user.schema.methods.comparePassword(credentials.password);
+              if(isPasswordCorrect){
+                return true;
+              }else{
+                throw new Error('Password is not correct')
+              }
+            }catch(err:any){
+              throw new err
+            }
+          }
         })
     ],
+    secret: process.env.NEXTAUTH_SECRET,
+    pages:{
+      signIn:'/login'
+    },
+    session: {
+      strategy: 'jwt'
+    },
     callbacks: {
       async signIn({ user, account, profile, email, credentials}){
         if(account?.provider == 'github' || account?.provider == 'google'){
@@ -67,5 +108,5 @@ export const authOptions:NextAuthOptions = {
         return session;
       }
     },
-    secret: process.env.NEXTAUTH_SECRET,
+    
 }
