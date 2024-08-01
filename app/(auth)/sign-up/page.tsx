@@ -1,7 +1,15 @@
 "use client"
-import React from 'react'
+import React, { useEffect, useState } from 'react'
 import { useSession, signIn, signOut } from "next-auth/react";
 import { useRouter } from 'next/navigation';
+import {zodResolver} from "@hookform/resolvers/zod";
+import {useForm} from "react-hook-form"
+import * as z from "zod";
+import Link from 'next/link';
+import { useDebounceCallback, useDebounceValue } from 'usehooks-ts'
+import { useToast } from "@/components/ui/use-toast"
+import { signUpSchema } from '@/schemas/signUpSchema';
+
 
 
 const page = () => {
@@ -13,6 +21,31 @@ const page = () => {
     if(session){
         router.push('/setup-password');
     }
+
+    const [username, setUsername] = useState('');
+    const [usernameMessage, setUsernameMessage] = useState('');
+    const [isCheckingUsername, setIsCheckingUsername] = useState(false);
+    const [isSubmitting, setIsSubmitting] = useState(false);
+
+    const debouncedUsername = useDebounceValue(username, 400)
+
+    const { toast } = useToast()
+
+    //zod implementation
+    const form = useForm<z.infer<typeof signUpSchema>>({   // many uses const register = userForm()
+        resolver:zodResolver(signUpSchema),
+        defaultValues:{
+            username:'',
+            email:'',
+            password:''
+        }
+    }) 
+
+    useEffect(() => {
+      
+    }, [debouncedUsername])
+    
+
   return (
     <div>
       <div className='absolute top-0 flex justify-center items-center h-screen w-full'>
