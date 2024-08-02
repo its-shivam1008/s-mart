@@ -2,11 +2,49 @@
 import React, { useState } from 'react';
 import { useSession, signIn, signOut } from "next-auth/react";
 import { useRouter } from 'next/navigation';
+import { zodResolver } from "@hookform/resolvers/zod"
+import { useForm } from "react-hook-form"
+// import { getSession } from "next-auth/client"
+import { z } from "zod"
+ 
+import { Button } from "@/components/ui/button"
+import {
+  Form,
+  FormControl,
+  FormDescription,
+  FormField,
+  FormItem,
+  FormLabel,
+  FormMessage,
+} from "@/components/ui/form"
+
+import {
+  InputOTP,
+  InputOTPGroup,
+  InputOTPSeparator,
+  InputOTPSlot,
+} from "@/components/ui/input-otp"
+import { useToast } from "@/components/ui/use-toast"
+import { verifySchema } from '@/schemas/verifySchema';
+import { Loader2 } from 'lucide-react';
 
 const page = () => {
   const [textValue, setTextValue] = useState('');
   const { data: session, status } = useSession()
   const [toggleDisable, setToggleDisable] = useState(true);
+
+  const [isSubmitting, setIsSubmitting] = useState(false);
+
+  const [disableSubmit, setDisableSubmit] = useState(false);
+
+  const { toast } = useToast()
+
+  // TODO: I have to extract session from the useSession 
+  const sess = {
+    user:{
+      email:'shivamshukla.email@gmail.com'
+    }
+  }
 
   setTimeout(() => {
     setToggleDisable(false);
@@ -25,10 +63,14 @@ const page = () => {
       headers:{
         'Content-type': 'application/json'
       },
-      body:JSON.stringify({session})
+      body:JSON.stringify({sess})
     })
+    // console.log(session);
     const data = await res.json();
-    alert(data.message);
+    toast({
+      variant: "default",
+      description:data.message
+    })
     enableCount();
   }
 
@@ -39,36 +81,101 @@ const page = () => {
     setTextValue(e.target.value);
   }
 
-  const submitTheVerifyCode = async(e: React.FormEvent<HTMLFormElement>) =>{
-    // prevnting the page refresh
-    e.preventDefault()
+  const submitTheVerifyCode = async(data: z.infer<typeof verifySchema>) =>{
     // verifying the verification code through fetch
+    setDisableSubmit(true);
+    setIsSubmitting(true);
+    // const sess = await getSession();
+    
     const res = await fetch('http://localhost:3000/api/verifyingCode', {
       method:'POST',
       headers:{
         'Content-type': 'application/json'
       },
-      body:JSON.stringify({session, verifyCode:textValue})
+      body:JSON.stringify({session:sess, verifyCode:data.code})
     })
-    const data = await res.json();
+    // console.log(sess)
+    const dataResponse = await res.json();
     // redirecting the user to home page if it is a user or pushing it to store for more store information if it is a store owner
-    if(data.success && !data.isStoreOwner){
+    if(dataResponse.success && !dataResponse.isStoreOwner){
+      toast({
+        title:'Success 🎉',
+        description:dataResponse.message
+    })
       router.push('/');
-    }else if(data.isStoreOwner){
+    }else if(dataResponse.isStoreOwner){
+      toast({
+        title:'Success 🎉',
+        description:dataResponse.message
+    })
       router.push('/store');
     }else{
-      alert(data.message);
+      toast({
+        variant: "destructive",
+        title:'Verification failed',
+        description:dataResponse.message
+    })
     }
+    setIsSubmitting(false);
+    setDisableSubmit(false);
   }
+
+  const form = useForm<z.infer<typeof verifySchema>>({
+    resolver:zodResolver(verifySchema),
+    defaultValues:{
+      code:''
+    }
+  })
+
+  
+
   return (
-    <div>
-      <form onSubmit={submitTheVerifyCode}>
-            <label htmlFor="verifyCode">Enter Verification Code:</label>
-            <input type="text" name="verifyCode" id="verifyCode" value={textValue} onChange={handleChange}/>
-            <button type="submit" className='bg-blue-500 text-white rounded-full px-3 py-2 cursor-pointer m-5'>Verify</button>
-        </form>
-        <button type="button" onClick={handleClick} className='bg-blue-500 text-white rounded-full px-3 py-2 cursor-pointer m-5 disabled:bg-gray-500' disabled={toggleDisable}>Resend new otp</button>
+    <div className='flex justify-center items-center min-h-screen bg-gray-100'>
+        <div className='w-full max-w-md px-4 py-8 space-y-4 bg-white rounded-lg shadow-lg'>
+        <Form {...form}>
+          <form onSubmit={form.handleSubmit(submitTheVerifyCode)}>
+          <FormField
+          control={form.control}
+          name="code"
+          render={({ field }) => (
+            <FormItem className='space-y-4'>
+              <FormLabel className='flex justify-center items-center text-2xl font-bold'>One-Time Password</FormLabel>
+              <FormControl>
+                <div  className='flex justify-center items-center'>
+                <InputOTP maxLength={6} {...field}>
+                  <InputOTPGroup>
+                    <InputOTPSlot index={0} />
+                    <InputOTPSlot index={1} />
+                    <InputOTPSlot index={2} />
+                  </InputOTPGroup>
+                  <InputOTPSeparator />
+                  <InputOTPGroup>
+                    <InputOTPSlot index={3} />
+                    <InputOTPSlot index={4} />
+                    <InputOTPSlot index={5} />
+                  </InputOTPGroup>
+                </InputOTP>
+                </div>
+              </FormControl>
+              <FormDescription  className='flex justify-center items-center'>
+                Please enter the one-time password sent to your email.
+              </FormDescription>
+              <FormMessage />
+            </FormItem>
+          )}
+        />
+        <Button type="submit" className='my-4 flex justify-center items-center' disabled={disableSubmit}>{
+            isSubmitting ? <><Loader2 className='animate-spin font-extrabold mr-2 h-4 w-4'/> Verifying...</> : "Submit"
+          }</Button>
+          </form>
+        </Form>
+        <hr />
+        <Button type='button' onClick={handleClick} disabled={toggleDisable}>
+          { toggleDisable ? 'Time of back counting' : 'Resend otp'}
+        </Button>
+        {/* <button type="button" onClick={handleClick} className='bg-blue-500 text-white rounded-full px-3 py-2 cursor-pointer m-5 disabled:bg-gray-500' disabled={toggleDisable}>Resend new otp</button> */}
     </div>
+  </div>
   )
 }
 
