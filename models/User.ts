@@ -101,9 +101,9 @@ const UserSchema:Schema<User> = new Schema({
     },
     signUpWith:{
         type:String,
-        enum:['google', 'github', 'username or email password'],
+        enum:['google', 'github', 'credentials'],
         required:[true, "which oauthProvider is used is necessary to disclose"],
-        default:'username or email'
+        default:'credentials'
     },
     cart:[
         {

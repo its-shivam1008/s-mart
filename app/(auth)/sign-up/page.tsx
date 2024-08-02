@@ -64,7 +64,7 @@ const page = () => {
                 setUsernameMessage('');
                 try{
                     const response = await axios.get(`/api/checkUsername?username=${username}`)
-                    console.log(response)
+                    // console.log(response)
                     setUsernameMessage(response.data.message);
                 }catch(err){
                     const axiosError = err as AxiosError<ApiResponse>;
@@ -81,7 +81,9 @@ const page = () => {
     const onSubmit = async (data: z.infer<typeof signUpSchema>) =>{
         setIsSubmitting(true);
         try{
-            const response = await axios.post('/api/sign-up', data);
+            console.log(data);
+            const response = await axios.post('/api/signup', data);
+            console.log(response)
             if(!response.data.success){
                 toast({
                     variant: "destructive",
