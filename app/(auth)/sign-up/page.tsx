@@ -111,12 +111,12 @@ const page = () => {
 
   return (
     <div className='flex flex-col justify-center items-center min-h-screen bg-gray-100'>
-        <div className='w-full max-w-md px-8 py-3 space-y-6 bg-white rounded-lg shadow-md'>
+        <div className='w-full max-w-md px-8 py-3 space-y-4 bg-white rounded-lg shadow-md'>
             <div className='text-center'>
-                <h1 className='text-2xl font-extrabold tracking-tight lg:text-3xl mb-4'>
+                <h1 className='text-2xl font-extrabold tracking-tight lg:text-3xl mb-2'>
                     S-Mart is waiting for you!
                 </h1>
-                <p className='mb-4'>Sign-up to start your journey</p>
+                <p className='mb-2'>Sign-up to start your journey</p>
             </div>
             <Form {...form}>
                 <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-3">

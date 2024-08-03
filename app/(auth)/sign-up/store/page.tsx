@@ -112,15 +112,15 @@ const page = () => {
 
   return (
     <div className='flex justify-center items-center min-h-screen bg-gray-100'>
-        <div className='w-full max-w-md px-8 py-3 space-y-6 bg-white rounded-lg shadow-md'>
+        <div className='w-full max-w-md px-8 py-3 space-y-4 bg-white rounded-lg shadow-md'>
             <div className='text-center'>
-                <h1 className='text-2xl text-purple-600 font-extrabold tracking-tight lg:text-3xl mb-4'>
+                <h1 className='text-2xl text-purple-600 font-extrabold tracking-tight lg:text-3xl mb-2'>
                     Open your S-Mart store now!
                 </h1>
-                <p className='mb-4'>Sign-up to register as store-owner</p>
+                <p className='mb-2'>Sign-up to register as store-owner</p>
             </div>
             <Form {...form}>
-                <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-3">
+                <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-2">
                 <FormField
                     control={form.control}
                     name="username"
@@ -201,7 +201,7 @@ const page = () => {
             <div className='text-center mt-2'>
                 <p>
                     Already a member?{' '}
-                    <Link href='/login' className='text-blue-600 hover:text-blue-800'>Log-in</Link>
+                    <Link href='/login' className='text-purple-600 hover:text-purple-800'>Log-in</Link>
                 </p>
             </div>
         </div>
