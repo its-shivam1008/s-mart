@@ -27,6 +27,7 @@
     "react-dom": "^18",
     "react-email": "2.1.5",
     "react-hook-form": "^7.52.1",
+    "react-timer-hook": "^3.0.7",
     "react-toastify": "^10.0.5",
     "resend": "^3.4.0",
     "tailwind-merge": "^2.4.0",

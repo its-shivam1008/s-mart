@@ -1,12 +1,12 @@
 "use client";
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { useSession, signIn, signOut } from "next-auth/react";
 import { useRouter } from 'next/navigation';
 import { zodResolver } from "@hookform/resolvers/zod"
 import { useForm } from "react-hook-form"
 // import { getSession } from "next-auth/client"
 import { z } from "zod"
- 
+import { useTimer } from 'react-timer-hook';
 import { Button } from "@/components/ui/button"
 import {
   Form,
@@ -36,34 +36,59 @@ const page = () => {
   const [isSubmitting, setIsSubmitting] = useState(false);
 
   const [disableSubmit, setDisableSubmit] = useState(false);
+  const time = new Date();
+  time.setSeconds(time.getSeconds() + 120);
+  const [expiryTimestamp, setExpiryTimestamp] = useState(time);
 
   const { toast } = useToast()
 
   // TODO: I have to extract session from the useSession 
   const sess = {
     user:{
-      email:'shivamshukla.email@gmail.com'
+      email:'shivamshukla.email@gmail.com',
+      username:'lebhen kabhai'
     }
   }
 
-  setTimeout(() => {
-    setToggleDisable(false);
-  }, 35000);
+  const {start, restart, minutes, seconds} = useTimer({expiryTimestamp})
 
-  const enableCount = () =>{
+
+  // setTimeout(() => {
+  //   setToggleDisable(false);
+  // }, 35000);
+
+  // const enableCount = () =>{
+  //   setTimeout(() => {
+  //     setToggleDisable(false);
+  //   }, 35000);
+  // }
+  useEffect(() => {
+    start();
     setTimeout(() => {
       setToggleDisable(false);
-    }, 35000);
+    }, 120000);
+  }, [])
+
+  const enableCount = () =>{
+    const resetTime = new Date();
+    resetTime.setSeconds(resetTime.getSeconds() + 120);
+    restart(resetTime)
+    setTimeout(() => {
+          setToggleDisable(false);
+        }, 120000);
+    
   }
+  
 
   const handleClick = async() =>{
     setToggleDisable(true);
+    enableCount();
     const res = await fetch('http://localhost:3000/api/generateOtp',{
       method:'PUT',
       headers:{
         'Content-type': 'application/json'
       },
-      body:JSON.stringify({sess})
+      body:JSON.stringify({session:sess})
     })
     // console.log(session);
     const data = await res.json();
@@ -71,7 +96,7 @@ const page = () => {
       variant: "default",
       description:data.message
     })
-    enableCount();
+    // enableCount();
   }
 
   const router = useRouter();
@@ -102,13 +127,21 @@ const page = () => {
         title:'Success 🎉',
         description:dataResponse.message
     })
-      router.push('/');
-    }else if(dataResponse.isStoreOwner){
       toast({
         title:'Success 🎉',
         description:dataResponse.message
     })
-      router.push('/store');
+      router.push('/login');
+    }else if(dataResponse.isStoreOwner){
+      toast({
+        title:"Account creation successful 🎊",
+        description:"Now you can login."
+    })
+      toast({
+        title:"Account creation successful 🎊",
+        description:"Now you can login."
+    })
+      router.push('/login');
     }else{
       toast({
         variant: "destructive",
@@ -170,8 +203,8 @@ const page = () => {
           </form>
         </Form>
         <hr />
-        <Button type='button' onClick={handleClick} disabled={toggleDisable}>
-          { toggleDisable ? 'Time of back counting' : 'Resend otp'}
+        <Button type='button' onClick={handleClick} className='w-[95px] h-[40px]' disabled={toggleDisable}>
+          { toggleDisable ? <><span>{minutes}</span>:<span>{seconds}</span></> : 'Resend otp'}
         </Button>
         {/* <button type="button" onClick={handleClick} className='bg-blue-500 text-white rounded-full px-3 py-2 cursor-pointer m-5 disabled:bg-gray-500' disabled={toggleDisable}>Resend new otp</button> */}
     </div>

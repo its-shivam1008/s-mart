@@ -119,7 +119,7 @@ const page = () => {
                 <p className='mb-4'>Sign-up to start your journey</p>
             </div>
             <Form {...form}>
-                <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-5">
+                <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-3">
                 <FormField
                     control={form.control}
                     name="username"
