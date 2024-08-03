@@ -52,7 +52,8 @@ const page = () => {
         defaultValues:{
             username:'',
             email:'',
-            password:''
+            password:'',
+            role:'StoreOwner'
         }
     }) 
 
@@ -110,13 +111,13 @@ const page = () => {
     }
 
   return (
-    <div className='flex flex-col justify-center items-center min-h-screen bg-gray-100'>
+    <div className='flex justify-center items-center min-h-screen bg-gray-100'>
         <div className='w-full max-w-md px-8 py-3 space-y-6 bg-white rounded-lg shadow-md'>
             <div className='text-center'>
-                <h1 className='text-2xl font-extrabold tracking-tight lg:text-3xl mb-4'>
-                    S-Mart is waiting for you!
+                <h1 className='text-2xl text-purple-600 font-extrabold tracking-tight lg:text-3xl mb-4'>
+                    Open your S-Mart store now!
                 </h1>
-                <p className='mb-4'>Sign-up to start your journey</p>
+                <p className='mb-4'>Sign-up to register as store-owner</p>
             </div>
             <Form {...form}>
                 <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-3">
@@ -171,7 +172,7 @@ const page = () => {
                         </FormItem>
                     )}
                     />
-                    <Button type='submit' disabled={isSubmitting}>
+                    <Button type='submit' className='bg-purple-600' disabled={isSubmitting}>
                         {
                             isSubmitting?(
                                 <>
@@ -197,19 +198,13 @@ const page = () => {
                 Continue with Google
             </button>
             </div>
-            <div className='text-center mt-4'>
+            <div className='text-center mt-2'>
                 <p>
                     Already a member?{' '}
                     <Link href='/login' className='text-blue-600 hover:text-blue-800'>Log-in</Link>
                 </p>
             </div>
         </div>
-        <div className='text-center md:text-left m-2'>
-                <p>
-                    Wanna sell something?{' '}
-                    <Link href='/sign-up/store' className='text-blue-600 hover:text-blue-800'>Open your store now!</Link>
-                </p>
-            </div>
     </div>
   )
 }

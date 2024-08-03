@@ -123,24 +123,17 @@ const page = () => {
     const dataResponse = await res.json();
     // redirecting the user to home page if it is a user or pushing it to store for more store information if it is a store owner
     if(dataResponse.success && !dataResponse.isStoreOwner){
-      toast({
-        title:'Success 🎉',
-        description:dataResponse.message
-    })
-      toast({
-        title:'Success 🎉',
-        description:dataResponse.message
-    })
+    toast({
+      title:"Account creation successful 🎊",
+      description:dataResponse.message+". You can login now"
+  })
       router.push('/login');
     }else if(dataResponse.isStoreOwner){
       toast({
         title:"Account creation successful 🎊",
-        description:"Now you can login."
+        description:dataResponse.message+". You can login now"
     })
-      toast({
-        title:"Account creation successful 🎊",
-        description:"Now you can login."
-    })
+     
       router.push('/login');
     }else{
       toast({
