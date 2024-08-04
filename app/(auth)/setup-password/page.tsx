@@ -24,13 +24,14 @@ const page = () => {
 
     const submitThePass =async(e: React.FormEvent<HTMLFormElement>)=>{
         e.preventDefault();
+        const roleFromStorage = localStorage.getItem('role');
         // fetch to password saving route to save the password
         const res = await fetch('http://localhost:3000/api/setup-password',{
             method: 'POST',
             headers: {
                 'Content-type': 'application/json',
             },
-            body: JSON.stringify({session, password:textValue, role:userRole}),
+            body: JSON.stringify({session, password:textValue, role:roleFromStorage}),
         })
         const data = await res.json();
         console.log(data);

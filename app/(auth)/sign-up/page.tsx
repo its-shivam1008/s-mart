@@ -30,7 +30,7 @@ import { Loader2, LoaderCircle } from 'lucide-react';
 const page = () => {
     const { data: session, status } = useSession()
     const router = useRouter();
-    
+    const route = useRouter();
 
     const [username, setUsername] = useState('');
     const [usernameMessage, setUsernameMessage] = useState('');
@@ -52,6 +52,7 @@ const page = () => {
     }) 
 
     useEffect(() => {
+        localStorage.setItem('role', 'User')
         // checking the username present in the database or not 
         const checkUsernameUnique = async () =>{
             if(username){
@@ -72,7 +73,7 @@ const page = () => {
         }
         checkUsernameUnique();
     }, [username])
-
+    
 
     const onSubmit = async (data: z.infer<typeof signUpSchema>) =>{
         setIsSubmitting(true);

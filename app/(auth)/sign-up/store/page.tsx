@@ -58,6 +58,7 @@ const page = () => {
     }) 
 
     useEffect(() => {
+        localStorage.setItem('role', 'StoreOwner')
         // checking the username present in the database or not 
         const checkUsernameUnique = async () =>{
             if(username){
@@ -78,7 +79,8 @@ const page = () => {
         }
         checkUsernameUnique();
     }, [username])
-    
+
+
     const onSubmit = async (data: z.infer<typeof signUpSchema>) =>{
         setIsSubmitting(true);
         try{
