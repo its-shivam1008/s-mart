@@ -30,7 +30,6 @@ import { Loader2, LoaderCircle } from 'lucide-react';
 const page = () => {
     const { data: session, status } = useSession()
     const router = useRouter();
-    const route = useRouter();
 
     const [username, setUsername] = useState('');
     const [usernameMessage, setUsernameMessage] = useState('');
