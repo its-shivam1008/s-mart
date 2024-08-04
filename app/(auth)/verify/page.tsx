@@ -184,7 +184,7 @@ const page = () => {
                 </div>
               </FormControl>
               <FormDescription  className='flex justify-center items-center'>
-               Please verify your email, otp sent to {session?.user.email}
+               <span className='text-center'>Please verify your email, otp sent to {session?.user.email}</span>
               </FormDescription>
               <FormMessage />
             </FormItem>
