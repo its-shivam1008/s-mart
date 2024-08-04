@@ -1,3 +1,4 @@
+import axios from 'axios'
 import { getToken } from 'next-auth/jwt'
 import { NextResponse } from 'next/server'
 export {default} from 'next-auth/middleware'
@@ -18,8 +19,7 @@ export async function middleware(request: NextRequest) {
     //   }
     // }
     if(token &&  (
-        url.pathname.startsWith('/login')||
-        url.pathname.startsWith('/sign-up')
+        url.pathname.startsWith('/login')
     )){
         return NextResponse.redirect(new URL('/', request.url))
     }

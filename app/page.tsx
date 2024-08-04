@@ -12,12 +12,14 @@ export default function Home() {
     const checkPass = async () =>{
       alert('useeffect')
       if(session){
-        alert('session present')
-        const response = await axios.get(`/api/checkPassword?email=${session.user.email}`)
-        if(!response.data.isPasswordPresent){
-           router.push('/setup-password')
+        console.log(session)
+        const res = await axios.get(`/api/isVerified?email=${session.user.email}`);
+        console.log(res.data.isVerified)
+        if(!res.data.isVerified){
+          router.push('/verify')
         }
       }else{
+        alert(session)
         alert('no session')
       }
     }

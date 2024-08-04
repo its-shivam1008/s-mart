@@ -88,7 +88,7 @@ const page = () => {
       headers:{
         'Content-type': 'application/json'
       },
-      body:JSON.stringify({session:sess})
+      body:JSON.stringify({session})
     })
     // console.log(session);
     const data = await res.json();
@@ -117,7 +117,7 @@ const page = () => {
       headers:{
         'Content-type': 'application/json'
       },
-      body:JSON.stringify({session:sess, verifyCode:data.code})
+      body:JSON.stringify({session, verifyCode:data.code})
     })
     // console.log(sess)
     const dataResponse = await res.json();
@@ -184,7 +184,7 @@ const page = () => {
                 </div>
               </FormControl>
               <FormDescription  className='flex justify-center items-center'>
-                Please enter the one-time password sent to your email.
+                Email sent to {session?.user.email}
               </FormDescription>
               <FormMessage />
             </FormItem>

@@ -30,12 +30,7 @@ import { Loader2, LoaderCircle } from 'lucide-react';
 const page = () => {
     const { data: session, status } = useSession()
     const router = useRouter();
-    const loginAndRedirecting = (method:string) : void => {
-        signIn(method);
-    }
-    if(session){
-        router.push('/setup-password');
-    }
+    
 
     const [username, setUsername] = useState('');
     const [usernameMessage, setUsernameMessage] = useState('');
@@ -77,7 +72,8 @@ const page = () => {
         }
         checkUsernameUnique();
     }, [username])
-    
+
+
     const onSubmit = async (data: z.infer<typeof signUpSchema>) =>{
         setIsSubmitting(true);
         try{
@@ -109,6 +105,27 @@ const page = () => {
         }
     }
 
+    // these checking conditions of whether the status is loading or not isgiven below the hooks and functions as it will generate error if defiend above them
+    const loginAndRedirecting = (method:string) : void => {
+        signIn(method);
+    }
+    if(session){
+        // console.log(session)
+        (async function (){
+            const response = await axios.get(`/api/checkPassword?email=${session.user.email}`)
+            if(!response.data.isPasswordPresent){
+            router.push('/setup-password')
+            }else{
+                router.push('/')
+            }
+        })()
+    }
+    if(status === 'loading'){
+       return <div>loading...</div>
+    }
+    
+    
+if(!session){
   return (
     <div className='flex flex-col justify-center items-center min-h-screen bg-gray-100'>
         <div className='w-full max-w-md px-8 py-3 space-y-4 bg-white rounded-lg shadow-md'>
@@ -213,5 +230,5 @@ const page = () => {
     </div>
   )
 }
-
+}
 export default page
