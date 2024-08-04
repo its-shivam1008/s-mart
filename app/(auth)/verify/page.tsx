@@ -190,7 +190,7 @@ const page = () => {
             </FormItem>
           )}
         />
-        <Button type="submit" className='my-4 flex justify-center items-center' disabled={disableSubmit}>{
+        <Button type="submit"  className='my-4 flex justify-center items-center' disabled={disableSubmit}>{
             isSubmitting ? <><Loader2 className='animate-spin font-extrabold mr-2 h-4 w-4'/> Verifying...</> : "Submit"
           }</Button>
           </form>

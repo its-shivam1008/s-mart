@@ -81,6 +81,10 @@ const page = () => {
         }
     });
 
+    if(!session){
+        router.push('/login')
+    }
+
     // const handleClick = ():void =>{
     //     setUserRole('StoreOwner');
     // }
@@ -106,7 +110,7 @@ const page = () => {
                 </FormItem>
             )}
             />
-            <Button type="submit">
+            <Button type="submit" disabled={isSubmitting}>
                 {
                     isSubmitting ? <><Loader2 className='animate-spin mr-2 w-4 h-4'/> Saving... </> : 'Save'
                 }
