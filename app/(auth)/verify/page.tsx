@@ -111,6 +111,7 @@ const page = () => {
     setDisableSubmit(true);
     setIsSubmitting(true);
     // const sess = await getSession();
+    const email = localStorage.getItem('email')
     
     const res = await fetch('http://localhost:3000/api/verifyingCode', {
       method:'POST',

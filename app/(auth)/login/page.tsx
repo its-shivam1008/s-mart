@@ -72,6 +72,11 @@ const page = () => {
   return (
     <div className='flex flex-col justify-center items-center min-h-screen bg-gray-100'>
         <div className='w-full max-w-md px-8 py-3 space-y-4 bg-white rounded-lg shadow-md'>
+        <div className='text-center'>
+                <h1 className='text-3xl text-blue-500 font-extrabold tracking-tight lg:text-3xl mb-2'>
+                    Login to continue!!
+                </h1>
+            </div>
         <Form {...form}>
                 <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-4">
                 <FormField
@@ -104,7 +109,7 @@ const page = () => {
                         </FormItem>
                     )}
                     />
-                    <Button type='submit' disabled={isSubmitting}>
+                    <Button type='submit' className='bg-blue-500 hover:bg-blue-400 disabled:bg-blue-300' disabled={isSubmitting}>
                         {
                             isSubmitting?(
                                 <>

@@ -98,6 +98,7 @@ const page = () => {
                 title:'Success 🎉',
                 description:response.data.message
             })
+            localStorage.setItem('email',data.email)
             router.push('/verify');
             setIsSubmitting(false);
         }catch(err){

@@ -79,7 +79,7 @@ const page = () => {
         try{
             console.log(data);
             const response = await axios.post('/api/signup', data);
-            console.log(response)
+            // console.log(response)
             if(!response.data.success){
                 toast({
                     variant: "destructive",
@@ -91,6 +91,7 @@ const page = () => {
                 title:'Success 🎉',
                 description:response.data.message
             })
+            localStorage.setItem('email',data.email)
             router.push('/verify');
             setIsSubmitting(false);
         }catch(err){
