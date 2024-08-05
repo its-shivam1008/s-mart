@@ -2,6 +2,19 @@
 import React from 'react'
 import { useSession, signIn, signOut } from "next-auth/react";
 import { useRouter } from 'next/navigation';
+import { Button } from "@/components/ui/button"
+import {
+  Form,
+  FormControl,
+  FormDescription,
+  FormField,
+  FormItem,
+  FormLabel,
+  FormMessage,
+} from "@/components/ui/form"
+import { Input } from "@/components/ui/input"
+import { Loader2, LoaderCircle } from 'lucide-react';
+
 
 
 const page = () => {
@@ -15,7 +28,74 @@ const page = () => {
     }
   return (
     <div>
-      <div className='absolute top-0 flex justify-center items-center h-screen w-full'>
+        <div>
+        <Form {...form}>
+                <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-3">
+                <FormField
+                    control={form.control}
+                    name="username"
+                    render={({ field }) => (
+                        <FormItem>
+                        <FormLabel>Username</FormLabel>
+                        <FormControl>
+                            <Input placeholder="username"
+                            {...field}
+                            onChange={(e) =>{ // if we want to write the on change we have to write it after {...field}
+                                field.onChange(e);
+                                debounced(e.target.value)
+                            }}
+                            />
+                        </FormControl>
+                        {isCheckingUsername && <LoaderCircle className='animate-spin'/>}
+                        <p className={`text-sm ${usernameMessage === 'Username is available'?'text-green-500':'text-red-500'}`}>{usernameMessage}</p>
+                        <FormMessage />
+                        </FormItem>
+                    )}
+                    />
+                <FormField
+                    control={form.control}
+                    name="email"
+                    render={({ field }) => (
+                        <FormItem>
+                        <FormLabel>Email</FormLabel>
+                        <FormControl>
+                            <Input placeholder="abc@example.com"
+                            {...field}
+                            />
+                        </FormControl>
+                        <FormMessage />
+                        </FormItem>
+                    )}
+                    />
+                <FormField
+                    control={form.control}
+                    name="password"
+                    render={({ field }) => (
+                        <FormItem>
+                        <FormLabel>Password</FormLabel>
+                        <FormControl>
+                            <Input type='password' placeholder="Password"
+                            {...field}
+                            />
+                        </FormControl>
+                        <FormMessage />
+                        </FormItem>
+                    )}
+                    />
+                    <Button type='submit' disabled={isSubmitting}>
+                        {
+                            isSubmitting?(
+                                <>
+                                    <Loader2 className='mr-2 h-4 w-4 animate-spin'/>Please wait
+                                </>
+                            ):('Sign-up')
+                        }
+                    </Button>
+                </form>
+            </Form>
+        </div>
+
+      {/* <div className='absolute top-0 flex justify-center items-center h-screen w-full'>
                     <div className='flex flex-col space-y-5 justify-center items-center rounded-[12px]  h-fit bg-white bg-opacity-40 backdrop-blur-xl w-fit p-4 my-auto'>
                         <button onClick={() => { loginAndRedirecting("github") }} type="button" className="text-white bg-[#24292F] hover:bg-[#24292F]/90 focus:ring-4 focus:outline-none focus:ring-[#24292F]/50 font-medium rounded-lg text-sm px-5 py-2.5 text-center inline-flex items-center dark:focus:ring-gray-500 dark:hover:bg-[#050708]/30 me-2 mb-2">
                             <svg className="w-4 h-4 me-2" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 20 20">
@@ -30,7 +110,7 @@ const page = () => {
                             Sign in with Google
                         </button>
                     </div>
-                </div>
+                </div> */}
     </div>
   )
 }
