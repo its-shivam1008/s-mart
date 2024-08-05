@@ -41,6 +41,7 @@ const page = () => {
   const [expiryTimestamp, setExpiryTimestamp] = useState(time);
   const [sessionObject, setSessionObject] = useState({});
   const { toast } = useToast()
+  const [flag, setFlag] = useState(false)
 
   // TODO: I have to extract session from the useSession 
   const sess = {
@@ -106,17 +107,26 @@ const page = () => {
     setTextValue(e.target.value);
   }
 
+  useEffect(() => {
+      if(!session && !flag){
+        const sessionObj = localStorage.getItem('sessionObj')
+        console.log(sessionObj);
+        if(sessionObj){
+          setSessionObject(sessionObj);
+        }
+        setFlag(true);
+      }
+      if(session && !flag){
+        setSessionObject(session)
+      }
+  }, [session, flag])
+  
+
   const submitTheVerifyCode = async(data: z.infer<typeof verifySchema>) =>{
     // verifying the verification code through fetch
     setDisableSubmit(true);
     setIsSubmitting(true);
     // const sess = await getSession();
-    if(!session){
-      const sessionObj = localStorage.getItem('sessionObj')
-      console.log(sessionObj);
-      setSessionObject(sessionObj);
-    }
-    setSessionObject(session)
     const res = await fetch('http://localhost:3000/api/verifyingCode', {
       method:'POST',
       headers:{
@@ -131,7 +141,7 @@ const page = () => {
     toast({
       title:"Account creation successful 🎊",
       description:dataResponse.message+". You can login now"
-  })
+    })
       router.push('/login');
     }else if(dataResponse.isStoreOwner){
       toast({
@@ -189,7 +199,7 @@ const page = () => {
                 </div>
               </FormControl>
               <FormDescription  className='flex justify-center items-center'>
-               <span className='text-center'>Please verify your email, otp sent to {session?.user.email}</span>
+               <span className='text-center'>Please verify your email, otp sent to {sessionObject?.user.email}</span>
               </FormDescription>
               <FormMessage />
             </FormItem>
