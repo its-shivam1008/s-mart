@@ -39,7 +39,7 @@ const page = () => {
   const time = new Date();
   time.setSeconds(time.getSeconds() + 120);
   const [expiryTimestamp, setExpiryTimestamp] = useState(time);
-
+  const [sessionObject, setSessionObject] = useState({});
   const { toast } = useToast()
 
   // TODO: I have to extract session from the useSession 
@@ -111,14 +111,18 @@ const page = () => {
     setDisableSubmit(true);
     setIsSubmitting(true);
     // const sess = await getSession();
-    const email = localStorage.getItem('email')
-    
+    if(!session){
+      const sessionObj = localStorage.getItem('sessionObj')
+      console.log(sessionObj);
+      setSessionObject(sessionObj);
+    }
+    setSessionObject(session)
     const res = await fetch('http://localhost:3000/api/verifyingCode', {
       method:'POST',
       headers:{
         'Content-type': 'application/json'
       },
-      body:JSON.stringify({session, verifyCode:data.code})
+      body:JSON.stringify({session:sessionObject, verifyCode:data.code})
     })
     // console.log(sess)
     const dataResponse = await res.json();

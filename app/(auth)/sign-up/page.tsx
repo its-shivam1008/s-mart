@@ -91,7 +91,7 @@ const page = () => {
                 title:'Success 🎉',
                 description:response.data.message
             })
-            localStorage.setItem('email',data.email)
+            localStorage.setItem("sessionObj",`{email:${data.email}, username:${data.username}}`)
             router.push('/verify');
             setIsSubmitting(false);
         }catch(err){
