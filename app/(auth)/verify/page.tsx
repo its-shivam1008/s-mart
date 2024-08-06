@@ -39,7 +39,7 @@ const page = () => {
   const time = new Date();
   time.setSeconds(time.getSeconds() + 120);
   const [expiryTimestamp, setExpiryTimestamp] = useState(time);
-  const [sessionObject, setSessionObject] = useState({});
+  const [sessionObject, setSessionObject] = useState({user:{email:"abc@email.com"}});
   const { toast } = useToast()
   const [flag, setFlag] = useState(false)
 
@@ -52,7 +52,6 @@ const page = () => {
   }
 
   const {start, restart, minutes, seconds} = useTimer({expiryTimestamp})
-
 
   // setTimeout(() => {
   //   setToggleDisable(false);
@@ -80,7 +79,6 @@ const page = () => {
     
   }
   
-
   const handleClick = async() =>{
     setToggleDisable(true);
     enableCount();
@@ -107,17 +105,26 @@ const page = () => {
     setTextValue(e.target.value);
   }
 
+  type SessionType = {user:{email:string; username?:string, name?:string}}
+
   useEffect(() => {
       if(!session && !flag){
         const sessionObj = localStorage.getItem('sessionObj')
-        console.log(sessionObj);
+        // console.log(sessionObj);
         if(sessionObj){
-          setSessionObject(sessionObj);
+          const userJsonObj = JSON.parse(sessionObj)
+          // console.log("sessObj",userJsonObj);
+          // console.log("jsonparse",userJsonObj)
+          setSessionObject(userJsonObj);
+          // console.log("user",sessionObject)
+          // console.log("session.user",sessionObject.user)
+          // console.log("session.user.email",sessionObject.user.email)
+
         }
         setFlag(true);
       }
       if(session && !flag){
-        setSessionObject(session)
+        setSessionObject(session as SessionType)
       }
   }, [session, flag])
   
@@ -199,7 +206,7 @@ const page = () => {
                 </div>
               </FormControl>
               <FormDescription  className='flex justify-center items-center'>
-               <span className='text-center'>Please verify your email, otp sent to {sessionObject?.user.email}</span>
+               <span className='text-center'>Please verify your email, otp sent to {sessionObject?.user?.email}</span>
               </FormDescription>
               <FormMessage />
             </FormItem>
@@ -219,5 +226,4 @@ const page = () => {
   </div>
   )
 }
-
 export default page
