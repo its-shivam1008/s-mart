@@ -46,7 +46,20 @@ export default function Home() {
   return (
     <div>
       <main className="w-full">
-        <div className="home min-h-screen w-full border-2 bg-blue-400"></div>
+        <div className="home h-screen w-full border-2 bg-blue-400">
+          {/* bg here */}
+
+          <div className="absolute">
+            <div className="flex flex-col gap-3 bg-red-500">
+              <div className="text-xl">Buy Anything</div>
+              <div className="text-5xl flex gap-5 ">
+                <div>Lorem</div>
+                <div>Ipsum</div>
+                <div>Dolor</div>
+              </div>
+            </div>
+          </div>
+        </div>
       </main>
 
       {/* hello this side ecommerce app hii

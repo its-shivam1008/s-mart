@@ -10,7 +10,8 @@ const Navbar = () => {
     useGSAP(()=>{
         const tl = gsap.timeline()
         tl.from(navBar.current,{
-            scale:0.3,
+            scale:0,
+            backgroundColor:'white',
             duration:0.5,
             delay:0.3
         })
@@ -21,7 +22,7 @@ const Navbar = () => {
             delay:0.5,
         })
         tl.from('.elements',{
-            y:-30,
+            y:30,
             opacity:0,
             duration:0.5,
             stagger:0.2
@@ -41,7 +42,7 @@ const Navbar = () => {
             </div>
             <div className="icons">UserLogo</div>
         </div>
-
+        
     </div>
   )
 }
