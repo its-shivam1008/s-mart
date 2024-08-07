@@ -32,17 +32,20 @@ export const authOptions:NextAuthOptions = {
                   {username: credentials.identifier},
                 ]
               })
+              // console.log(user)
               if(!user){
                 throw new Error('No user found with this email or username');
               }
               if(!user.isVerified){
                 throw new Error('please verify yourself');
               }
-              const isPasswordCorrect = await user.schema.methods.comparePassword(credentials.password);
+              const isPasswordCorrect = await user.comparePassword(credentials.password);
+              // console.log(isPasswordCorrect)
               if(isPasswordCorrect){
-                return true;
+                return user;
               }else{
                 throw new Error('Password is not correct')
+                // return null;
               }
             }catch(err:any){
               throw new err

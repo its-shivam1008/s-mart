@@ -31,6 +31,7 @@ export interface User extends Document{
     cart:CartObj[];
     createdAt:Date;
     updatedAt:Date;
+    comparePassword(candidatePassword: string): Promise<boolean>;
 }
 
 const UserSchema:Schema<User> = new Schema({

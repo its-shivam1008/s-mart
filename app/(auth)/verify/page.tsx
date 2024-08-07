@@ -125,6 +125,7 @@ const page = () => {
       if(session && !flag){
         if(session.user.email && session.user.username){
           setSessionObject({user:{email:session.user.email, username:session.user.username}})
+          console.log(sessionObject)
           setFlag(true);
           setIsFetched(true);
         }
