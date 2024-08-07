@@ -1,11 +1,28 @@
 "use client"
 import Image from "next/image";
 import { useSession, signIn, signOut } from "next-auth/react";
-import { useEffect, useState } from "react";
+import { useEffect, useState , useRef} from "react";
 import axios from "axios";
 import { useRouter } from 'next/navigation';
+import gsap from 'gsap';
+import {useGSAP} from '@gsap/react';
 
 export default function Home() {
+
+  const signOutRef = useRef(null);
+  useGSAP(() => {
+    gsap.from(signOutRef.current,{
+      // x:1000,
+      duration:5,
+      delay:1,
+      rotate:720,
+      scale:2,
+      // opacity:0,
+      color:'red',
+      background:'green'
+    })
+  })
+
   const router = useRouter()
   const [flag, setFlag] = useState(false)
   const { data: session, status } = useSession()
@@ -28,9 +45,15 @@ export default function Home() {
   
   return (
     <div>
-      hello this side ecommerce app hii
+      <main className="w-full">
+        <div className="home min-h-screen w-full border-2 bg-blue-400"></div>
+      </main>
 
-      <button type='button' onClick={()=>{signOut()}}>Sign out</button>
+      {/* hello this side ecommerce app hii
+        <button type='button' onClick={()=>{signOut()}}>Sign out</button>
+      <div className='bg-blue-500 w-20 h-20 rounded-md m-5' ref={signOutRef}>
+
+      </div> */}
     </div>
   );
 }

@@ -4,6 +4,7 @@ import "./globals.css";
 import SessionWrapper from "@/components/SessionWrapper";
 const inter = Inter({ subsets: ["latin"] });
 import { Toaster } from "@/components/ui/toaster"
+import Navbar from "@/components/Navbar";
 
 export const metadata: Metadata = {
   title: "Create Next App",
@@ -18,7 +19,9 @@ export default function RootLayout({
   return (
     <html lang="en">
       <SessionWrapper>
-        <body className={inter.className}>{children}
+        <body className={inter.className}>
+        <Navbar/>
+          {children}
         <Toaster />
         </body> 
       </SessionWrapper>
