@@ -27,6 +27,7 @@ import {
 import { useToast } from "@/components/ui/use-toast"
 import { verifySchema } from '@/schemas/verifySchema';
 import { Loader2 } from 'lucide-react';
+import { Session } from 'next-auth';
 
 const page = () => {
   const [textValue, setTextValue] = useState('');
@@ -39,7 +40,8 @@ const page = () => {
   const time = new Date();
   time.setSeconds(time.getSeconds() + 120);
   const [expiryTimestamp, setExpiryTimestamp] = useState(time);
-  const [sessionObject, setSessionObject] = useState({user:{email:"abc@email.com"}});
+  const [sessionObject, setSessionObject] = useState({user:{email:'abc@example.com', username:'abcd'}});
+  const [isFetched, setIsFetched] = useState(false);
   const { toast } = useToast()
   const [flag, setFlag] = useState(false)
 
@@ -87,7 +89,7 @@ const page = () => {
       headers:{
         'Content-type': 'application/json'
       },
-      body:JSON.stringify({session})
+      body:JSON.stringify({sessionObject})
     })
     // console.log(session);
     const data = await res.json();
@@ -105,28 +107,29 @@ const page = () => {
     setTextValue(e.target.value);
   }
 
-  type SessionType = {user:{email:string; username?:string, name?:string}}
+  // type SessionType = {user:{email:string; username?:string; name?:string}}
 
   useEffect(() => {
       if(!session && !flag){
-        const sessionObj = localStorage.getItem('sessionObj')
+        const sessionEmail = localStorage.getItem('sessionEmail')
+        const sessionUsername = localStorage.getItem('sessionUsername')
         // console.log(sessionObj);
-        if(sessionObj){
-          const userJsonObj = JSON.parse(sessionObj)
-          // console.log("sessObj",userJsonObj);
-          // console.log("jsonparse",userJsonObj)
-          setSessionObject(userJsonObj);
-          // console.log("user",sessionObject)
-          // console.log("session.user",sessionObject.user)
-          // console.log("session.user.email",sessionObject.user.email)
-
+        if(sessionEmail && sessionUsername){
+          
+          setSessionObject({user:{email:sessionEmail, username:sessionUsername}});
+          
         }
         setFlag(true);
+        setIsFetched(true);
       }
       if(session && !flag){
-        setSessionObject(session as SessionType)
+        if(session.user.email && session.user.username){
+          setSessionObject({user:{email:session.user.email, username:session.user.username}})
+          setFlag(true);
+          setIsFetched(true);
+        }
       }
-  }, [session, flag])
+  }, [session, flag, sessionObject])
   
 
   const submitTheVerifyCode = async(data: z.infer<typeof verifySchema>) =>{
@@ -206,7 +209,7 @@ const page = () => {
                 </div>
               </FormControl>
               <FormDescription  className='flex justify-center items-center'>
-               <span className='text-center'>Please verify your email, otp sent to {sessionObject?.user?.email}</span>
+               <span className='text-center'>Please verify your email, otp sent to {isFetched ? sessionObject.user.email : " "}</span>
               </FormDescription>
               <FormMessage />
             </FormItem>

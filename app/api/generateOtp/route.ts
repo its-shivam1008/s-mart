@@ -7,8 +7,9 @@ export async function PUT(req:Request){
     await dbConnect();
     try{
         const data = await req.json();
+        // console.log(data)
         //finding the user is present in the db or not
-        const userByEmail = await UserModel.findOne({email:data.session.user.email});
+        const userByEmail = await UserModel.findOne({email:data.sessionObject.user.email});
         if(!userByEmail){
             return NextResponse.json({message: "user not saved try to sign up again", success:false}, {status:404})
         }
@@ -22,7 +23,7 @@ export async function PUT(req:Request){
         await UserModel.findByIdAndUpdate(userByEmail._id, {verifyCode:verifyCode, verifyCodeExpiry:expiryDate, updatedAt: new Date()});
 
         //sending the verification email again
-        const emailResponse = await sendVerificationEmail(data.session.user.email,data.session.user.username,verifyCode)
+        const emailResponse = await sendVerificationEmail(data.sessionObject.user.email,data.sessionObject.user.username,verifyCode)
         if(!emailResponse.success){
             return NextResponse.json({message:emailResponse.message, success:false}, {status:400})
         }
