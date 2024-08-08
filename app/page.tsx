@@ -11,15 +11,17 @@ export default function Home() {
 
   const signOutRef = useRef(null);
   useGSAP(() => {
-    gsap.from(signOutRef.current,{
-      // x:1000,
-      duration:5,
-      delay:1,
-      rotate:720,
-      scale:2,
-      // opacity:0,
-      color:'red',
-      background:'green'
+    const tl = gsap.timeline()
+    tl.from('.buy-text', {
+      duration:0.5,
+      x:-30,
+      opacity:0,
+      delay:4
+    })
+    tl.from('.headings',{
+      duration:1,
+      scale:0,
+      opacity:0,
     })
   })
 
@@ -46,18 +48,15 @@ export default function Home() {
   return (
     <div>
       <main className="w-full">
-        <div className="home h-screen w-full border-2 bg-blue-400">
-          {/* bg here */}
-
-          <div className="absolute">
-            <div className="flex flex-col gap-3 bg-red-500">
-              <div className="text-xl">Buy Anything</div>
-              <div className="text-5xl flex gap-5 ">
-                <div>Lorem</div>
-                <div>Ipsum</div>
-                <div>Dolor</div>
+        <div className="home h-screen w-full bg-blue-400 flex justify-center items-center">
+            
+            <div className="text-white absolute flex flex-col gap-3">
+              <div className="buy-text tracking-wider font-bold text-xl">Buy Anything</div>
+              <div className="text-5xl flex gap-5 font-extrabold tracking-widest text-stroke">
+                <div className='headings'>Lorem</div>
+                <div className='headings'>Ipsum</div>
+                <div className='headings'>Dolor</div>
               </div>
-            </div>
           </div>
         </div>
       </main>

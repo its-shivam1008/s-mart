@@ -6,9 +6,9 @@ import { useGSAP } from '@gsap/react'
 const Navbar = () => {
 
     const navBar = useRef(null)
-
+    
+    const tl = gsap.timeline()
     useGSAP(()=>{
-        const tl = gsap.timeline()
         tl.from(navBar.current,{
             scale:0,
             backgroundColor:'white',
