@@ -5,6 +5,7 @@ import { useEffect, useState , useRef} from "react";
 import axios from "axios";
 import { useRouter } from 'next/navigation';
 import gsap from 'gsap';
+import { Zenitho, Novatrix } from "uvcanvas"
 import {useGSAP} from '@gsap/react';
 
 export default function Home() {
@@ -48,9 +49,9 @@ export default function Home() {
   return (
     <div>
       <main className="w-full">
-        <div className="home h-screen w-full bg-blue-400 flex justify-center items-center">
-            
-            <div className="text-white absolute flex flex-col gap-3">
+        <div className="home h-screen w-full  flex justify-center items-center">
+        <Novatrix />
+            <div className="text-Black absolute flex flex-col gap-3">
               <div className="buy-text tracking-wider font-bold text-xl">Buy Anything</div>
               <div className="text-5xl flex gap-5 font-extrabold tracking-widest text-stroke">
                 <div className='headings'>Lorem</div>

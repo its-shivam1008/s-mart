@@ -7,6 +7,10 @@
   -webkit-text-fill-color: black;
   /* -webkit-text-stroke-width: 0.1px; */
 }
+div::selection{
+  background-color: rebeccapurple;
+  color:white;
+}
 @tailwind components;
 @tailwind utilities;
 
