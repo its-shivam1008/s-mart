@@ -10,7 +10,39 @@ import {useGSAP} from '@gsap/react';
 
 export default function Home() {
 
+  const {contextSafe} = useGSAP();
+  const mainRef = useRef(null);
+  const cursorRef = useRef(null);
+
+  // mouse follower in the hero section 
+  const mouseMove = contextSafe((e: React.MouseEvent)=>{
+    gsap.to(cursorRef.current,{
+      x:e.screenX-10,
+      y:e.screenY-60,
+      ease:'back.out',
+      delay:0.1
+    })
+  })
+
+  // scalinng the cursor on mouse enter and mouse leave
+  const mouseEnter = contextSafe((e: React.MouseEvent)=>{
+    gsap.to(cursorRef.current,{
+      scale:2,
+      delay:0.2,
+      duration:0.2
+    })
+  })
+  const mouseLeave = contextSafe((e: React.MouseEvent)=>{
+    gsap.to(cursorRef.current,{
+      scale:1,
+      delay:0.2,
+      duration:0.2
+    })
+  })
+
+
   const signOutRef = useRef(null);
+  // text reveal animantion in the hero section 
   useGSAP(() => {
     const tl = gsap.timeline()
     tl.from('.buy-text', {
@@ -48,12 +80,13 @@ export default function Home() {
   
   return (
     <div>
-      <main className="w-full">
+      <main onMouseMove={mouseMove} ref={mainRef} className="w-full">
+        <div className="h-6 w-6 rounded-full bg-purple-500 opacity-50 fixed" ref={cursorRef}></div>
         <div className="home h-screen w-full  flex justify-center items-center">
         <Novatrix />
             <div className="text-Black absolute flex flex-col gap-3">
               <div className="buy-text tracking-wider font-bold text-xl">Buy Anything</div>
-              <div className="text-5xl flex gap-5 font-extrabold tracking-widest text-stroke">
+              <div onMouseEnter={mouseEnter} onMouseLeave={mouseLeave} className="text-5xl flex gap-5 font-extrabold tracking-widest text-stroke">
                 <div className='headings'>Lorem</div>
                 <div className='headings'>Ipsum</div>
                 <div className='headings'>Dolor</div>
@@ -67,6 +100,7 @@ export default function Home() {
       <div className='bg-blue-500 w-20 h-20 rounded-md m-5' ref={signOutRef}>
 
       </div> */}
+      
     </div>
   );
 }
