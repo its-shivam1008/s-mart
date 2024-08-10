@@ -16,6 +16,24 @@ export default function Home() {
   const mainRef = useRef(null);
   const cursorRef = useRef(null);
 
+  //page3 animation using scrollTrigger and its pin property
+  useGSAP(()=>{
+    const tl3 = gsap.timeline()
+    tl3.to('.page3 h1',{
+      transform:"translatex(-150%)",
+      scrollTrigger:{
+        trigger:'.page3',
+        pin:true,
+        scrub:2,
+        markers:true,
+        start:'top 0%',
+        end:'top -150%',
+        scroller:'body'
+        
+      }
+    })
+  })
+
 
   //page2 animation on scroll( with scrolltrigger)
   useGSAP(()=>{
@@ -39,8 +57,8 @@ export default function Home() {
       scrollTrigger:{
         trigger:'.category1',
         // markers:true,
-        start:'top 80%',
-        end:'top 40%',
+        start:'top 70%',
+        end:'top 30%',
         scrub:2,
       }
     })
@@ -51,8 +69,8 @@ export default function Home() {
       scrollTrigger:{
         trigger:'.category1',
         // markers:true,
-        start:'top 80%',
-        end:'top 40%',
+        start:'top 70%',
+        end:'top 30%',
         scrub:2,
       }
     })
@@ -174,7 +192,13 @@ export default function Home() {
             </div>
           </div>
         </div>
+        <div className="page3 h-full w-full overflow-x-hidden">
+          <h1 className="text-black text-[40vw]">Lorem ipsum</h1>
+        </div>
+        <div className="page4 min-h-screen">lorem</div>
       </main>
+
+
     
       {/* hello this side ecommerce app hii
         <button type='button' onClick={()=>{signOut()}}>Sign out</button>
