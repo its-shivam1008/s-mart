@@ -7,12 +7,57 @@ import { useRouter } from 'next/navigation';
 import gsap from 'gsap';
 import { Zenitho, Novatrix } from "uvcanvas"
 import {useGSAP} from '@gsap/react';
+import { ScrollTrigger } from "gsap/ScrollTrigger";
+gsap.registerPlugin(ScrollTrigger);
 
 export default function Home() {
 
   const {contextSafe} = useGSAP();
   const mainRef = useRef(null);
   const cursorRef = useRef(null);
+
+
+  //page2 animation on scroll( with scrolltrigger)
+  useGSAP(()=>{
+    const tl2 = gsap.timeline();
+    tl2.from('.page2 .categories',{
+      opacity:0,
+      x:-50,
+      duration:2,
+      stagger:0.3,
+      scrollTrigger:{
+        trigger:'.page2 .categories',
+        start:'top 70%',
+        scrub:2,
+        end:"top 40%",
+      }
+    })
+    tl2.from('.category1',{
+      opacity:0,
+      x:-50,
+      duration:2,
+      scrollTrigger:{
+        trigger:'.category1',
+        // markers:true,
+        start:'top 80%',
+        end:'top 40%',
+        scrub:2,
+      }
+    })
+    tl2.from('.category2',{
+      opacity:0,
+      x:50,
+      duration:2,
+      scrollTrigger:{
+        trigger:'.category1',
+        // markers:true,
+        start:'top 80%',
+        end:'top 40%',
+        scrub:2,
+      }
+    })
+  })
+  
 
   // mouse follower in the hero section 
   const mouseMove = contextSafe((e: React.MouseEvent)=>{
@@ -27,7 +72,7 @@ export default function Home() {
   // scalinng the cursor on mouse enter and mouse leave
   const mouseEnter = contextSafe((e: React.MouseEvent)=>{
     gsap.to(cursorRef.current,{
-      scale:2,
+      scale:3,
       delay:0.2,
       duration:0.2
     })
@@ -51,7 +96,7 @@ export default function Home() {
       opacity:0,
       delay:4
     })
-    tl.from('.headings',{
+    tl.from('.hero .headings',{
       duration:1,
       scale:0,
       opacity:0,
@@ -86,15 +131,51 @@ export default function Home() {
         <Novatrix />
             <div className="text-Black absolute flex flex-col gap-3">
               <div className="buy-text tracking-wider font-bold text-xl">Buy Anything</div>
-              <div onMouseEnter={mouseEnter} onMouseLeave={mouseLeave} className="text-5xl flex gap-5 font-extrabold tracking-widest text-stroke">
+              <div onMouseEnter={mouseEnter} onMouseLeave={mouseLeave} className="hero text-5xl flex gap-5 font-extrabold tracking-widest text-stroke">
                 <div className='headings'>Lorem</div>
                 <div className='headings'>Ipsum</div>
                 <div className='headings'>Dolor</div>
               </div>
           </div>
         </div>
+        <div className="page2 w-full h-fit px-5">
+          <div className="categories flex my-10">
+            <div className="bg-purple-200 text-purple-900 font-bold tracking-wider w-fit text-3xl p-1 rounded-md mr-3">Catgories</div>
+            <div className="w-fit ml-3">Lorem ipsum dolor sit amet, consectetur adipisicing elit. Aliquid, consequuntur voluptatem sequi rerum dicta labore itaque repellat blanditiis magnam vero neque minus excepturi nesciunt modi? Voluptatum, quibusdam? Alias, unde voluptatum?</div>
+          </div>
+          <div className="categories-scroll grid grid-cols-2 gap-5 m-8 py-8"> 
+            <div className="category1 flex flex-col items-center space-y-20">
+              <div  onMouseEnter={mouseEnter} onMouseLeave={mouseLeave} className='headings w-96 h-48 shadow-xl bg-purple-300 bg-opacity-70 rounded-lg'>
+                <div className="category-title text-black w-fit text-2xl p-2 m-2">Electronics</div>
+                {/* images of the products */}
+              </div>
+              <div  onMouseEnter={mouseEnter} onMouseLeave={mouseLeave} className='headings w-96 h-48 shadow-xl bg-purple-300 bg-opacity-70 rounded-lg'>
+                <div className="category-title text-black w-fit text-2xl p-2 m-2">Fashion</div>
+                {/* images of the products */}
+              </div>
+              <div  onMouseEnter={mouseEnter} onMouseLeave={mouseLeave} className='headings w-96 h-48 shadow-xl bg-purple-300 bg-opacity-70 rounded-lg'>
+                <div className="category-title text-black w-fit text-2xl p-2 m-2">Home and Furniture</div>
+                {/* images of the products */}
+              </div>
+            </div>
+            <div className="category2 flex flex-col items-center space-y-20">
+              <div  onMouseEnter={mouseEnter} onMouseLeave={mouseLeave} className='headings w-96 h-48 shadow-xl bg-purple-300 bg-opacity-70 rounded-lg'>
+                <div className="category-title text-black w-fit text-2xl p-2 m-2">Books</div>
+                {/* images of the products */}
+              </div>
+              <div  onMouseEnter={mouseEnter} onMouseLeave={mouseLeave} className='headings w-96 h-48 shadow-xl bg-purple-300 bg-opacity-70 rounded-lg'>
+                <div className="category-title text-black w-fit text-2xl p-2 m-2">Personal Care</div>
+                {/* images of the products */}
+              </div>
+              <div  onMouseEnter={mouseEnter} onMouseLeave={mouseLeave} className='headings w-96 h-48 shadow-xl bg-purple-300 bg-opacity-70 rounded-lg'>
+                <div className="category-title text-black w-fit text-2xl p-2 m-2">Sports and outdoors</div>
+                {/* images of the products */}
+              </div>
+            </div>
+          </div>
+        </div>
       </main>
-
+    
       {/* hello this side ecommerce app hii
         <button type='button' onClick={()=>{signOut()}}>Sign out</button>
       <div className='bg-blue-500 w-20 h-20 rounded-md m-5' ref={signOutRef}>
