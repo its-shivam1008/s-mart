@@ -16,11 +16,12 @@ export default function Home() {
   const mainRef = useRef(null);
   const cursorRef = useRef(null);
 
+
   //page3 animation using scrollTrigger and its pin property
   useGSAP(()=>{
     const tl3 = gsap.timeline()
     tl3.to('.page3 h1',{
-      transform:"translatex(-150%)",
+      transform:"translatex(-450%)", // you have to change this for according to the text length
       scrollTrigger:{
         trigger:'.page3',
         pin:true,
@@ -104,7 +105,7 @@ export default function Home() {
   })
 
 
-  const signOutRef = useRef(null);
+  
   // text reveal animantion in the hero section 
   useGSAP(() => {
     const tl = gsap.timeline()
@@ -192,8 +193,12 @@ export default function Home() {
             </div>
           </div>
         </div>
-        <div className="page3 h-full w-full overflow-x-hidden">
-          <h1 className="text-black text-[40vw]">Lorem ipsum</h1>
+        <div className="page3 h-full w-full overflow-x-hidden flex gap-5">
+          <h1 className="text-scroll text-black text-[40vw]">Lorem</h1>
+          <h1 className="text-scroll text-black text-[40vw]">Lorem</h1>
+          <h1 className="text-scroll text-black text-[40vw]">Lorem</h1>
+          <h1 className="text-scroll text-black text-[40vw]">Lorem</h1>
+          <h1 className="text-scroll text-black text-[40vw]">Lorem</h1>
         </div>
         <div className="page4 min-h-screen">lorem</div>
       </main>
