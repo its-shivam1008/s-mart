@@ -15,6 +15,46 @@ export default function Home() {
   const {contextSafe} = useGSAP();
   const mainRef = useRef(null);
   const cursorRef = useRef(null);
+  const viewItemRef = useRef(null);
+  const [cursorText, setCursorText] = useState('')
+
+  //changing the mouse cursor on ntering and leaving a product
+  const mouseEnterProduct = contextSafe((e: React.MouseEvent)=>{
+    gsap.set('.product',{
+      cursor:"none"
+    })
+    setCursorText('View 🤩')
+    gsap.to(cursorRef.current, {
+      delay:0.3,
+      height:"fit-content",
+      width:"fit-content",
+      padding:"4px",
+      // zIndex:'9',
+      outlineColor:'rebeccapurple',
+      outlineStyle:'solid',
+      outlineWidth:'thin',
+      border:'2px solid white',
+      borderRadius:"16px",
+      backgroundColor:"rebeccapurple",
+      color:'white'
+    });
+  })
+  const mouseLeaveProduct = contextSafe((e: React.MouseEvent)=>{
+    gsap.set(cursorRef.current, {
+      cursor:'auto'
+    })
+    setCursorText('');
+    gsap.to(cursorRef.current,{
+      delay:0.3,
+      width:'28px',
+      height:'28px',
+      borderRadius:'9999px',
+      backgroundColor:'white',
+      outline:'none',
+      border:'none'
+    })
+
+  })
 
   //changing the color of mouse follower on entering and leaving the page 3
   const mouseEnterPage3 = contextSafe((e: React.MouseEvent)=>{
@@ -92,17 +132,17 @@ export default function Home() {
   // mouse follower in the hero section 
   const mouseMove = contextSafe((e: React.MouseEvent)=>{
     gsap.to(cursorRef.current,{
-      x:e.screenX-10,
-      y:e.screenY-60,
+      x:e.clientX+15,
+      y:e.clientY+15,
       ease:'back.out',
-      delay:0.1
+      delay:0.2
     })
   })
 
   // scalinng the cursor on mouse enter and mouse leave
   const mouseEnter = contextSafe((e: React.MouseEvent)=>{
     gsap.to(cursorRef.current,{
-      scale:3,
+      scale:2.3,
       delay:0.2,
       duration:0.2
     })
@@ -156,7 +196,7 @@ export default function Home() {
   return (
     <div>
       <main onMouseMove={mouseMove} ref={mainRef} className="w-full">
-        <div className="h-7 w-7 rounded-full bg-purple-500 opacity-50 fixed" ref={cursorRef}></div>
+        <div className="h-5 w-5 rounded-full bg-[rebeccapurple] fixed" ref={cursorRef}>{cursorText}</div>
         <div className="home h-screen w-full  flex justify-center items-center">
         <Novatrix />
             <div className="text-Black absolute flex flex-col gap-3">
@@ -175,29 +215,29 @@ export default function Home() {
           </div>
           <div className="categories-scroll grid grid-cols-2 gap-5 m-8 py-8"> 
             <div className="category1 flex flex-col items-center space-y-20">
-              <div  onMouseEnter={mouseEnter} onMouseLeave={mouseLeave} className='headings w-96 h-48 shadow-xl bg-purple-300 bg-opacity-70 rounded-lg'>
+              <div  onMouseEnter={mouseEnter} onMouseLeave={mouseLeave} className='headings w-96 h-48 shadow-xl bg-purple-300  rounded-lg'>
                 <div className="category-title text-black w-fit text-2xl p-2 m-2">Electronics</div>
                 {/* images of the products */}
               </div>
-              <div  onMouseEnter={mouseEnter} onMouseLeave={mouseLeave} className='headings w-96 h-48 shadow-xl bg-purple-300 bg-opacity-70 rounded-lg'>
+              <div  onMouseEnter={mouseEnter} onMouseLeave={mouseLeave} className='headings w-96 h-48 shadow-xl bg-purple-300  rounded-lg'>
                 <div className="category-title text-black w-fit text-2xl p-2 m-2">Fashion</div>
                 {/* images of the products */}
               </div>
-              <div  onMouseEnter={mouseEnter} onMouseLeave={mouseLeave} className='headings w-96 h-48 shadow-xl bg-purple-300 bg-opacity-70 rounded-lg'>
+              <div  onMouseEnter={mouseEnter} onMouseLeave={mouseLeave} className='headings w-96 h-48 shadow-xl bg-purple-300  rounded-lg'>
                 <div className="category-title text-black w-fit text-2xl p-2 m-2">Home and Furniture</div>
                 {/* images of the products */}
               </div>
             </div>
             <div className="category2 flex flex-col items-center space-y-20">
-              <div  onMouseEnter={mouseEnter} onMouseLeave={mouseLeave} className='headings w-96 h-48 shadow-xl bg-purple-300 bg-opacity-70 rounded-lg'>
+              <div  onMouseEnter={mouseEnter} onMouseLeave={mouseLeave} className='headings w-96 h-48 shadow-xl bg-purple-300  rounded-lg'>
                 <div className="category-title text-black w-fit text-2xl p-2 m-2">Books</div>
                 {/* images of the products */}
               </div>
-              <div  onMouseEnter={mouseEnter} onMouseLeave={mouseLeave} className='headings w-96 h-48 shadow-xl bg-purple-300 bg-opacity-70 rounded-lg'>
+              <div  onMouseEnter={mouseEnter} onMouseLeave={mouseLeave} className='headings w-96 h-48 shadow-xl bg-purple-300  rounded-lg'>
                 <div className="category-title text-black w-fit text-2xl p-2 m-2">Personal Care</div>
                 {/* images of the products */}
               </div>
-              <div  onMouseEnter={mouseEnter} onMouseLeave={mouseLeave} className='headings w-96 h-48 shadow-xl bg-purple-300 bg-opacity-70 rounded-lg'>
+              <div  onMouseEnter={mouseEnter} onMouseLeave={mouseLeave} className='headings w-96 h-48 shadow-xl bg-purple-300  rounded-lg'>
                 <div className="category-title text-black w-fit text-2xl p-2 m-2">Sports and outdoors</div>
                 {/* images of the products */}
               </div>
@@ -209,31 +249,36 @@ export default function Home() {
             <div className="hidden"></div>
             <div className='px-2 py-3 ml-10 mb-10 text-3xl font-bold bg-slate-100 rounded-md text-purple-800 w-fit'>Electronics</div>
             <div className="electProducts flex items-center justify-around">
-              <div className="eleProd1 w-48 h-48 p-4 m-2 bg-white bg-opacity-80 backdrop-blur-sm rounded-lg flex flex-col gap-3 justify-center">
+              <div onMouseEnter={mouseEnterProduct} onMouseLeave={mouseLeaveProduct} className="eleProd1 relative product w-48 h-48 p-4 m-2 bg-white bg-opacity-80 backdrop-blur-sm rounded-lg flex flex-col gap-3 justify-center">
+                
                 <div className="title text-xl font-semibold">Title</div>
                 <Image src='' alt="noimg"/>
                 <div className="price text-xl font-bold">price</div>
                 <div className="description text-sm">Lorem ipsum dolor sit.</div>
               </div>
-              <div className="eleProd2 w-48 h-48 p-4 m-2 bg-white bg-opacity-80 backdrop-blur-sm rounded-lg flex flex-col gap-3 justify-center">
+              <div onMouseEnter={mouseEnterProduct} onMouseLeave={mouseLeaveProduct} className="eleProd2 product w-48 h-48 p-4 m-2 bg-white bg-opacity-80 backdrop-blur-sm rounded-lg flex flex-col gap-3 justify-center">
+                
                 <div className="title text-xl font-semibold">Title</div>
                 <Image src='' alt="noimg"/>
                 <div className="price text-xl font-bold">price</div>
                 <div className="description text-sm">Lorem ipsum dolor sit.</div>
               </div>
-              <div className="eleProd3 w-48 h-48 p-4 m-2 bg-white bg-opacity-80 backdrop-blur-sm rounded-lg flex flex-col gap-3 justify-center">
+              <div onMouseEnter={mouseEnterProduct} onMouseLeave={mouseLeaveProduct} className="eleProd3 product w-48 h-48 p-4 m-2 bg-white bg-opacity-80 backdrop-blur-sm rounded-lg flex flex-col gap-3 justify-center">
+                
                 <div className="title text-xl font-semibold">Title</div>
                 <Image src='' alt="noimg"/>
                 <div className="price text-xl font-bold">price</div>
                 <div className="description text-sm">Lorem ipsum dolor sit.</div>
               </div>
-              <div className="eleProd4 w-48 h-48 p-4 m-2 bg-white bg-opacity-80 backdrop-blur-sm rounded-lg flex flex-col gap-3 justify-center">
+              <div onMouseEnter={mouseEnterProduct} onMouseLeave={mouseLeaveProduct} className="eleProd4 product w-48 h-48 p-4 m-2 bg-white bg-opacity-80 backdrop-blur-sm rounded-lg flex flex-col gap-3 justify-center">
+                
                 <div className="title text-xl font-semibold">Title</div>
                 <Image src='' alt="noimg"/>
                 <div className="price text-xl font-bold">price</div>
                 <div className="description text-sm">Lorem ipsum dolor sit.</div>
               </div>
-              <div className="eleProd5 w-48 h-48 p-4 m-2 bg-white bg-opacity-80 backdrop-blur-sm rounded-lg flex flex-col gap-3 justify-center">
+              <div onMouseEnter={mouseEnterProduct} onMouseLeave={mouseLeaveProduct} className="eleProd5 product w-48 h-48 p-4 m-2 bg-white bg-opacity-80 backdrop-blur-sm rounded-lg flex flex-col gap-3 justify-center">
+                
                 <div className="title text-xl font-semibold">Title</div>
                 <Image src='' alt="noimg"/>
                 <div className="price text-xl font-bold">price</div>
@@ -245,31 +290,36 @@ export default function Home() {
             <div className="hidden"></div>
             <div className='px-2 py-3 m-10 text-3xl font-bold bg-slate-100 rounded-md text-purple-800 w-fit'>Fashion</div>
             <div className="fashionProducts flex items-center justify-around">
-              <div className="fashionProd1 w-48 h-48 p-4 m-2 bg-white bg-opacity-80 backdrop-blur-sm rounded-lg flex flex-col gap-3 justify-center">
+              <div onMouseEnter={mouseEnterProduct} onMouseLeave={mouseLeaveProduct} className="fashionProd1 product w-48 h-48 p-4 m-2 bg-white bg-opacity-80 backdrop-blur-sm rounded-lg flex flex-col gap-3 justify-center">
+                
                 <div className="title text-xl font-semibold">Title</div>
                 <Image src='' alt="noimg"/>
                 <div className="price text-xl font-bold">price</div>
                 <div className="description text-sm">Lorem ipsum dolor sit.</div>
               </div>
-              <div className="fashionProd2 w-48 h-48 p-4 m-2 bg-white bg-opacity-80 backdrop-blur-sm rounded-lg flex flex-col gap-3 justify-center">
+              <div onMouseEnter={mouseEnterProduct} onMouseLeave={mouseLeaveProduct} className="fashionProd2 product w-48 h-48 p-4 m-2 bg-white bg-opacity-80 backdrop-blur-sm rounded-lg flex flex-col gap-3 justify-center">
+                
                 <div className="title text-xl font-semibold">Title</div>
                 <Image src='' alt="noimg"/>
                 <div className="price text-xl font-bold">price</div>
                 <div className="description text-sm">Lorem ipsum dolor sit.</div>
               </div>
-              <div className="fashionProd3 w-48 h-48 p-4 m-2 bg-white bg-opacity-80 backdrop-blur-sm rounded-lg flex flex-col gap-3 justify-center">
+              <div onMouseEnter={mouseEnterProduct} onMouseLeave={mouseLeaveProduct} className="fashionProd3 product w-48 h-48 p-4 m-2 bg-white bg-opacity-80 backdrop-blur-sm rounded-lg flex flex-col gap-3 justify-center">
+                
                 <div className="title text-xl font-semibold">Title</div>
                 <Image src='' alt="noimg"/>
                 <div className="price text-xl font-bold">price</div>
                 <div className="description text-sm">Lorem ipsum dolor sit.</div>
               </div>
-              <div className="fashionProd4 w-48 h-48 p-4 m-2 bg-white bg-opacity-80 backdrop-blur-sm rounded-lg flex flex-col gap-3 justify-center">
+              <div onMouseEnter={mouseEnterProduct} onMouseLeave={mouseLeaveProduct} className="fashionProd4 product w-48 h-48 p-4 m-2 bg-white bg-opacity-80 backdrop-blur-sm rounded-lg flex flex-col gap-3 justify-center">
+                
                 <div className="title text-xl font-semibold">Title</div>
                 <Image src='' alt="noimg"/>
                 <div className="price text-xl font-bold">price</div>
                 <div className="description text-sm">Lorem ipsum dolor sit.</div>
               </div>
-              <div className="fashionProd5 w-48 h-48 p-4 m-2 bg-white bg-opacity-80 backdrop-blur-sm rounded-lg flex flex-col gap-3 justify-center">
+              <div onMouseEnter={mouseEnterProduct} onMouseLeave={mouseLeaveProduct} className="fashionProd5 product w-48 h-48 p-4 m-2 bg-white bg-opacity-80 backdrop-blur-sm rounded-lg flex flex-col gap-3 justify-center">
+                
                 <div className="title text-xl font-semibold">Title</div>
                 <Image src='' alt="noimg"/>
                 <div className="price text-xl font-bold">price</div>
@@ -281,31 +331,36 @@ export default function Home() {
             <div className="hidden"></div>
             <div className='px-2 py-3 m-10 text-3xl font-bold bg-slate-100 rounded-md text-purple-800 w-fit'>Home and Furniture</div>
             <div className="homeProducts flex items-center justify-around">
-              <div className="homeProd1 w-48 h-48 p-4 m-2 bg-white bg-opacity-80 backdrop-blur-sm rounded-lg flex flex-col gap-3 justify-center">
+              <div onMouseEnter={mouseEnterProduct} onMouseLeave={mouseLeaveProduct} className="homeProd1 product w-48 h-48 p-4 m-2 bg-white bg-opacity-80 backdrop-blur-sm rounded-lg flex flex-col gap-3 justify-center">
+                
                 <div className="title text-xl font-semibold">Title</div>
                 <Image src='' alt="noimg"/>
                 <div className="price text-xl font-bold">price</div>
                 <div className="description text-sm">Lorem ipsum dolor sit.</div>
               </div>
-              <div className="homeProd2 w-48 h-48 p-4 m-2 bg-white bg-opacity-80 backdrop-blur-sm rounded-lg flex flex-col gap-3 justify-center">
+              <div onMouseEnter={mouseEnterProduct} onMouseLeave={mouseLeaveProduct} className="homeProd2 product w-48 h-48 p-4 m-2 bg-white bg-opacity-80 backdrop-blur-sm rounded-lg flex flex-col gap-3 justify-center">
+                
                 <div className="title text-xl font-semibold">Title</div>
                 <Image src='' alt="noimg"/>
                 <div className="price text-xl font-bold">price</div>
                 <div className="description text-sm">Lorem ipsum dolor sit.</div>
               </div>
-              <div className="homeProd3 w-48 h-48 p-4 m-2 bg-white bg-opacity-80 backdrop-blur-sm rounded-lg flex flex-col gap-3 justify-center">
+              <div onMouseEnter={mouseEnterProduct} onMouseLeave={mouseLeaveProduct} className="homeProd3 product w-48 h-48 p-4 m-2 bg-white bg-opacity-80 backdrop-blur-sm rounded-lg flex flex-col gap-3 justify-center">
+                
                 <div className="title text-xl font-semibold">Title</div>
                 <Image src='' alt="noimg"/>
                 <div className="price text-xl font-bold">price</div>
                 <div className="description text-sm">Lorem ipsum dolor sit.</div>
               </div>
-              <div className="homeProd4 w-48 h-48 p-4 m-2 bg-white bg-opacity-80 backdrop-blur-sm rounded-lg flex flex-col gap-3 justify-center">
+              <div onMouseEnter={mouseEnterProduct} onMouseLeave={mouseLeaveProduct} className="homeProd4 product w-48 h-48 p-4 m-2 bg-white bg-opacity-80 backdrop-blur-sm rounded-lg flex flex-col gap-3 justify-center">
+                
                 <div className="title text-xl font-semibold">Title</div>
                 <Image src='' alt="noimg"/>
                 <div className="price text-xl font-bold">price</div>
                 <div className="description text-sm">Lorem ipsum dolor sit.</div>
               </div>
-              <div className="homeProd5 w-48 h-48 p-4 m-2 bg-white bg-opacity-80 backdrop-blur-sm rounded-lg flex flex-col gap-3 justify-center">
+              <div onMouseEnter={mouseEnterProduct} onMouseLeave={mouseLeaveProduct} className="homeProd5 product w-48 h-48 p-4 m-2 bg-white bg-opacity-80 backdrop-blur-sm rounded-lg flex flex-col gap-3 justify-center">
+                
                 <div className="title text-xl font-semibold">Title</div>
                 <Image src='' alt="noimg"/>
                 <div className="price text-xl font-bold">price</div>
@@ -317,31 +372,36 @@ export default function Home() {
             <div className="hidden"></div>
             <div className='px-2 py-3 m-10 text-3xl font-bold bg-slate-100 rounded-md text-purple-800 w-fit'>Books</div>
             <div className="booksProducts flex items-center justify-around">
-              <div className="booksProd1 w-48 h-48 p-4 m-2 bg-white bg-opacity-80 backdrop-blur-sm rounded-lg flex flex-col gap-3 justify-center">
+              <div onMouseEnter={mouseEnterProduct} onMouseLeave={mouseLeaveProduct} className="booksProd1 product w-48 h-48 p-4 m-2 bg-white bg-opacity-80 backdrop-blur-sm rounded-lg flex flex-col gap-3 justify-center">
+                
                 <div className="title text-xl font-semibold">Title</div>
                 <Image src='' alt="noimg"/>
                 <div className="price text-xl font-bold">price</div>
                 <div className="description text-sm">Lorem ipsum dolor sit.</div>
               </div>
-              <div className="booksProd2 w-48 h-48 p-4 m-2 bg-white bg-opacity-80 backdrop-blur-sm rounded-lg flex flex-col gap-3 justify-center">
+              <div onMouseEnter={mouseEnterProduct} onMouseLeave={mouseLeaveProduct} className="booksProd2 product w-48 h-48 p-4 m-2 bg-white bg-opacity-80 backdrop-blur-sm rounded-lg flex flex-col gap-3 justify-center">
+                
                 <div className="title text-xl font-semibold">Title</div>
                 <Image src='' alt="noimg"/>
                 <div className="price text-xl font-bold">price</div>
                 <div className="description text-sm">Lorem ipsum dolor sit.</div>
               </div>
-              <div className="booksProd3 w-48 h-48 p-4 m-2 bg-white bg-opacity-80 backdrop-blur-sm rounded-lg flex flex-col gap-3 justify-center">
+              <div onMouseEnter={mouseEnterProduct} onMouseLeave={mouseLeaveProduct} className="booksProd3 product w-48 h-48 p-4 m-2 bg-white bg-opacity-80 backdrop-blur-sm rounded-lg flex flex-col gap-3 justify-center">
+                
                 <div className="title text-xl font-semibold">Title</div>
                 <Image src='' alt="noimg"/>
                 <div className="price text-xl font-bold">price</div>
                 <div className="description text-sm">Lorem ipsum dolor sit.</div>
               </div>
-              <div className="booksProd4 w-48 h-48 p-4 m-2 bg-white bg-opacity-80 backdrop-blur-sm rounded-lg flex flex-col gap-3 justify-center">
+              <div onMouseEnter={mouseEnterProduct} onMouseLeave={mouseLeaveProduct} className="booksProd4 product w-48 h-48 p-4 m-2 bg-white bg-opacity-80 backdrop-blur-sm rounded-lg flex flex-col gap-3 justify-center">
+                
                 <div className="title text-xl font-semibold">Title</div>
                 <Image src='' alt="noimg"/>
                 <div className="price text-xl font-bold">price</div>
                 <div className="description text-sm">Lorem ipsum dolor sit.</div>
               </div>
-              <div className="booksProd5 w-48 h-48 p-4 m-2 bg-white bg-opacity-80 backdrop-blur-sm rounded-lg flex flex-col gap-3 justify-center">
+              <div onMouseEnter={mouseEnterProduct} onMouseLeave={mouseLeaveProduct} className="booksProd5 product w-48 h-48 p-4 m-2 bg-white bg-opacity-80 backdrop-blur-sm rounded-lg flex flex-col gap-3 justify-center">
+                
                 <div className="title text-xl font-semibold">Title</div>
                 <Image src='' alt="noimg"/>
                 <div className="price text-xl font-bold">price</div>
@@ -353,31 +413,36 @@ export default function Home() {
             <div className="hidden"></div>
             <div className='px-2 py-3 m-10 text-3xl font-bold bg-slate-100 rounded-md text-purple-800 w-fit'>Personal care</div>
             <div className="personalProducts flex items-center justify-around">
-              <div className="personalProd1 w-48 h-48 p-4 m-2 bg-white bg-opacity-80 backdrop-blur-sm rounded-lg flex flex-col gap-3 justify-center">
+              <div onMouseEnter={mouseEnterProduct} onMouseLeave={mouseLeaveProduct} className="personalProd1 product w-48 h-48 p-4 m-2 bg-white bg-opacity-80 backdrop-blur-sm rounded-lg flex flex-col gap-3 justify-center">
+                
                 <div className="title text-xl font-semibold">Title</div>
                 <Image src='' alt="noimg"/>
                 <div className="price text-xl font-bold">price</div>
                 <div className="description text-sm">Lorem ipsum dolor sit.</div>
               </div>
-              <div className="personalProd2 w-48 h-48 p-4 m-2 bg-white bg-opacity-80 backdrop-blur-sm rounded-lg flex flex-col gap-3 justify-center">
+              <div onMouseEnter={mouseEnterProduct} onMouseLeave={mouseLeaveProduct} className="personalProd2 product w-48 h-48 p-4 m-2 bg-white bg-opacity-80 backdrop-blur-sm rounded-lg flex flex-col gap-3 justify-center">
+                
                 <div className="title text-xl font-semibold">Title</div>
                 <Image src='' alt="noimg"/>
                 <div className="price text-xl font-bold">price</div>
                 <div className="description text-sm">Lorem ipsum dolor sit.</div>
               </div>
-              <div className="personalProd3 w-48 h-48 p-4 m-2 bg-white bg-opacity-80 backdrop-blur-sm rounded-lg flex flex-col gap-3 justify-center">
+              <div onMouseEnter={mouseEnterProduct} onMouseLeave={mouseLeaveProduct} className="personalProd3 product w-48 h-48 p-4 m-2 bg-white bg-opacity-80 backdrop-blur-sm rounded-lg flex flex-col gap-3 justify-center">
+                
                 <div className="title text-xl font-semibold">Title</div>
                 <Image src='' alt="noimg"/>
                 <div className="price text-xl font-bold">price</div>
                 <div className="description text-sm">Lorem ipsum dolor sit.</div>
               </div>
-              <div className="personalProd4 w-48 h-48 p-4 m-2 bg-white bg-opacity-80 backdrop-blur-sm rounded-lg flex flex-col gap-3 justify-center">
+              <div onMouseEnter={mouseEnterProduct} onMouseLeave={mouseLeaveProduct} className="personalProd4 product w-48 h-48 p-4 m-2 bg-white bg-opacity-80 backdrop-blur-sm rounded-lg flex flex-col gap-3 justify-center">
+                
                 <div className="title text-xl font-semibold">Title</div>
                 <Image src='' alt="noimg"/>
                 <div className="price text-xl font-bold">price</div>
                 <div className="description text-sm">Lorem ipsum dolor sit.</div>
               </div>
-              <div className="personalProd5 w-48 h-48 p-4 m-2 bg-white bg-opacity-80 backdrop-blur-sm rounded-lg flex flex-col gap-3 justify-center">
+              <div onMouseEnter={mouseEnterProduct} onMouseLeave={mouseLeaveProduct} className="personalProd5 product w-48 h-48 p-4 m-2 bg-white bg-opacity-80 backdrop-blur-sm rounded-lg flex flex-col gap-3 justify-center">
+                
                 <div className="title text-xl font-semibold">Title</div>
                 <Image src='' alt="noimg"/>
                 <div className="price text-xl font-bold">price</div>
@@ -389,31 +454,36 @@ export default function Home() {
             <div className="hidden"></div>
             <div className='px-2 py-3 m-10 text-3xl font-bold bg-slate-100 rounded-md text-purple-800 w-fit'>Sports and Outdoors</div>
             <div className="sportsProducts flex items-center justify-around">
-              <div className="sportsProd1 w-48 h-48 p-4 m-2 bg-white bg-opacity-80 backdrop-blur-sm rounded-lg flex flex-col gap-3 justify-center">
+              <div onMouseEnter={mouseEnterProduct} onMouseLeave={mouseLeaveProduct} className="sportsProd1 product w-48 h-48 p-4 m-2 bg-white bg-opacity-80 backdrop-blur-sm rounded-lg flex flex-col gap-3 justify-center">
+                
                 <div className="title text-xl font-semibold">Title</div>
                 <Image src='' alt="noimg"/>
                 <div className="price text-xl font-bold">price</div>
                 <div className="description text-sm">Lorem ipsum dolor sit.</div>
               </div>
-              <div className="sportsProd2 w-48 h-48 p-4 m-2 bg-white bg-opacity-80 backdrop-blur-sm rounded-lg flex flex-col gap-3 justify-center">
+              <div onMouseEnter={mouseEnterProduct} onMouseLeave={mouseLeaveProduct} className="sportsProd2 product w-48 h-48 p-4 m-2 bg-white bg-opacity-80 backdrop-blur-sm rounded-lg flex flex-col gap-3 justify-center">
+                
                 <div className="title text-xl font-semibold">Title</div>
                 <Image src='' alt="noimg"/>
                 <div className="price text-xl font-bold">price</div>
                 <div className="description text-sm">Lorem ipsum dolor sit.</div>
               </div>
-              <div className="sportsProd3 w-48 h-48 p-4 m-2 bg-white bg-opacity-80 backdrop-blur-sm rounded-lg flex flex-col gap-3 justify-center">
+              <div onMouseEnter={mouseEnterProduct} onMouseLeave={mouseLeaveProduct} className="sportsProd3 product w-48 h-48 p-4 m-2 bg-white bg-opacity-80 backdrop-blur-sm rounded-lg flex flex-col gap-3 justify-center">
+                
                 <div className="title text-xl font-semibold">Title</div>
                 <Image src='' alt="noimg"/>
                 <div className="price text-xl font-bold">price</div>
                 <div className="description text-sm">Lorem ipsum dolor sit.</div>
               </div>
-              <div className="sportsProd4 w-48 h-48 p-4 m-2 bg-white bg-opacity-80 backdrop-blur-sm rounded-lg flex flex-col gap-3 justify-center">
+              <div onMouseEnter={mouseEnterProduct} onMouseLeave={mouseLeaveProduct} className="sportsProd4 product w-48 h-48 p-4 m-2 bg-white bg-opacity-80 backdrop-blur-sm rounded-lg flex flex-col gap-3 justify-center">
+                
                 <div className="title text-xl font-semibold">Title</div>
                 <Image src='' alt="noimg"/>
                 <div className="price text-xl font-bold">price</div>
                 <div className="description text-sm">Lorem ipsum dolor sit.</div>
               </div>
-              <div className="sportsProd5 w-48 h-48 p-4 m-2 bg-white bg-opacity-80 backdrop-blur-sm rounded-lg flex flex-col gap-3 justify-center">
+              <div onMouseEnter={mouseEnterProduct} onMouseLeave={mouseLeaveProduct} className="sportsProd5 product w-48 h-48 p-4 m-2 bg-white bg-opacity-80 backdrop-blur-sm rounded-lg flex flex-col gap-3 justify-center">
+                
                 <div className="title text-xl font-semibold">Title</div>
                 <Image src='' alt="noimg"/>
                 <div className="price text-xl font-bold">price</div>
