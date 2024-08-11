@@ -24,7 +24,7 @@ export default function Home() {
       scrollTrigger:{
         trigger:'.part-7',
         start:"50% 50%",
-        end:'300% 50%',
+        end:'840% 50%', // we have to change this 840% if we want to add orr remove an image from the list
         pin:true,
         scrub:1,
       }
@@ -45,7 +45,7 @@ export default function Home() {
       right:"0%"
     }, 'height')
     tl5.to('.scroll-img',{
-      marginTop:'-300%'
+      marginTop:'-840%' // we have to change this 840% if we want to add orr remove an image from the list
     })
   }, {scope:viewItemRef})
 
