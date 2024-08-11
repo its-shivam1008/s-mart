@@ -16,17 +16,28 @@ export default function Home() {
   const mainRef = useRef(null);
   const cursorRef = useRef(null);
 
+  //changing the color of mouse follower on entering and leaving the page 3
+  const mouseEnterPage3 = contextSafe((e: React.MouseEvent)=>{
+    gsap.to(cursorRef.current,{
+      backgroundColor:'#f1f5f9',
+    })
+  })
+  const mouseLeavePage3 = contextSafe((e: React.MouseEvent)=>{
+    gsap.to(cursorRef.current,{
+      backgroundColor:'#a855f7', 
+    })
+  })
+
 
   //page3 animation using scrollTrigger and its pin property
   useGSAP(()=>{
     const tl3 = gsap.timeline()
-    tl3.to('.page3 h1',{
+    tl3.to('.page4 h1',{
       transform:"translatex(-450%)", // you have to change this for according to the text length
       scrollTrigger:{
-        trigger:'.page3',
+        trigger:'.page4',
         pin:true,
         scrub:2,
-        markers:true,
         start:'top 0%',
         end:'top -150%',
         scroller:'body'
@@ -58,8 +69,8 @@ export default function Home() {
       scrollTrigger:{
         trigger:'.category1',
         // markers:true,
-        start:'top 70%',
-        end:'top 30%',
+        start:'top 50%',
+        end:'top 10%',
         scrub:2,
       }
     })
@@ -70,8 +81,8 @@ export default function Home() {
       scrollTrigger:{
         trigger:'.category1',
         // markers:true,
-        start:'top 70%',
-        end:'top 30%',
+        start:'top 50%',
+        end:'top 10%',
         scrub:2,
       }
     })
@@ -145,15 +156,15 @@ export default function Home() {
   return (
     <div>
       <main onMouseMove={mouseMove} ref={mainRef} className="w-full">
-        <div className="h-6 w-6 rounded-full bg-purple-500 opacity-50 fixed" ref={cursorRef}></div>
+        <div className="h-7 w-7 rounded-full bg-purple-500 opacity-50 fixed" ref={cursorRef}></div>
         <div className="home h-screen w-full  flex justify-center items-center">
         <Novatrix />
             <div className="text-Black absolute flex flex-col gap-3">
               <div className="buy-text tracking-wider font-bold text-xl">Buy Anything</div>
-              <div onMouseEnter={mouseEnter} onMouseLeave={mouseLeave} className="hero text-5xl flex gap-5 font-extrabold tracking-widest text-stroke">
-                <div className='headings'>Lorem</div>
-                <div className='headings'>Ipsum</div>
-                <div className='headings'>Dolor</div>
+              <div onMouseEnter={mouseEnter} onMouseLeave={mouseLeave} className="hero text-5xl flex gap-5 font-extrabold tracking-widest">
+                <div className='headings text-stroke'>Lorem</div>
+                <div className='headings text-stroke'>Ipsum</div>
+                <div className='headings text-stroke'>Dolor</div>
               </div>
           </div>
         </div>
@@ -193,14 +204,233 @@ export default function Home() {
             </div>
           </div>
         </div>
-        <div className="page3 h-full w-full overflow-x-hidden flex gap-5">
-          <h1 className="text-scroll text-black text-[40vw]">Lorem</h1>
-          <h1 className="text-scroll text-black text-[40vw]">Lorem</h1>
-          <h1 className="text-scroll text-black text-[40vw]">Lorem</h1>
-          <h1 className="text-scroll text-black text-[40vw]">Lorem</h1>
-          <h1 className="text-scroll text-black text-[40vw]">Lorem</h1>
+        <div onMouseEnter={mouseEnterPage3} onMouseLeave={mouseLeavePage3} className="page3 bg-purple-400 h-fit py-20 space-y-20">
+          <div className='flex flex-col'>
+            <div className="hidden"></div>
+            <div className='px-2 py-3 ml-10 mb-10 text-3xl font-bold bg-slate-100 rounded-md text-purple-800 w-fit'>Electronics</div>
+            <div className="electProducts flex items-center justify-around">
+              <div className="eleProd1 w-48 h-48 p-4 m-2 bg-white bg-opacity-80 backdrop-blur-sm rounded-lg flex flex-col gap-3 justify-center">
+                <div className="title text-xl font-semibold">Title</div>
+                <Image src='' alt="noimg"/>
+                <div className="price text-xl font-bold">price</div>
+                <div className="description text-sm">Lorem ipsum dolor sit.</div>
+              </div>
+              <div className="eleProd2 w-48 h-48 p-4 m-2 bg-white bg-opacity-80 backdrop-blur-sm rounded-lg flex flex-col gap-3 justify-center">
+                <div className="title text-xl font-semibold">Title</div>
+                <Image src='' alt="noimg"/>
+                <div className="price text-xl font-bold">price</div>
+                <div className="description text-sm">Lorem ipsum dolor sit.</div>
+              </div>
+              <div className="eleProd3 w-48 h-48 p-4 m-2 bg-white bg-opacity-80 backdrop-blur-sm rounded-lg flex flex-col gap-3 justify-center">
+                <div className="title text-xl font-semibold">Title</div>
+                <Image src='' alt="noimg"/>
+                <div className="price text-xl font-bold">price</div>
+                <div className="description text-sm">Lorem ipsum dolor sit.</div>
+              </div>
+              <div className="eleProd4 w-48 h-48 p-4 m-2 bg-white bg-opacity-80 backdrop-blur-sm rounded-lg flex flex-col gap-3 justify-center">
+                <div className="title text-xl font-semibold">Title</div>
+                <Image src='' alt="noimg"/>
+                <div className="price text-xl font-bold">price</div>
+                <div className="description text-sm">Lorem ipsum dolor sit.</div>
+              </div>
+              <div className="eleProd5 w-48 h-48 p-4 m-2 bg-white bg-opacity-80 backdrop-blur-sm rounded-lg flex flex-col gap-3 justify-center">
+                <div className="title text-xl font-semibold">Title</div>
+                <Image src='' alt="noimg"/>
+                <div className="price text-xl font-bold">price</div>
+                <div className="description text-sm">Lorem ipsum dolor sit.</div>
+              </div>
+            </div>
+          </div>
+          <div className='flex flex-col'>
+            <div className="hidden"></div>
+            <div className='px-2 py-3 m-10 text-3xl font-bold bg-slate-100 rounded-md text-purple-800 w-fit'>Fashion</div>
+            <div className="fashionProducts flex items-center justify-around">
+              <div className="fashionProd1 w-48 h-48 p-4 m-2 bg-white bg-opacity-80 backdrop-blur-sm rounded-lg flex flex-col gap-3 justify-center">
+                <div className="title text-xl font-semibold">Title</div>
+                <Image src='' alt="noimg"/>
+                <div className="price text-xl font-bold">price</div>
+                <div className="description text-sm">Lorem ipsum dolor sit.</div>
+              </div>
+              <div className="fashionProd2 w-48 h-48 p-4 m-2 bg-white bg-opacity-80 backdrop-blur-sm rounded-lg flex flex-col gap-3 justify-center">
+                <div className="title text-xl font-semibold">Title</div>
+                <Image src='' alt="noimg"/>
+                <div className="price text-xl font-bold">price</div>
+                <div className="description text-sm">Lorem ipsum dolor sit.</div>
+              </div>
+              <div className="fashionProd3 w-48 h-48 p-4 m-2 bg-white bg-opacity-80 backdrop-blur-sm rounded-lg flex flex-col gap-3 justify-center">
+                <div className="title text-xl font-semibold">Title</div>
+                <Image src='' alt="noimg"/>
+                <div className="price text-xl font-bold">price</div>
+                <div className="description text-sm">Lorem ipsum dolor sit.</div>
+              </div>
+              <div className="fashionProd4 w-48 h-48 p-4 m-2 bg-white bg-opacity-80 backdrop-blur-sm rounded-lg flex flex-col gap-3 justify-center">
+                <div className="title text-xl font-semibold">Title</div>
+                <Image src='' alt="noimg"/>
+                <div className="price text-xl font-bold">price</div>
+                <div className="description text-sm">Lorem ipsum dolor sit.</div>
+              </div>
+              <div className="fashionProd5 w-48 h-48 p-4 m-2 bg-white bg-opacity-80 backdrop-blur-sm rounded-lg flex flex-col gap-3 justify-center">
+                <div className="title text-xl font-semibold">Title</div>
+                <Image src='' alt="noimg"/>
+                <div className="price text-xl font-bold">price</div>
+                <div className="description text-sm">Lorem ipsum dolor sit.</div>
+              </div>
+            </div>
+          </div>
+          <div className='flex flex-col'>
+            <div className="hidden"></div>
+            <div className='px-2 py-3 m-10 text-3xl font-bold bg-slate-100 rounded-md text-purple-800 w-fit'>Home and Furniture</div>
+            <div className="homeProducts flex items-center justify-around">
+              <div className="homeProd1 w-48 h-48 p-4 m-2 bg-white bg-opacity-80 backdrop-blur-sm rounded-lg flex flex-col gap-3 justify-center">
+                <div className="title text-xl font-semibold">Title</div>
+                <Image src='' alt="noimg"/>
+                <div className="price text-xl font-bold">price</div>
+                <div className="description text-sm">Lorem ipsum dolor sit.</div>
+              </div>
+              <div className="homeProd2 w-48 h-48 p-4 m-2 bg-white bg-opacity-80 backdrop-blur-sm rounded-lg flex flex-col gap-3 justify-center">
+                <div className="title text-xl font-semibold">Title</div>
+                <Image src='' alt="noimg"/>
+                <div className="price text-xl font-bold">price</div>
+                <div className="description text-sm">Lorem ipsum dolor sit.</div>
+              </div>
+              <div className="homeProd3 w-48 h-48 p-4 m-2 bg-white bg-opacity-80 backdrop-blur-sm rounded-lg flex flex-col gap-3 justify-center">
+                <div className="title text-xl font-semibold">Title</div>
+                <Image src='' alt="noimg"/>
+                <div className="price text-xl font-bold">price</div>
+                <div className="description text-sm">Lorem ipsum dolor sit.</div>
+              </div>
+              <div className="homeProd4 w-48 h-48 p-4 m-2 bg-white bg-opacity-80 backdrop-blur-sm rounded-lg flex flex-col gap-3 justify-center">
+                <div className="title text-xl font-semibold">Title</div>
+                <Image src='' alt="noimg"/>
+                <div className="price text-xl font-bold">price</div>
+                <div className="description text-sm">Lorem ipsum dolor sit.</div>
+              </div>
+              <div className="homeProd5 w-48 h-48 p-4 m-2 bg-white bg-opacity-80 backdrop-blur-sm rounded-lg flex flex-col gap-3 justify-center">
+                <div className="title text-xl font-semibold">Title</div>
+                <Image src='' alt="noimg"/>
+                <div className="price text-xl font-bold">price</div>
+                <div className="description text-sm">Lorem ipsum dolor sit.</div>
+              </div>
+            </div>
+          </div>
+          <div className='flex flex-col'>
+            <div className="hidden"></div>
+            <div className='px-2 py-3 m-10 text-3xl font-bold bg-slate-100 rounded-md text-purple-800 w-fit'>Books</div>
+            <div className="booksProducts flex items-center justify-around">
+              <div className="booksProd1 w-48 h-48 p-4 m-2 bg-white bg-opacity-80 backdrop-blur-sm rounded-lg flex flex-col gap-3 justify-center">
+                <div className="title text-xl font-semibold">Title</div>
+                <Image src='' alt="noimg"/>
+                <div className="price text-xl font-bold">price</div>
+                <div className="description text-sm">Lorem ipsum dolor sit.</div>
+              </div>
+              <div className="booksProd2 w-48 h-48 p-4 m-2 bg-white bg-opacity-80 backdrop-blur-sm rounded-lg flex flex-col gap-3 justify-center">
+                <div className="title text-xl font-semibold">Title</div>
+                <Image src='' alt="noimg"/>
+                <div className="price text-xl font-bold">price</div>
+                <div className="description text-sm">Lorem ipsum dolor sit.</div>
+              </div>
+              <div className="booksProd3 w-48 h-48 p-4 m-2 bg-white bg-opacity-80 backdrop-blur-sm rounded-lg flex flex-col gap-3 justify-center">
+                <div className="title text-xl font-semibold">Title</div>
+                <Image src='' alt="noimg"/>
+                <div className="price text-xl font-bold">price</div>
+                <div className="description text-sm">Lorem ipsum dolor sit.</div>
+              </div>
+              <div className="booksProd4 w-48 h-48 p-4 m-2 bg-white bg-opacity-80 backdrop-blur-sm rounded-lg flex flex-col gap-3 justify-center">
+                <div className="title text-xl font-semibold">Title</div>
+                <Image src='' alt="noimg"/>
+                <div className="price text-xl font-bold">price</div>
+                <div className="description text-sm">Lorem ipsum dolor sit.</div>
+              </div>
+              <div className="booksProd5 w-48 h-48 p-4 m-2 bg-white bg-opacity-80 backdrop-blur-sm rounded-lg flex flex-col gap-3 justify-center">
+                <div className="title text-xl font-semibold">Title</div>
+                <Image src='' alt="noimg"/>
+                <div className="price text-xl font-bold">price</div>
+                <div className="description text-sm">Lorem ipsum dolor sit.</div>
+              </div>
+            </div>
+          </div>
+          <div className='flex flex-col'>
+            <div className="hidden"></div>
+            <div className='px-2 py-3 m-10 text-3xl font-bold bg-slate-100 rounded-md text-purple-800 w-fit'>Personal care</div>
+            <div className="personalProducts flex items-center justify-around">
+              <div className="personalProd1 w-48 h-48 p-4 m-2 bg-white bg-opacity-80 backdrop-blur-sm rounded-lg flex flex-col gap-3 justify-center">
+                <div className="title text-xl font-semibold">Title</div>
+                <Image src='' alt="noimg"/>
+                <div className="price text-xl font-bold">price</div>
+                <div className="description text-sm">Lorem ipsum dolor sit.</div>
+              </div>
+              <div className="personalProd2 w-48 h-48 p-4 m-2 bg-white bg-opacity-80 backdrop-blur-sm rounded-lg flex flex-col gap-3 justify-center">
+                <div className="title text-xl font-semibold">Title</div>
+                <Image src='' alt="noimg"/>
+                <div className="price text-xl font-bold">price</div>
+                <div className="description text-sm">Lorem ipsum dolor sit.</div>
+              </div>
+              <div className="personalProd3 w-48 h-48 p-4 m-2 bg-white bg-opacity-80 backdrop-blur-sm rounded-lg flex flex-col gap-3 justify-center">
+                <div className="title text-xl font-semibold">Title</div>
+                <Image src='' alt="noimg"/>
+                <div className="price text-xl font-bold">price</div>
+                <div className="description text-sm">Lorem ipsum dolor sit.</div>
+              </div>
+              <div className="personalProd4 w-48 h-48 p-4 m-2 bg-white bg-opacity-80 backdrop-blur-sm rounded-lg flex flex-col gap-3 justify-center">
+                <div className="title text-xl font-semibold">Title</div>
+                <Image src='' alt="noimg"/>
+                <div className="price text-xl font-bold">price</div>
+                <div className="description text-sm">Lorem ipsum dolor sit.</div>
+              </div>
+              <div className="personalProd5 w-48 h-48 p-4 m-2 bg-white bg-opacity-80 backdrop-blur-sm rounded-lg flex flex-col gap-3 justify-center">
+                <div className="title text-xl font-semibold">Title</div>
+                <Image src='' alt="noimg"/>
+                <div className="price text-xl font-bold">price</div>
+                <div className="description text-sm">Lorem ipsum dolor sit.</div>
+              </div>
+            </div>
+          </div>
+          <div className='flex flex-col'>
+            <div className="hidden"></div>
+            <div className='px-2 py-3 m-10 text-3xl font-bold bg-slate-100 rounded-md text-purple-800 w-fit'>Sports and Outdoors</div>
+            <div className="sportsProducts flex items-center justify-around">
+              <div className="sportsProd1 w-48 h-48 p-4 m-2 bg-white bg-opacity-80 backdrop-blur-sm rounded-lg flex flex-col gap-3 justify-center">
+                <div className="title text-xl font-semibold">Title</div>
+                <Image src='' alt="noimg"/>
+                <div className="price text-xl font-bold">price</div>
+                <div className="description text-sm">Lorem ipsum dolor sit.</div>
+              </div>
+              <div className="sportsProd2 w-48 h-48 p-4 m-2 bg-white bg-opacity-80 backdrop-blur-sm rounded-lg flex flex-col gap-3 justify-center">
+                <div className="title text-xl font-semibold">Title</div>
+                <Image src='' alt="noimg"/>
+                <div className="price text-xl font-bold">price</div>
+                <div className="description text-sm">Lorem ipsum dolor sit.</div>
+              </div>
+              <div className="sportsProd3 w-48 h-48 p-4 m-2 bg-white bg-opacity-80 backdrop-blur-sm rounded-lg flex flex-col gap-3 justify-center">
+                <div className="title text-xl font-semibold">Title</div>
+                <Image src='' alt="noimg"/>
+                <div className="price text-xl font-bold">price</div>
+                <div className="description text-sm">Lorem ipsum dolor sit.</div>
+              </div>
+              <div className="sportsProd4 w-48 h-48 p-4 m-2 bg-white bg-opacity-80 backdrop-blur-sm rounded-lg flex flex-col gap-3 justify-center">
+                <div className="title text-xl font-semibold">Title</div>
+                <Image src='' alt="noimg"/>
+                <div className="price text-xl font-bold">price</div>
+                <div className="description text-sm">Lorem ipsum dolor sit.</div>
+              </div>
+              <div className="sportsProd5 w-48 h-48 p-4 m-2 bg-white bg-opacity-80 backdrop-blur-sm rounded-lg flex flex-col gap-3 justify-center">
+                <div className="title text-xl font-semibold">Title</div>
+                <Image src='' alt="noimg"/>
+                <div className="price text-xl font-bold">price</div>
+                <div className="description text-sm">Lorem ipsum dolor sit.</div>
+              </div>
+            </div>
+          </div>
         </div>
-        <div className="page4 min-h-screen">lorem</div>
+        <div className="page4 h-full w-full overflow-x-hidden flex gap-5">
+          <h1 className="text-scroll text-black text-[40vw]">Lorem</h1>
+          <h1 className="text-scroll text-black text-[40vw]">Lorem</h1>
+          <h1 className="text-scroll text-black text-[40vw]">Lorem</h1>
+          <h1 className="text-scroll text-black text-[40vw]">Lorem</h1>
+          <h1 className="text-scroll text-black text-[40vw]">Lorem</h1>
+          {/* I have to add some images with animation on them to make it look more attractive */}
+        </div>
+        <div className="page5 min-h-screen">lorem</div>
       </main>
 
 
@@ -209,7 +439,8 @@ export default function Home() {
         <button type='button' onClick={()=>{signOut()}}>Sign out</button>
       <div className='bg-blue-500 w-20 h-20 rounded-md m-5' ref={signOutRef}>
 
-      </div> */}
+      </div> 
+      */}
       
     </div>
   );
