@@ -18,6 +18,36 @@ export default function Home() {
   const viewItemRef = useRef(null);
   const [cursorText, setCursorText] = useState('')
 
+  //page 5 image viewer
+  useGSAP(() =>{
+    const tl5 = gsap.timeline({
+      scrollTrigger:{
+        trigger:'.part-7',
+        start:"50% 50%",
+        end:'300% 50%',
+        pin:true,
+        scrub:1,
+      }
+    });
+    tl5.to('.demo',{
+      bottom:7,
+    })
+    tl5.to('.our-work-txt-div',{
+      height:"60vh",
+    }, 'height')
+    tl5.to('.our-work-txt',{
+      height:"60vh",
+    }, 'height')
+    tl5.to('.Popular',{
+      left:"0%",
+    }, 'height')
+    tl5.to('.Things',{
+      right:"0%"
+    }, 'height')
+    tl5.to('.scroll-img',{
+      marginTop:'-300%'
+    })
+  }, {scope:viewItemRef})
 
   // page3 elements loading animation
   useGSAP(()=>{
@@ -392,6 +422,23 @@ export default function Home() {
             </div>
           </div>
         </div>
+        <div ref={viewItemRef} className="page5 w-full min-h-screen my-12">
+          <div className="part-7 flex items-center justify-center w-full h-screen">
+            <div className="our-work-txt absolute w-[60vw] h-[0vh] z-[9]">
+              <h1 className="Popular absolute top-0 left-[35%] translate-x-[-20%] -translate-y-[110%] text-[rebeccapurple] text-[5vw]">Popular</h1>
+              <h1 className="Things absolute bottom-0 right-[35%] translate-x-[20%] translate-y-[110%] text-[rebeccapurple] text-[5vw]">Things</h1>
+            </div>
+            <div className="our-work-txt-div overflow-hidden flex items-center justify-center relative w-[60vw] h-[0vh] bg-white">
+              <div className="scroll-work w-full h-[60vh] bg-[#919191]">
+                <div className="scroll-img w-full mt-0 transition-all">
+                  <Image className='w-full' src='https://images.unsplash.com/photo-1695619575474-9b45e37bc1e6?q=80&w=1470&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D' width={0} height={0} sizes="100vw" style={{ width: '100%', height: 'auto' }}  alt='noimg' />
+                  {/* 7 images including above */}
+                </div>
+              </div>
+            </div>
+            <button type='button' className="demo absolute bottom-[0%] py-[1.5vw] px-[3vw] bg-[#d1d1d1] text-[0.8vw] border-none rounded-xl">Demo</button>
+          </div>
+        </div>
         <div onMouseEnter={mouseEnterPage3} onMouseLeave={mouseLeavePage3} className="page3 bg-purple-400 h-fit py-20 space-y-20">
           <div className='flex flex-col'>
             <div className="hidden"></div>
@@ -648,7 +695,6 @@ export default function Home() {
           <h1 className="text-scroll text-black text-[40vw]">Lorem</h1>
           {/* I have to add some images with animation on them to make it look more attractive */}
         </div>
-        <div className="page5 min-h-screen">lorem</div>
       </main>
 
 
