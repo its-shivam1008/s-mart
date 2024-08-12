@@ -8,6 +8,9 @@ import gsap from 'gsap';
 import { Zenitho, Novatrix } from "uvcanvas"
 import {useGSAP} from '@gsap/react';
 import { ScrollTrigger } from "gsap/ScrollTrigger";
+import LocomotiveScroll from 'locomotive-scroll';
+
+const scroll = new LocomotiveScroll();
 gsap.registerPlugin(ScrollTrigger);
 
 export default function Home() {
@@ -17,6 +20,8 @@ export default function Home() {
   const cursorRef = useRef(null);
   const viewItemRef = useRef(null);
   const [cursorText, setCursorText] = useState('')
+
+  let container = useRef(null);
 
   //page 5 image viewer
   useGSAP(() =>{
@@ -372,10 +377,9 @@ export default function Home() {
   
   
   return (
-    <div>
-      <main onMouseMove={mouseMove} ref={mainRef} className="w-full">
+      <main data-scroll-container onMouseMove={mouseMove} ref={mainRef} className="parent-with-no-height-width-for-locomotivejs">
         <div className="h-5 w-5 rounded-full bg-[rebeccapurple] fixed z-10" ref={cursorRef}>{cursorText}</div>
-        <div className="home h-screen w-full  flex justify-center items-center">
+        <div data-scroll data-scroll-speed='-2' className="home h-screen w-full  flex justify-center items-center">
         <Novatrix />
             <div className="text-Black absolute flex flex-col gap-3">
               <div className="buy-text tracking-wider font-bold text-xl">Buy Anything</div>
@@ -701,17 +705,16 @@ export default function Home() {
           <h1 className="text-scroll text-black text-[40vw]">Lorem</h1>
           {/* I have to add some images with animation on them to make it look more attractive */}
         </div>
+        {/* hello this side ecommerce app hii
+          <button type='button' onClick={()=>{signOut()}}>Sign out</button>
+        <div className='bg-blue-500 w-20 h-20 rounded-md m-5' ref={signOutRef}>
+        
+        </div> 
+        */}
       </main>
 
 
     
-      {/* hello this side ecommerce app hii
-        <button type='button' onClick={()=>{signOut()}}>Sign out</button>
-      <div className='bg-blue-500 w-20 h-20 rounded-md m-5' ref={signOutRef}>
-
-      </div> 
-      */}
       
-    </div>
   );
 }
