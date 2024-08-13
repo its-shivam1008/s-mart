@@ -7,10 +7,10 @@ import { useRouter } from 'next/navigation';
 import gsap from 'gsap';
 import { Zenitho, Novatrix } from "uvcanvas"
 import {useGSAP} from '@gsap/react';
+import './css/locomotive-scroll.css';
+import LocomotiveScroll from "locomotive-scroll";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
-import LocomotiveScroll from 'locomotive-scroll';
 
-const scroll = new LocomotiveScroll();
 gsap.registerPlugin(ScrollTrigger);
 
 export default function Home() {
@@ -21,7 +21,20 @@ export default function Home() {
   const viewItemRef = useRef(null);
   const [cursorText, setCursorText] = useState('')
 
-  let container = useRef(null);
+  let scrollContainer = useRef(null);
+
+  useEffect(() => {
+    const scroll = new LocomotiveScroll({
+      el:scrollContainer.current ? scrollContainer.current : undefined,
+      smooth:true
+    })
+  
+    return () => {
+      scroll.destroy()
+    }
+  }, [])
+  
+  
 
   //page 5 image viewer
   useGSAP(() =>{
@@ -377,9 +390,12 @@ export default function Home() {
   
   
   return (
-      <main data-scroll-container onMouseMove={mouseMove} ref={mainRef} className="parent-with-no-height-width-for-locomotivejs">
+    <div id="main" ref={scrollContainer}  className="scroll-container">
+
+    
+      <main data-scroll onMouseMove={mouseMove} ref={mainRef} className="parent-with-no-height-width-for-locomotivejs">
         <div className="h-5 w-5 rounded-full bg-[rebeccapurple] fixed z-10" ref={cursorRef}>{cursorText}</div>
-        <div data-scroll data-scroll-speed='-2' className="home h-screen w-full  flex justify-center items-center">
+        <div data-scroll data-scroll-speed={5} data-scroll-direction='horizontal' className="home h-screen w-full  flex justify-center items-center">
         <Novatrix />
             <div className="text-Black absolute flex flex-col gap-3">
               <div className="buy-text tracking-wider font-bold text-xl">Buy Anything</div>
@@ -712,7 +728,7 @@ export default function Home() {
         </div> 
         */}
       </main>
-
+      </div>
 
     
       
