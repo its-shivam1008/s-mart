@@ -7,8 +7,8 @@ import { useRouter } from 'next/navigation';
 import gsap from 'gsap';
 import { Zenitho, Novatrix } from "uvcanvas"
 import {useGSAP} from '@gsap/react';
-import './css/locomotive-scroll.css';
-import LocomotiveScroll from "locomotive-scroll";
+// import './css/locomotive-scroll.css';
+// import LocomotiveScroll from "locomotive-scroll";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 
 gsap.registerPlugin(ScrollTrigger);
@@ -23,16 +23,6 @@ export default function Home() {
 
   let scrollContainer = useRef(null);
 
-  useEffect(() => {
-    const scroll = new LocomotiveScroll({
-      el:scrollContainer.current ? scrollContainer.current : undefined,
-      smooth:true
-    })
-  
-    return () => {
-      scroll.destroy()
-    }
-  }, [])
   
   
 
@@ -390,7 +380,7 @@ export default function Home() {
   
   
   return (
-    <div id="main" ref={scrollContainer}  className="scroll-container">
+    <div>
 
     
       <main data-scroll onMouseMove={mouseMove} ref={mainRef} className="parent-with-no-height-width-for-locomotivejs">

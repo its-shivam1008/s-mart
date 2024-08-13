@@ -5,6 +5,7 @@ import SessionWrapper from "@/components/SessionWrapper";
 const inter = Inter({ subsets: ["latin"] });
 import { Toaster } from "@/components/ui/toaster"
 import Navbar from "@/components/Navbar";
+import SmoothScrolling from "@/components/SmoothScrolling";
 
 export const metadata: Metadata = {
   title: "Create Next App",
@@ -21,7 +22,7 @@ export default function RootLayout({
       <SessionWrapper>
         <body className={inter.className}>
         <Navbar/>
-          {children}
+          <SmoothScrolling> {children} </SmoothScrolling>
         <Toaster />
         </body> 
       </SessionWrapper>
