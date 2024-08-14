@@ -32,7 +32,7 @@ export default function Home() {
       scrollTrigger:{
         trigger:'.part-7',
         start:"50% 50%",
-        end:'840% 50%', // we have to change this 840% if we want to add orr remove an image from the list
+        end:'800% 50%', // we have to change this 840% if we want to add orr remove an image from the list
         pin:true,
         scrub:1,
       }
@@ -53,155 +53,186 @@ export default function Home() {
       right:"0%"
     }, 'height')
     tl5.to('.scroll-img',{
-      marginTop:'-840%' // we have to change this 840% if we want to add orr remove an image from the list
+      marginTop:'-800%' // we have to change this 800% if we want to add or remove an image from the list
     })
   }, {scope:viewItemRef})
 
-  // page3 elements loading animation
-  useGSAP(()=>{
-    const tl4 = gsap.timeline()
-    tl4.from('.electProducts', {
-      x:-30,
-      opacity:0,
-      rotate:360,
-      scrollTrigger:{
-        trigger:'.electProducts',
-        // markers:true,
-        start:'top 80%',
-        end:"top 40%",
-        scrub:1
-      }
-    })
-    tl4.from('.eleProd',{
-      scale:0,
-      opacity:0,
-      stagger:0.3,
-      scrollTrigger:{
-        trigger:".eleProd",
-        // markers:true,
-        start:'top 80%',
-        end:"top 40%",
-        scrub:1
-      }
-    })
-    tl4.from('.fashionProducts',{
-      scale:0,
-      opacity:0,
-      scrollTrigger:{
-        trigger:".fashionProducts",
-        // markers:true,
-        start:'top 80%',
-        end:"top 50%",
-        scrub:1
-      }
-    })
-    tl4.from('.fashionProd',{
-      y:-100,
-      opacity:0,
-      stagger:0.3,
-      scrollTrigger:{
-        trigger:".fashionProd",
-        // markers:true,
-        start:'top 80%',
-        end:"top 50%",
-        scrub:1
-      }
-    })
-    tl4.from('.homeProduct',{
-      x:-30,
-      opacity:0,
-      rotate:360,
-      scrollTrigger:{
-        trigger:".homeProduct",
-        // markers:true,
-        start:'top 80%',
-        end:"top 50%",
-        scrub:1
-      }
-    })
-    tl4.from('.homeProd',{
-      scale:0,
-      opacity:0,
-      stagger:0.3,
-      scrollTrigger:{
-        trigger:".homeProd",
-        // markers:true,
-        start:'top 80%',
-        end:"top 50%",
-        scrub:1
-      }
-    })
-    tl4.from('.booksProduct',{
-      scale:0,
-      opacity:0,
-      scrollTrigger:{
-        trigger:".booksProduct",
-        // markers:true,
-        start:'top 80%',
-        end:"top 40%",
-        scrub:1
-      }
-    })
-    tl4.from('.booksProd',{
-      y:-100,
-      opacity:0,
-      stagger:0.3,
-      scrollTrigger:{
-        trigger:".booksProd",
-        // markers:true,
-        start:'top 80%',
-        end:"top 40%",
-        scrub:1
-      }
-    })
-    tl4.from('.personalProduct',{
-      x:-30,
-      opacity:0,
-      rotate:360,
-      scrollTrigger:{
-        trigger:".personalProduct",
-        // markers:true,
-        start:'top 80%',
-        end:"top 40%",
-        scrub:1
-      }
-    })
-    tl4.from('.personalProd',{
-      scale:0,
-      opacity:0,
-      stagger:0.3,
-      scrollTrigger:{
-        trigger:".personalProd",
-        // markers:true,
-        start:'top 80%',
-        end:"top 40%",
-        scrub:1
-      }
-    })
-    tl4.from('.sportsProduct',{
-      scale:0,
-      opacity:0,
-      scrollTrigger:{
-        trigger:".sportsProduct",
-        // markers:true,
-        start:'top 80%',
-        end:"top 30%",
-        scrub:1
-      }
-    })
-    tl4.from('.sportsProd',{
-      y:-100,
-      opacity:0,
-      stagger:0.3,
-      scrollTrigger:{
-        trigger:".sportsProd",
-        // markers:true,
-        start:'top 80%',
-        end:"top 30%",
-        scrub:1
-      }
+  // page 3 loading animation code refatoring for better performance
+  useGSAP(() =>{
+    const parentProducts = gsap.utils.toArray('.parentProduct')
+    parentProducts.forEach((parentProduct:any)=>{
+      let productTitle = parentProduct.querySelector('.productTitle')
+      let productCards = parentProduct.querySelector('.productCards')
+      let tl6 = gsap.timeline({
+        scrollTrigger:{
+          trigger:parentProduct,
+          start:'top 80%',
+          end:'top 40%',
+          scrub:3
+        }
+      })
+      tl6.from(parentProduct,{
+        opacity:0,
+        x:-50
+      })
+      tl6.from(productTitle,{
+        x:-30,
+        opacity:0,
+        rotate:360,
+      })
+      tl6.from(productCards,{
+        opacity:0,
+        scale:0,
+        stagger:0.3
+      })
     })
   })
+
+  // page3 elements loading animation
+  // useGSAP(()=>{
+  //   const tl4 = gsap.timeline()
+  //   tl4.from('.electProducts', {
+  //     x:-30,
+  //     opacity:0,
+  //     rotate:360,
+  //     scrollTrigger:{
+  //       trigger:'.electProducts',
+  //       // markers:true,
+  //       start:'top 80%',
+  //       end:"top 40%",
+  //       scrub:1
+  //     }
+  //   })
+  //   tl4.from('.eleProd',{
+  //     scale:0,
+  //     opacity:0,
+  //     stagger:0.3,
+  //     scrollTrigger:{
+  //       trigger:".eleProd",
+  //       // markers:true,
+  //       start:'top 80%',
+  //       end:"top 40%",
+  //       scrub:1
+  //     }
+  //   })
+  //   tl4.from('.fashionProducts',{
+  //     scale:0,
+  //     opacity:0,
+  //     scrollTrigger:{
+  //       trigger:".fashionProducts",
+  //       // markers:true,
+  //       start:'top 80%',
+  //       end:"top 50%",
+  //       scrub:1
+  //     }
+  //   })
+  //   tl4.from('.fashionProd',{
+  //     y:-100,
+  //     opacity:0,
+  //     stagger:0.3,
+  //     scrollTrigger:{
+  //       trigger:".fashionProd",
+  //       // markers:true,
+  //       start:'top 80%',
+  //       end:"top 50%",
+  //       scrub:1
+  //     }
+  //   })
+  //   tl4.from('.homeProduct',{
+  //     x:-30,
+  //     opacity:0,
+  //     rotate:360,
+  //     scrollTrigger:{
+  //       trigger:".homeProduct",
+  //       // markers:true,
+  //       start:'top 80%',
+  //       end:"top 50%",
+  //       scrub:1
+  //     }
+  //   })
+  //   tl4.from('.homeProd',{
+  //     scale:0,
+  //     opacity:0,
+  //     stagger:0.3,
+  //     scrollTrigger:{
+  //       trigger:".homeProd",
+  //       // markers:true,
+  //       start:'top 80%',
+  //       end:"top 50%",
+  //       scrub:1
+  //     }
+  //   })
+  //   tl4.from('.booksProduct',{
+  //     scale:0,
+  //     opacity:0,
+  //     scrollTrigger:{
+  //       trigger:".booksProduct",
+  //       // markers:true,
+  //       start:'top 80%',
+  //       end:"top 40%",
+  //       scrub:1
+  //     }
+  //   })
+  //   tl4.from('.booksProd',{
+  //     y:-100,
+  //     opacity:0,
+  //     stagger:0.3,
+  //     scrollTrigger:{
+  //       trigger:".booksProd",
+  //       // markers:true,
+  //       start:'top 80%',
+  //       end:"top 40%",
+  //       scrub:1
+  //     }
+  //   })
+  //   tl4.from('.personalProduct',{
+  //     x:-30,
+  //     opacity:0,
+  //     rotate:360,
+  //     scrollTrigger:{
+  //       trigger:".personalProduct",
+  //       // markers:true,
+  //       start:'top 80%',
+  //       end:"top 40%",
+  //       scrub:1
+  //     }
+  //   })
+  //   tl4.from('.personalProd',{
+  //     scale:0,
+  //     opacity:0,
+  //     stagger:0.3,
+  //     scrollTrigger:{
+  //       trigger:".personalProd",
+  //       // markers:true,
+  //       start:'top 80%',
+  //       end:"top 40%",
+  //       scrub:1
+  //     }
+  //   })
+  //   tl4.from('.sportsProduct',{
+  //     scale:0,
+  //     opacity:0,
+  //     scrollTrigger:{
+  //       trigger:".sportsProduct",
+  //       // markers:true,
+  //       start:'top 80%',
+  //       end:"top 30%",
+  //       scrub:1
+  //     }
+  //   })
+  //   tl4.from('.sportsProd',{
+  //     y:-100,
+  //     opacity:0,
+  //     stagger:0.3,
+  //     scrollTrigger:{
+  //       trigger:".sportsProd",
+  //       // markers:true,
+  //       start:'top 80%',
+  //       end:"top 30%",
+  //       scrub:1
+  //     }
+  //   })
+  // })
 
   //changing the mouse cursor on ntering and leaving a product
   const mouseEnterProduct = contextSafe((e: React.MouseEvent)=>{
@@ -381,8 +412,6 @@ export default function Home() {
   
   return (
     <div>
-
-    
       <main data-scroll onMouseMove={mouseMove} ref={mainRef} className="parent-with-no-height-width-for-locomotivejs">
         <div className="h-5 w-5 rounded-full bg-[rebeccapurple] fixed z-10" ref={cursorRef}>{cursorText}</div>
         <div data-scroll data-scroll-speed={5} data-scroll-direction='horizontal' className="home h-screen w-full  flex justify-center items-center">
@@ -456,10 +485,10 @@ export default function Home() {
           </div>
         </div>
         <div onMouseEnter={mouseEnterPage3} onMouseLeave={mouseLeavePage3} className="page3 bg-purple-400 h-fit py-20 space-y-20">
-          <div className='flex flex-col'>
+          <div className='parentProduct flex flex-col'>
             <div className="hidden"></div>
-            <div className='electProducts px-2 py-3 ml-10 mb-10 text-3xl font-bold bg-slate-100 rounded-md text-purple-800 w-fit'>Electronics</div>
-            <div className="flex items-center justify-around">
+            <div className='productTitle electProducts px-2 py-3 ml-10 mb-10 text-3xl font-bold bg-slate-100 rounded-md text-purple-800 w-fit'>Electronics</div>
+            <div className="productCards flex items-center justify-around">
               <div onMouseEnter={mouseEnterProduct} onMouseLeave={mouseLeaveProduct} className="eleProd product w-48 h-48 p-4 m-2 bg-white bg-opacity-80 backdrop-blur-sm rounded-lg flex flex-col gap-3 justify-center">
           
                 <div className="title text-xl font-semibold">Title</div>
@@ -497,10 +526,10 @@ export default function Home() {
               </div>
             </div>
           </div>
-          <div className='flex flex-col'>
+          <div className='parentProduct flex flex-col'>
             <div className="hidden"></div>
-            <div className='fashionProducts px-2 py-3 m-10 text-3xl font-bold bg-slate-100 rounded-md text-purple-800 w-fit'>Fashion</div>
-            <div className="flex items-center justify-around">
+            <div className='productTitle fashionProducts px-2 py-3 m-10 text-3xl font-bold bg-slate-100 rounded-md text-purple-800 w-fit'>Fashion</div>
+            <div className="productCards flex items-center justify-around">
               <div onMouseEnter={mouseEnterProduct} onMouseLeave={mouseLeaveProduct} className="fashionProd product w-48 h-48 p-4 m-2 bg-white bg-opacity-80 backdrop-blur-sm rounded-lg flex flex-col gap-3 justify-center">
                 
                 <div className="title text-xl font-semibold">Title</div>
@@ -538,10 +567,10 @@ export default function Home() {
               </div>
             </div>
           </div>
-          <div className='flex flex-col'>
+          <div className='parentProduct flex flex-col'>
             <div className="hidden"></div>
-            <div className='homeProduct px-2 py-3 m-10 text-3xl font-bold bg-slate-100 rounded-md text-purple-800 w-fit'>Home and Furniture</div>
-            <div className="flex items-center justify-around">
+            <div className='productTitle homeProduct px-2 py-3 m-10 text-3xl font-bold bg-slate-100 rounded-md text-purple-800 w-fit'>Home and Furniture</div>
+            <div className="productCards flex items-center justify-around">
               <div onMouseEnter={mouseEnterProduct} onMouseLeave={mouseLeaveProduct} className="homeProd product w-48 h-48 p-4 m-2 bg-white bg-opacity-80 backdrop-blur-sm rounded-lg flex flex-col gap-3 justify-center">
                 
                 <div className="title text-xl font-semibold">Title</div>
@@ -579,10 +608,10 @@ export default function Home() {
               </div>
             </div>
           </div>
-          <div className='flex flex-col'>
+          <div className='parentProduct flex flex-col'>
             <div className="hidden"></div>
-            <div className='booksProduct px-2 py-3 m-10 text-3xl font-bold bg-slate-100 rounded-md text-purple-800 w-fit'>Books</div>
-            <div className="flex items-center justify-around">
+            <div className='productTitle booksProduct px-2 py-3 m-10 text-3xl font-bold bg-slate-100 rounded-md text-purple-800 w-fit'>Books</div>
+            <div className="productCards flex items-center justify-around">
               <div onMouseEnter={mouseEnterProduct} onMouseLeave={mouseLeaveProduct} className="booksProd product w-48 h-48 p-4 m-2 bg-white bg-opacity-80 backdrop-blur-sm rounded-lg flex flex-col gap-3 justify-center">
                 
                 <div className="title text-xl font-semibold">Title</div>
@@ -620,10 +649,10 @@ export default function Home() {
               </div>
             </div>
           </div>
-          <div className='flex flex-col'>
+          <div className='parentProduct flex flex-col'>
             <div className="hidden"></div>
-            <div className='personalProduct px-2 py-3 m-10 text-3xl font-bold bg-slate-100 rounded-md text-purple-800 w-fit'>Personal care</div>
-            <div className="flex items-center justify-around">
+            <div className='productTitle personalProduct px-2 py-3 m-10 text-3xl font-bold bg-slate-100 rounded-md text-purple-800 w-fit'>Personal care</div>
+            <div className="productCards flex items-center justify-around">
               <div onMouseEnter={mouseEnterProduct} onMouseLeave={mouseLeaveProduct} className="personalProd product w-48 h-48 p-4 m-2 bg-white bg-opacity-80 backdrop-blur-sm rounded-lg flex flex-col gap-3 justify-center">
                 
                 <div className="title text-xl font-semibold">Title</div>
@@ -661,10 +690,10 @@ export default function Home() {
               </div>
             </div>
           </div>
-          <div className='flex flex-col'>
+          <div className='parentProduct flex flex-col'>
             <div className="hidden"></div>
-            <div className='sportsProduct px-2 py-3 m-10 text-3xl font-bold bg-slate-100 rounded-md text-purple-800 w-fit'>Sports and Outdoors</div>
-            <div className="flex items-center justify-around">
+            <div className='productTitle sportsProduct px-2 py-3 m-10 text-3xl font-bold bg-slate-100 rounded-md text-purple-800 w-fit'>Sports and Outdoors</div>
+            <div className="productCards flex items-center justify-around">
               <div onMouseEnter={mouseEnterProduct} onMouseLeave={mouseLeaveProduct} className="sportsProd product w-48 h-48 p-4 m-2 bg-white bg-opacity-80 backdrop-blur-sm rounded-lg flex flex-col gap-3 justify-center">
                 
                 <div className="title text-xl font-semibold">Title</div>
