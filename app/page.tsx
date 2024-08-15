@@ -23,8 +23,6 @@ export default function Home() {
 
   let scrollContainer = useRef(null);
 
-  
-  
 
     //page 5 image viewer
     useGSAP(() =>{
@@ -275,7 +273,7 @@ export default function Home() {
   return (
     <div>
       <main data-scroll onMouseMove={mouseMove} ref={mainRef} className="parent-with-no-height-width-for-locomotivejs">
-        <div className="h-5 w-5 rounded-full bg-[rebeccapurple] fixed z-10" ref={cursorRef}>{cursorText}</div>
+        <div className="h-5 w-5 rounded-full bg-[rebeccapurple] fixed z-10 min-[0px]:max-md:hidden" ref={cursorRef}>{cursorText}</div>
         <div data-scroll data-scroll-speed={5} data-scroll-direction='horizontal' className="home h-screen w-full z-[1] flex justify-center items-center">
         <Novatrix />
             <div className="text-Black absolute flex flex-col gap-3">
@@ -294,30 +292,36 @@ export default function Home() {
           </div>
           <div className="categories-scroll md:grid md:grid-cols-2 gap-5 m-8 py-8 flex flex-col space-y-20 md:space-y-0"> 
             <div className="category1 flex flex-col items-center space-y-20">
-              <div  onMouseEnter={mouseEnter} onMouseLeave={mouseLeave} className='headings w-96 h-48 shadow-xl bg-purple-300  rounded-lg'>
-                <div className="category-title text-black w-fit text-2xl p-2 m-2">Electronics</div>
+              <div  onMouseEnter={mouseEnter} onMouseLeave={mouseLeave} className='headings relative overflow-hidden w-96 h-48 shadow-xl bg-purple-300  rounded-lg'>
+                <div className="category-title text-black w-fit text-2xl p-2 m-2 absolute top-0">Electronics</div>
+                <Image className="object-fill" src='/categoryImages/categoryElectronics.jpg' alt='noImg found' width={0} height={0} sizes="100vw" style={{ width: '100%', height: '100%', objectFit:'cover'}}/>
                 {/* images of the products */}
               </div>
-              <div  onMouseEnter={mouseEnter} onMouseLeave={mouseLeave} className='headings w-96 h-48 shadow-xl bg-purple-300  rounded-lg'>
-                <div className="category-title text-black w-fit text-2xl p-2 m-2">Fashion</div>
+              <div  onMouseEnter={mouseEnter} onMouseLeave={mouseLeave} className='headings relative overflow-hidden w-96 h-48 shadow-xl bg-purple-300  rounded-lg'>
+                <div className="category-title text-white w-fit text-2xl p-2 m-2 absolute top-0">Fashion</div>
+                <Image  src='/categoryImages/categoryFashion.jpeg' alt='noImg found' width={0} height={0} sizes="100vw" style={{width: '100%', height: '100%', objectFit:'cover'}}/>
                 {/* images of the products */}
               </div>
-              <div  onMouseEnter={mouseEnter} onMouseLeave={mouseLeave} className='headings w-96 h-48 shadow-xl bg-purple-300  rounded-lg'>
-                <div className="category-title text-black w-fit text-2xl p-2 m-2">Home and Furniture</div>
+              <div  onMouseEnter={mouseEnter} onMouseLeave={mouseLeave} className='headings relative overflow-hidden w-96 h-48 shadow-xl bg-purple-300  rounded-lg'>
+                <div className="category-title text-black w-fit text-2xl p-2 m-2 absolute top-0">Home and Furniture</div>
+                <Image src='/categoryImages/categoryHome.jpg' alt='noImg found' width={0} height={0} sizes="100vw" style={{ width: '100%', height: '100%', objectFit:'cover'}}/>
                 {/* images of the products */}
               </div>
             </div>
             <div className="category2 flex flex-col items-center space-y-20">
-              <div  onMouseEnter={mouseEnter} onMouseLeave={mouseLeave} className='headings w-96 h-48 shadow-xl bg-purple-300  rounded-lg'>
-                <div className="category-title text-black w-fit text-2xl p-2 m-2">Books</div>
+              <div  onMouseEnter={mouseEnter} onMouseLeave={mouseLeave} className='headings relative overflow-hidden w-96 h-48 shadow-xl bg-purple-300  rounded-lg'>
+                <div className="category-title text-white w-fit text-2xl p-2 m-2 absolute top-0">Books</div>
+                <Image src='/categoryImages/categoryBooks.jpg' alt='noImg found' width={0} height={0} sizes="100vw" style={{ width: '100%', height: '100%', objectFit:'cover'}}/>
                 {/* images of the products */}
               </div>
-              <div  onMouseEnter={mouseEnter} onMouseLeave={mouseLeave} className='headings w-96 h-48 shadow-xl bg-purple-300  rounded-lg'>
-                <div className="category-title text-black w-fit text-2xl p-2 m-2">Personal Care</div>
+              <div  onMouseEnter={mouseEnter} onMouseLeave={mouseLeave} className='headings relative overflow-hidden w-96 h-48 shadow-xl bg-purple-300  rounded-lg'>
+                <div className="category-title text-black w-fit text-2xl p-2 m-2 absolute top-0">Personal Care</div>
+                <Image src='/categoryImages/categoryBeauty.jpg' alt='noImg found' width={0} height={0} sizes="100vw" style={{ width: '100%', height: '100%', objectFit:'cover'}}/>
                 {/* images of the products */}
               </div>
-              <div  onMouseEnter={mouseEnter} onMouseLeave={mouseLeave} className='headings w-96 h-48 shadow-xl bg-purple-300  rounded-lg'>
-                <div className="category-title text-black w-fit text-2xl p-2 m-2">Sports and outdoors</div>
+              <div  onMouseEnter={mouseEnter} onMouseLeave={mouseLeave} className='headings relative overflow-hidden w-96 h-48 shadow-xl bg-purple-300  rounded-lg'>
+                <div className="category-title text-black w-fit text-2xl p-2 m-2 absolute top-0">Sports and outdoors</div>
+                <Image src='/categoryImages/categorySports.jpg' alt='noImg found' width={0} height={0} sizes="100vw" style={{ width: '100%', height: '100%', objectFit:'cover'}}/>
                 {/* images of the products */}
               </div>
             </div>
@@ -572,7 +576,6 @@ export default function Home() {
           </div>
         </div>  
         {/* page4 is to be removed for proper working of the below code */}
-        <div className="features h-screen w-full bg-orange-300"></div>
         <div ref={viewItemRef} className="page5 w-full min-h-screen my-12">
           <div className="part-7 flex items-center justify-center w-full h-screen">
             <div className="our-work-txt absolute w-[60vw] h-[0vh] z-[9]">
