@@ -26,36 +26,37 @@ export default function Home() {
   
   
 
-  //page 5 image viewer
-  useGSAP(() =>{
-    const tl5 = gsap.timeline({
-      scrollTrigger:{
-        trigger:'.part-7',
-        start:"50% 50%",
-        end:'800% 50%', // we have to change this 840% if we want to add orr remove an image from the list
-        pin:true,
-        scrub:1,
-      }
-    });
-    tl5.to('.demo',{
-      bottom:7,
-    })
-    tl5.to('.our-work-txt-div',{
-      height:"60vh",
-    }, 'height')
-    tl5.to('.our-work-txt',{
-      height:"60vh",
-    }, 'height')
-    tl5.to('.Popular',{
-      left:"0%",
-    }, 'height')
-    tl5.to('.Things',{
-      right:"0%"
-    }, 'height')
-    tl5.to('.scroll-img',{
-      marginTop:'-800%' // we have to change this 800% if we want to add or remove an image from the list
-    })
-  }, {scope:viewItemRef})
+    //page 5 image viewer
+    useGSAP(() =>{
+      const tl5 = gsap.timeline({
+        scrollTrigger:{
+          trigger:'.part-7',
+          start:"50% 50%",
+          end:'800% 50%', // we have to change this 840% if we want to add orr remove an image from the list
+          pin:true,
+          // markers:true,
+          scrub:3,
+        }
+      });
+      tl5.to('.demo',{
+        bottom:'-3%',
+      })
+      tl5.to('.our-work-txt-div',{
+        height:"70vh",
+      }, 'height')
+      tl5.to('.our-work-txt',{
+        height:"70vh",
+      }, 'height')
+      tl5.to('.Popular',{
+        left:"0%",
+      }, 'height')
+      tl5.to('.Things',{
+        right:"0%"
+      }, 'height')
+      tl5.to('.scroll-img',{
+        marginTop:'-800%' // we have to change this 800% if we want to add or remove an image from the list
+      })
+    }, {scope:viewItemRef})
 
   // page 3 loading animation code refatoring for better performance
   useGSAP(() =>{
@@ -151,12 +152,14 @@ export default function Home() {
     const tl3 = gsap.timeline()
     tl3.to('.page4 h1',{
       transform:"translatex(-450%)", // you have to change this for according to the text length
+      // x:'-450px',
       scrollTrigger:{
         trigger:'.page4',
         pin:true,
         scrub:2,
         start:'top 0%',
-        end:'top -150%',
+        // markers:true,
+        end:'top -100%',
         scroller:'body'
         
       }
@@ -273,11 +276,11 @@ export default function Home() {
     <div>
       <main data-scroll onMouseMove={mouseMove} ref={mainRef} className="parent-with-no-height-width-for-locomotivejs">
         <div className="h-5 w-5 rounded-full bg-[rebeccapurple] fixed z-10" ref={cursorRef}>{cursorText}</div>
-        <div data-scroll data-scroll-speed={5} data-scroll-direction='horizontal' className="home h-screen w-full  flex justify-center items-center">
-        <Novatrix />
+        <div data-scroll data-scroll-speed={5} data-scroll-direction='horizontal' className="home h-screen w-full z-[1] flex justify-center items-center">
+        {/* <Novatrix /> */}
             <div className="text-Black absolute flex flex-col gap-3">
               <div className="buy-text tracking-wider font-bold text-xl">Buy Anything</div>
-              <div onMouseEnter={mouseEnter} onMouseLeave={mouseLeave} className="hero text-5xl flex gap-5 font-extrabold tracking-widest">
+              <div onMouseEnter={mouseEnter} onMouseLeave={mouseLeave} className="hero text-4xl md:text-5xl flex gap-5 font-extrabold tracking-widest">
                 <div className='headings text-stroke'>Lorem</div>
                 <div className='headings text-stroke'>Ipsum</div>
                 <div className='headings text-stroke'>Dolor</div>
@@ -318,29 +321,6 @@ export default function Home() {
                 {/* images of the products */}
               </div>
             </div>
-          </div>
-        </div>
-        <div ref={viewItemRef} className="page5 w-full min-h-screen my-12">
-          <div className="part-7 flex items-center justify-center w-full h-screen">
-            <div className="our-work-txt absolute w-[60vw] h-[0vh] z-[9]">
-              <h1 className="Popular absolute top-0 left-[35%] translate-x-[-20%] -translate-y-[110%] text-[rebeccapurple] text-[5vw]">Popular</h1>
-              <h1 className="Things absolute bottom-0 right-[35%] translate-x-[20%] translate-y-[110%] text-[rebeccapurple] text-[5vw]">Things</h1>
-            </div>
-            <div className="our-work-txt-div overflow-hidden flex items-center justify-center relative w-[60vw] h-[0vh] bg-white">
-              <div className="scroll-work w-full h-[60vh] bg-[#919191]">
-                <div className="scroll-img w-full mt-0 transition-all">
-                  <Image className='w-full' src='https://images.unsplash.com/photo-1695619575474-9b45e37bc1e6?q=80&w=1470&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D' width={0} height={0} sizes="100vw" style={{ width: '100%', height: 'auto' }}  alt='noimg' />
-                  <Image className='w-full' src='https://images.unsplash.com/photo-1621899576945-ab4f37af765c?q=80&w=1374&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D' width={0} height={0} sizes="100vw" style={{ width: '100%', height: 'auto' }}  alt='noimg' />
-                  <Image className='w-full' src='https://images.unsplash.com/photo-1543652437-15ae836b33e3?q=80&w=1470&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D' width={0} height={0} sizes="100vw" style={{ width: '100%', height: 'auto' }}  alt='noimg' />
-                  <Image className='w-full' src='https://plus.unsplash.com/premium_photo-1679483562579-023de24ab10f?q=80&w=1527&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D' width={0} height={0} sizes="100vw" style={{ width: '100%', height: 'auto' }}  alt='noimg' />
-                  <Image className='w-full' src='https://images.unsplash.com/photo-1610701596061-2ecf227e85b2?q=80&w=1470&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D' width={0} height={0} sizes="100vw" style={{ width: '100%', height: 'auto' }}  alt='noimg' />
-                  <Image className='w-full' src='https://images.unsplash.com/photo-1663869960499-6866301c0259?q=80&w=1374&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D' width={0} height={0} sizes="100vw" style={{ width: '100%', height: 'auto' }}  alt='noimg' />
-                  <Image className='w-full' src='https://images.unsplash.com/photo-1534755120520-cd02c122038d?q=80&w=1374&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D' width={0} height={0} sizes="100vw" style={{ width: '100%', height: 'auto' }}  alt='noimg' />
-                  {/* 7 images including above */}
-                </div>
-              </div>
-            </div>
-            <button type='button' className="demo absolute bottom-[0%] py-[1.5vw] px-[3vw] bg-[#d1d1d1] text-[0.8vw] border-none rounded-xl">Demo</button>
           </div>
         </div>
         <div onMouseEnter={mouseEnterPage3} onMouseLeave={mouseLeavePage3} className="page3 bg-purple-400 h-fit py-20 space-y-20">
@@ -590,14 +570,39 @@ export default function Home() {
               </div>
             </div>
           </div>
+        </div>  
+        {/* page4 is to be removed for proper working of the below code */}
+        <div className="features h-screen w-full bg-orange-300"></div>
+        <div ref={viewItemRef} className="page5 w-full min-h-screen my-12">
+          <div className="part-7 flex items-center justify-center w-full h-screen">
+            <div className="our-work-txt absolute w-[60vw] h-[0vh] z-[9]">
+              <h1 className="Popular absolute top-0 left-[35%] translate-x-[-20%] -translate-y-[110%] text-[rebeccapurple] text-[5vw]">Popular</h1>
+              <h1 className="Things absolute bottom-0 right-[35%] translate-x-[20%] translate-y-[110%] text-[rebeccapurple] text-[5vw]">Things</h1>
+            </div>
+            <div className="our-work-txt-div overflow-hidden flex items-center justify-center relative w-[60vw] h-[0vh] bg-white">
+              <div className="scroll-work w-full h-[60vh] bg-[#919191]">
+                <div className="scroll-img w-full mt-0 transition-all">
+                  <Image className='w-full' src='https://images.unsplash.com/photo-1695619575474-9b45e37bc1e6?q=80&w=1470&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D' width={0} height={0} sizes="100vw" style={{ width: '100%', height: 'auto' }}  alt='noimg' />
+                  <Image className='w-full' src='https://images.unsplash.com/photo-1621899576945-ab4f37af765c?q=80&w=1374&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D' width={0} height={0} sizes="100vw" style={{ width: '100%', height: 'auto' }}  alt='noimg' />
+                  <Image className='w-full' src='https://images.unsplash.com/photo-1543652437-15ae836b33e3?q=80&w=1470&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D' width={0} height={0} sizes="100vw" style={{ width: '100%', height: 'auto' }}  alt='noimg' />
+                  <Image className='w-full' src='https://plus.unsplash.com/premium_photo-1679483562579-023de24ab10f?q=80&w=1527&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D' width={0} height={0} sizes="100vw" style={{ width: '100%', height: 'auto' }}  alt='noimg' />
+                  <Image className='w-full' src='https://images.unsplash.com/photo-1610701596061-2ecf227e85b2?q=80&w=1470&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D' width={0} height={0} sizes="100vw" style={{ width: '100%', height: 'auto' }}  alt='noimg' />
+                  <Image className='w-full' src='https://images.unsplash.com/photo-1663869960499-6866301c0259?q=80&w=1374&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D' width={0} height={0} sizes="100vw" style={{ width: '100%', height: 'auto' }}  alt='noimg' />
+                  <Image className='w-full' src='https://images.unsplash.com/photo-1534755120520-cd02c122038d?q=80&w=1374&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D' width={0} height={0} sizes="100vw" style={{ width: '100%', height: 'auto' }}  alt='noimg' />
+                  {/* 7 images including above */}
+                </div>
+              </div>
+            </div>
+            <button type='button' className="demo absolute bottom-[0%] py-[1.5vw] px-[3vw] bg-[#d1d1d1] text-[0.8vw] border-none rounded-xl">Demo</button>
+          </div>
         </div>
-        <div className="page4 h-full w-full overflow-x-hidden flex gap-5">
+        <div className="page4 h-fit w-full overflow-x-hidden flex gap-5">
           <h1 className="text-scroll text-black text-[40vw]">Lorem</h1>
           <h1 className="text-scroll text-black text-[40vw]">Lorem</h1>
           <h1 className="text-scroll text-black text-[40vw]">Lorem</h1>
           <h1 className="text-scroll text-black text-[40vw]">Lorem</h1>
           <h1 className="text-scroll text-black text-[40vw]">Lorem</h1>
-          {/* I have to add some images with animation on them to make it look more attractive */}
+           {/* I have to add some images with animation on them to make it look more attractive  */}
         </div>
         {/* hello this side ecommerce app hii
           <button type='button' onClick={()=>{signOut()}}>Sign out</button>
