@@ -288,11 +288,11 @@ export default function Home() {
           </div>
         </div>
         <div className="page2 w-full h-fit px-5">
-          <div className="categories flex my-10">
-            <div className="bg-purple-200 text-purple-900 font-bold tracking-wider w-fit text-3xl p-1 rounded-md mr-3">Catgories</div>
-            <div className="w-fit ml-3">Lorem ipsum dolor sit amet, consectetur adipisicing elit. Aliquid, consequuntur voluptatem sequi rerum dicta labore itaque repellat blanditiis magnam vero neque minus excepturi nesciunt modi? Voluptatum, quibusdam? Alias, unde voluptatum?</div>
+          <div className="categories flex flex-wrap md:flex-nowrap my-10">
+            <div className="bg-purple-200 text-purple-900 font-bold tracking-wider w-fit text-3xl h-fit p-2 rounded-md  m-3">Catgories</div>
+            <div className="w-fit m-3">Lorem ipsum dolor sit amet, consectetur adipisicing elit. Aliquid, consequuntur voluptatem sequi rerum dicta labore itaque repellat blanditiis magnam vero neque minus excepturi nesciunt modi? Voluptatum, quibusdam? Alias, unde voluptatum?</div>
           </div>
-          <div className="categories-scroll grid grid-cols-2 gap-5 m-8 py-8"> 
+          <div className="categories-scroll md:grid md:grid-cols-2 gap-5 m-8 py-8 flex flex-col space-y-20 md:space-y-0"> 
             <div className="category1 flex flex-col items-center space-y-20">
               <div  onMouseEnter={mouseEnter} onMouseLeave={mouseLeave} className='headings w-96 h-48 shadow-xl bg-purple-300  rounded-lg'>
                 <div className="category-title text-black w-fit text-2xl p-2 m-2">Electronics</div>
@@ -327,7 +327,7 @@ export default function Home() {
           <div className='parentProduct flex flex-col'>
             <div className="hidden"></div>
             <div className='productTitle electProducts px-2 py-3 ml-10 mb-10 text-3xl font-bold bg-slate-100 rounded-md text-purple-800 w-fit'>Electronics</div>
-            <div className="productCards flex items-center justify-around">
+            <div className="productCards flex items-center justify-around md:flex-row flex-col gap-10 md:gap-0">
               <div  className="eleProd product w-48 h-48 p-4 m-2 bg-white bg-opacity-80 backdrop-blur-sm rounded-lg flex flex-col gap-3 justify-center">
           
                 <div className="title text-xl font-semibold">Title</div>
@@ -368,7 +368,7 @@ export default function Home() {
           <div className='parentProduct flex flex-col'>
             <div className="hidden"></div>
             <div className='productTitle fashionProducts px-2 py-3 m-10 text-3xl font-bold bg-slate-100 rounded-md text-purple-800 w-fit'>Fashion</div>
-            <div className="productCards flex items-center justify-around">
+            <div className="productCards flex items-center justify-around md:flex-row flex-col gap-10 md:gap-0">
               <div  className="fashionProd product w-48 h-48 p-4 m-2 bg-white bg-opacity-80 backdrop-blur-sm rounded-lg flex flex-col gap-3 justify-center">
                 
                 <div className="title text-xl font-semibold">Title</div>
@@ -409,7 +409,7 @@ export default function Home() {
           <div className='parentProduct flex flex-col'>
             <div className="hidden"></div>
             <div className='productTitle homeProduct px-2 py-3 m-10 text-3xl font-bold bg-slate-100 rounded-md text-purple-800 w-fit'>Home and Furniture</div>
-            <div className="productCards flex items-center justify-around">
+            <div className="productCards flex items-center justify-around md:flex-row flex-col gap-10 md:gap-0">
               <div  className="homeProd product w-48 h-48 p-4 m-2 bg-white bg-opacity-80 backdrop-blur-sm rounded-lg flex flex-col gap-3 justify-center">
                 
                 <div className="title text-xl font-semibold">Title</div>
@@ -450,7 +450,7 @@ export default function Home() {
           <div className='parentProduct flex flex-col'>
             <div className="hidden"></div>
             <div className='productTitle booksProduct px-2 py-3 m-10 text-3xl font-bold bg-slate-100 rounded-md text-purple-800 w-fit'>Books</div>
-            <div className="productCards flex items-center justify-around">
+            <div className="productCards flex items-center justify-around md:flex-row flex-col gap-10 md:gap-0">
               <div  className="booksProd product w-48 h-48 p-4 m-2 bg-white bg-opacity-80 backdrop-blur-sm rounded-lg flex flex-col gap-3 justify-center">
                 
                 <div className="title text-xl font-semibold">Title</div>
@@ -491,7 +491,7 @@ export default function Home() {
           <div className='parentProduct flex flex-col'>
             <div className="hidden"></div>
             <div className='productTitle personalProduct px-2 py-3 m-10 text-3xl font-bold bg-slate-100 rounded-md text-purple-800 w-fit'>Personal care</div>
-            <div className="productCards flex items-center justify-around">
+            <div className="productCards flex items-center justify-around md:flex-row flex-col gap-10 md:gap-0">
               <div  className="personalProd product w-48 h-48 p-4 m-2 bg-white bg-opacity-80 backdrop-blur-sm rounded-lg flex flex-col gap-3 justify-center">
                 
                 <div className="title text-xl font-semibold">Title</div>
@@ -532,7 +532,7 @@ export default function Home() {
           <div className='parentProduct flex flex-col'>
             <div className="hidden"></div>
             <div className='productTitle sportsProduct px-2 py-3 m-10 text-3xl font-bold bg-slate-100 rounded-md text-purple-800 w-fit'>Sports and Outdoors</div>
-            <div className="productCards flex items-center justify-around">
+            <div className="productCards flex items-center justify-around md:flex-row flex-col gap-10 md:gap-0">
               <div  className="sportsProd product w-48 h-48 p-4 m-2 bg-white bg-opacity-80 backdrop-blur-sm rounded-lg flex flex-col gap-3 justify-center">
                 
                 <div className="title text-xl font-semibold">Title</div>
