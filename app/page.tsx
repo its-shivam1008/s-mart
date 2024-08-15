@@ -277,7 +277,7 @@ export default function Home() {
       <main data-scroll onMouseMove={mouseMove} ref={mainRef} className="parent-with-no-height-width-for-locomotivejs">
         <div className="h-5 w-5 rounded-full bg-[rebeccapurple] fixed z-10" ref={cursorRef}>{cursorText}</div>
         <div data-scroll data-scroll-speed={5} data-scroll-direction='horizontal' className="home h-screen w-full z-[1] flex justify-center items-center">
-        {/* <Novatrix /> */}
+        <Novatrix />
             <div className="text-Black absolute flex flex-col gap-3">
               <div className="buy-text tracking-wider font-bold text-xl">Buy Anything</div>
               <div onMouseEnter={mouseEnter} onMouseLeave={mouseLeave} className="hero text-4xl md:text-5xl flex gap-5 font-extrabold tracking-widest">
