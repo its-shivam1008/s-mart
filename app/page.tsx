@@ -145,19 +145,20 @@ export default function Home() {
   })
 
 
-  //page3 animation using scrollTrigger and its pin property
+  //page4 animation using scrollTrigger and its pin property
   useGSAP(()=>{
     const tl3 = gsap.timeline()
-    tl3.to('.page4 h1',{
-      transform:"translatex(-450%)", // you have to change this for according to the text length
-      // x:'-450px',
+    const arrayOfElements = gsap.utils.toArray('.text-scroll')
+    tl3.to(arrayOfElements,{
+      // transform:"translatex(-700%)", // you have to change this for according to the text length
+      x:-(document.querySelector('.page4')!.scrollWidth - window.innerWidth),
       scrollTrigger:{
         trigger:'.page4',
         pin:true,
-        scrub:2,
+        scrub:3,
         start:'top 0%',
         // markers:true,
-        end:'top -100%',
+        end: '+=' + document.querySelector('.page4')!.scrollWidth,
         scroller:'body'
         
       }
@@ -592,20 +593,43 @@ export default function Home() {
                   <Image className='w-full' src='https://images.unsplash.com/photo-1610701596061-2ecf227e85b2?q=80&w=1470&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D' width={0} height={0} sizes="100vw" style={{ width: '100%', height: 'auto' }}  alt='noimg' />
                   <Image className='w-full' src='https://images.unsplash.com/photo-1663869960499-6866301c0259?q=80&w=1374&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D' width={0} height={0} sizes="100vw" style={{ width: '100%', height: 'auto' }}  alt='noimg' />
                   <Image className='w-full' src='https://images.unsplash.com/photo-1534755120520-cd02c122038d?q=80&w=1374&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D' width={0} height={0} sizes="100vw" style={{ width: '100%', height: 'auto' }}  alt='noimg' />
-                  {/* 7 images including above */}
                 </div>
               </div>
             </div>
             <button type='button' className="demo absolute bottom-[0%] py-[1.5vw] px-[3vw] bg-[#d1d1d1] text-[0.8vw] border-none rounded-xl">Demo</button>
           </div>
         </div>
-        <div className="page4 h-fit w-full overflow-x-hidden flex gap-5">
-          <h1 className="text-scroll text-black text-[40vw]">Lorem</h1>
-          <h1 className="text-scroll text-black text-[40vw]">Lorem</h1>
-          <h1 className="text-scroll text-black text-[40vw]">Lorem</h1>
-          <h1 className="text-scroll text-black text-[40vw]">Lorem</h1>
-          <h1 className="text-scroll text-black text-[40vw]">Lorem</h1>
-           {/* I have to add some images with animation on them to make it look more attractive  */}
+        <div className="page4 h-fit w-full overflow-x-hidden flex gap-10">
+          <div className="relative text-scroll mx-3">
+            <h1 className="text-black text-[40vw]">Global</h1>
+            <div className="imageCard w-56 h-40 hover:outline-2 hover:outline hover:outline-red-500 outline-offset-2 rounded-[20px] absolute top-48 left-80 rotate-12">
+            <Image className="object-fill" src='/categoryImages/page4a.jpg' alt='noImg found' width={0} height={0} sizes="100vw" style={{ width: '100%', height: '100%', objectFit:'cover', borderRadius:'20px'}}/>
+            </div>
+            
+          </div>
+          <div className="relative text-scroll mx-3">
+            <h1 className="text-black text-[40vw] relative">Brands</h1>
+            <div className="imageCard w-40 h-56 hover:outline-2 hover:outline hover:outline-[rebeccapurple] outline-offset-2 rounded-[20px] absolute bottom-48 -right-10 -rotate-6">
+            <Image className="object-fill" src='/categoryImages/page4b.jpeg' alt='noImg found' width={0} height={0} sizes="100vw" style={{ width: '100%', height: '100%', objectFit:'cover', borderRadius:'20px'}}/>
+            </div>
+            
+          </div>
+          <div className="relative text-scroll mx-3">
+            <h1 className="text-black text-[40vw] relative">On</h1>
+          </div>
+          <div className="relative text-scroll mx-3">
+            <h1 className="text-black text-[40vw] relative">Your</h1>
+            <div className="imageCard w-56 h-40 hover:outline-2 hover:outline hover:outline-gray-500 outline-offset-2 rounded-[20px] absolute top-48 left-[50%] -rotate-45">
+            <Image className="object-fill" src='/categoryImages/page4c.jpg' alt='noImg found' width={0} height={0} sizes="100vw" style={{ width: '100%', height: '100%', objectFit:'cover', borderRadius:'20px'}}/>
+            </div>
+            
+          </div>
+          <div className="relative text-scroll mx-3">
+            <h1 className="text-black text-[40vw] relative">Fingertips!!!</h1>
+            <div className="imageCard w-40 h-56 hover:outline-2 hover:outline hover:outline-yellow-200 outline-offset-2 rounded-[20px] absolute top-48 right-[50%] rotate-12">
+            <Image className="object-fill" src='/categoryImages/page4d.jpg' alt='noImg found' width={0} height={0} sizes="100vw" style={{ width: '100%', height: '100%', objectFit:'cover', borderRadius:'20px'}}/>
+            </div>
+          </div>
         </div>
         {/* hello this side ecommerce app hii
           <button type='button' onClick={()=>{signOut()}}>Sign out</button>
