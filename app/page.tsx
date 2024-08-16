@@ -36,9 +36,9 @@ export default function Home() {
           scrub:3,
         }
       });
-      tl5.to('.demo',{
-        bottom:'-3%',
-      })
+      // tl5.to('.demo',{
+      //   bottom:'-3%',
+      // })
       tl5.to('.our-work-txt-div',{
         height:"70vh",
       }, 'height')
@@ -279,10 +279,10 @@ export default function Home() {
         <Novatrix />
             <div className="text-Black absolute flex flex-col gap-3">
               <div className="buy-text tracking-wider font-bold text-xl">Buy Anything</div>
-              <div onMouseEnter={mouseEnter} onMouseLeave={mouseLeave} className="hero text-4xl md:text-5xl flex gap-5 font-extrabold tracking-widest">
-                <div className='headings text-stroke'>Lorem</div>
-                <div className='headings text-stroke'>Ipsum</div>
-                <div className='headings text-stroke'>Dolor</div>
+              <div onMouseEnter={mouseEnter} onMouseLeave={mouseLeave} className="hero text-3xl md:text-5xl flex gap-5 font-extrabold tracking-widest">
+                <div className='headings text-stroke'>Shop .</div>
+                <div className='headings text-stroke'>Save .</div>
+                <div className='headings text-stroke'>Smile .</div>
               </div>
           </div>
         </div>
@@ -596,7 +596,7 @@ export default function Home() {
                 </div>
               </div>
             </div>
-            <button type='button' className="demo absolute bottom-[0%] py-[1.5vw] px-[3vw] bg-[#d1d1d1] text-[0.8vw] border-none rounded-xl">Demo</button>
+            {/* <button type='button' className="demo absolute bottom-[0%] py-[1.5vw] px-[3vw] bg-[#d1d1d1] text-[0.8vw] border-none rounded-xl">Demo</button> */}
           </div>
         </div>
         <div className="page4 h-fit w-full overflow-x-hidden flex gap-10">

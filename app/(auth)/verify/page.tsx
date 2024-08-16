@@ -109,6 +109,10 @@ const page = () => {
 
   // type SessionType = {user:{email:string; username?:string; name?:string}}
 
+
+  // a solution to this is that I should seperate the useEffect when I am using it with creds and without creds
+  // the problem is that the session is not updating the usestate hook sessoin object which is a problem it is being updated with creds if statement - solved partially now I have to check the below logic with creds part again
+  // also I have to load the page only when I got the sessionObject with actual values
   useEffect(() => {
       if(!session && !flag){
         const sessionEmail = localStorage.getItem('sessionEmail')
@@ -119,17 +123,23 @@ const page = () => {
           setSessionObject({user:{email:sessionEmail, username:sessionUsername}});
           
         }
-        setFlag(true);
+        console.log('ye chal gya na iss liye')
+        // setFlag(true);
         setIsFetched(true);
       }
       if(session && !flag){
-        if(session.user.email && session.user.username){
-          setSessionObject({user:{email:session.user.email, username:session.user.username}})
+        if(session.user.email){
+          console.log('session is ',session)
+          setSessionObject({user:{email:session.user.email, username:session.user.email.split('@')[0]}})
           console.log(sessionObject)
           setFlag(true);
           setIsFetched(true);
+          
         }
       }
+      
+      console.log(flag)
+      console.log('yaha prr session aa raha hai', session)
   }, [session, flag, sessionObject])
   
 
@@ -153,13 +163,14 @@ const page = () => {
       title:"Account creation successful 🎊",
       description:dataResponse.message+". You can login now"
     })
+      localStorage.setItem('isNextRoutePathStore','false')
       router.push('/login');
     }else if(dataResponse.isStoreOwner){
       toast({
         title:"Account creation successful 🎊",
         description:dataResponse.message+". You can login now"
     })
-     
+     localStorage.setItem('isNextRoutePathStore','true')
       router.push('/login');
     }else{
       toast({

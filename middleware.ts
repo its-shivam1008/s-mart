@@ -18,11 +18,11 @@ export async function middleware(request: NextRequest) {
     //     }
     //   }
     // }
-    if(token &&  (
-        url.pathname.startsWith('/login')
-    )){
-        return NextResponse.redirect(new URL('/', request.url))
-    }
+    // if(token &&  (
+    //     url.pathname.startsWith('/login')
+    // )){
+    //     return NextResponse.redirect(new URL('/', request.url))
+    // }
     if(!token && url.pathname.startsWith('/user/profile')){
         return NextResponse.redirect(new URL('/sign-up', request.url))
     }

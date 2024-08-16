@@ -67,7 +67,15 @@ const page = () => {
 
 
     if(session){
-        router.push('/');
+        console.log(session);
+
+        const isNextRoutePathStore = localStorage.getItem('isNextRoutePathStore')
+        console.log('this is ',Boolean(isNextRoutePathStore))
+        if(Boolean(isNextRoutePathStore)){
+            router.push('/store')
+        }else{
+            router.push('/');
+        }
     }
   return (
     <div className='flex flex-col justify-center items-center min-h-screen bg-gray-100'>

@@ -33,9 +33,7 @@ const page = () => {
     const loginAndRedirecting = (method:string) : void => {
         signIn(method);
     }
-    if(session){
-        router.push('/setup-password');
-    }
+    
 
     const [username, setUsername] = useState('');
     const [usernameMessage, setUsernameMessage] = useState('');
@@ -112,6 +110,18 @@ const page = () => {
             })
             setIsSubmitting(false)
         }
+    }
+
+    if(session){
+        // console.log(session)
+        (async function (){
+            const response = await axios.get(`/api/checkPassword?email=${session.user.email}`)
+            if(!response.data.isPasswordPresent){
+            router.push('/setup-password')
+            }else{
+                router.push('/')
+            }
+        })()
     }
 
   return (
