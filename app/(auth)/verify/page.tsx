@@ -41,9 +41,11 @@ const page = () => {
   time.setSeconds(time.getSeconds() + 120);
   const [expiryTimestamp, setExpiryTimestamp] = useState(time);
   const [sessionObject, setSessionObject] = useState({user:{email:'abc@example.com', username:'abcd'}});
+  const [sessionObject2, setSessionObject2] = useState({user:{email:'abc@example.com', username:'abcd'}});
   const [isFetched, setIsFetched] = useState(false);
   const { toast } = useToast()
   const [flag, setFlag] = useState(false)
+  const [flag2, setFlag2] = useState(false)
 
   // TODO: I have to extract session from the useSession 
   const sess = {
@@ -112,7 +114,9 @@ const page = () => {
 
   // a solution to this is that I should seperate the useEffect when I am using it with creds and without creds
   // the problem is that the session is not updating the usestate hook sessoin object which is a problem it is being updated with creds if statement - solved partially now I have to check the below logic with creds part again
-  // also I have to load the page only when I got the sessionObject with actual values
+  // also I have to load the page only when I got the sessionObject with actual values - all these problems solved
+
+  // this useEffect is used for sign-up with creds
   useEffect(() => {
       if(!session && !flag){
         const sessionEmail = localStorage.getItem('sessionEmail')
@@ -124,23 +128,24 @@ const page = () => {
           
         }
         console.log('ye chal gya na iss liye')
-        // setFlag(true);
+        setFlag(true);
         setIsFetched(true);
       }
-      if(session && !flag){
-        if(session.user.email){
-          console.log('session is ',session)
-          setSessionObject({user:{email:session.user.email, username:session.user.email.split('@')[0]}})
-          console.log(sessionObject)
-          setFlag(true);
-          setIsFetched(true);
-          
-        }
+  }, [flag, sessionObject])
+
+  // this usseEffect is used for sign-up without creds (Google or Github)
+  useEffect(() => {
+    if(session && !flag2){
+      if(session.user.email){
+        console.log('session is ',session)
+        setSessionObject2({user:{email:session.user.email, username:session.user.email.split('@')[0]}})
+        console.log(sessionObject)
+        setFlag2(true);
+        setIsFetched(true);
       }
-      
-      console.log(flag)
-      console.log('yaha prr session aa raha hai', session)
-  }, [session, flag, sessionObject])
+    }
+  }, [session, flag2, sessionObject2])
+  
   
 
   const submitTheVerifyCode = async(data: z.infer<typeof verifySchema>) =>{
@@ -148,12 +153,23 @@ const page = () => {
     setDisableSubmit(true);
     setIsSubmitting(true);
     // const sess = await getSession();
+
+    // this logic checks that whether the sessionObject(sign-up with creds) or sessionObject2(sign-up without creds) has the session information  
+    var sessionObjectSent = {}
+    if(flag && sessionObject){
+      sessionObjectSent = {... sessionObject}
+      console.log('sessionobjectsent',sessionObjectSent)
+    }else if(flag2){
+      sessionObjectSent = {... sessionObject2}
+      console.log('sessionobjectsent',sessionObjectSent)
+    }
+
     const res = await fetch('http://localhost:3000/api/verifyingCode', {
       method:'POST',
       headers:{
         'Content-type': 'application/json'
       },
-      body:JSON.stringify({session:sessionObject, verifyCode:data.code})
+      body:JSON.stringify({session:sessionObjectSent, verifyCode:data.code})
     })
     // console.log(sess)
     const dataResponse = await res.json();
@@ -221,7 +237,7 @@ const page = () => {
                 </div>
               </FormControl>
               <FormDescription  className='flex justify-center items-center'>
-               <span className='text-center'>Please verify your email, otp sent to {isFetched ? sessionObject.user.email : " "}</span>
+               <span className='text-center'>Please verify your email, otp sent to {isFetched ? (flag ? sessionObject.user.email: sessionObject2.user.email) : " "}</span>
               </FormDescription>
               <FormMessage />
             </FormItem>
