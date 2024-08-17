@@ -28,15 +28,6 @@ interface Store extends Document {
         city:string;
         country:string;
     }
-    taxDetails:{
-        gstNumber:string;
-        pan:string;
-    }
-    bankDetails:{
-        accountNumber:string;
-        IFSC:string;
-        bankName:string;
-    }
     razorpay:{
         id:string;
         secret:string;
@@ -106,15 +97,6 @@ const StoreSchema:Schema<Store> = new Schema({
         country:{
             type:String
         }
-    },
-    taxDetails:{
-        gstNumber:String,
-        pan:String
-    },
-    bankDetails:{
-        bankName:String,
-        accountNumber:String,
-        IFSC:String
     },
     razorpay:{
         id:String,
