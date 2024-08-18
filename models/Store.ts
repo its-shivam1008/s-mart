@@ -66,7 +66,10 @@ const StoreSchema:Schema<Store> = new Schema({
     },
     category:{
         categoryName:String,
-        categoryId:String
+        categoryId:{
+            type:Types.ObjectId,
+            ref:'ParentCategory'
+        }
     },
     product:[
         {

@@ -1,5 +1,5 @@
 'use client'
-import React from 'react'
+import React, { useState } from 'react'
 import {
   Accordion,
   AccordionContent,
@@ -24,14 +24,26 @@ import {
   SelectValue,
 } from "@/components/ui/select"
 import { Input } from "@/components/ui/input"
-import { Loader2, LoaderCircle } from 'lucide-react';
+import { Loader2, CircleCheckBig } from 'lucide-react';
 import { useForm } from 'react-hook-form'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { basicStoreInfo, businessAddress, paymentIntegration } from '@/schemas/StoreInfo'
 import * as z from 'zod'
+import axios, { AxiosError } from 'axios'
+import { useToast } from '@/components/ui/use-toast'
+import { ApiResponse } from '@/types/ApiResponse'
+import { useRouter } from 'next/navigation'
+import { useSession } from 'next-auth/react'
 
 
 const page = () => {
+
+  const { toast } = useToast()
+  const { data: session, status } = useSession()
+  const router = useRouter();
+
+  const [isSubmitting, setIsSubmitting] = useState({isBasicInfoFormSubmitted:false, isBusinessAddressFormSubmitted:false, isPaymentIntegrationFormSumbitted:false})
+  const [basicInfoFormSumbitted, setBasicInfoFormSumbitted] = useState(false)
 
   // zod implementation 
   const basicInfoForm = useForm<z.infer<typeof basicStoreInfo>>({
@@ -65,8 +77,46 @@ const page = () => {
     }
   })
 
-  const onSubmitBasicInfo = () => {
-
+  const onSubmitBasicInfo = async(basicInfoData: z.infer<typeof basicStoreInfo>) => {
+    setIsSubmitting({isBasicInfoFormSubmitted: true, isBusinessAddressFormSubmitted: false, isPaymentIntegrationFormSumbitted:false })
+    try{
+      const data = {
+        payload:{
+          owner_name:basicInfoData.owner_name,
+          contact:basicInfoData.contact,
+          businessName:basicInfoData.businessName,
+          storeName:basicInfoData.storeName,
+          category:{
+            categoryName:basicInfoData.category
+          }
+        },
+        session
+      }
+      const response = await axios.post('/api/store',data)
+      if(!response.data.success){
+        toast({
+          variant: "destructive",
+          title:'Some error occured',
+          description:response.data.message
+        })
+      }else{
+        setBasicInfoFormSumbitted(true)
+        toast({
+          title:'Success 🎉',
+          description:response.data.message
+        })
+      }
+      setIsSubmitting({isBasicInfoFormSubmitted:false, isBusinessAddressFormSubmitted:false, isPaymentIntegrationFormSumbitted:false})
+    }catch(err){
+      const axiosError = err as AxiosError<ApiResponse>
+      let errorMessage = axiosError.response?.data.message
+      toast({
+        variant: "destructive",
+        title:'Some error occured',
+        description:errorMessage
+      })
+      setIsSubmitting({isBasicInfoFormSubmitted:false, isBusinessAddressFormSubmitted:false, isPaymentIntegrationFormSumbitted:false})
+    }
   }
   const onSubmitBusinessAddress = () => {
 
@@ -81,7 +131,13 @@ const page = () => {
           <h1 className='text-[rebeccapurple] font-extrabold text-center text-4xl'>Getting started with your store</h1>
           <div className='text-gray-400 text-center text-normal'>Please fill these sections to publish your first product</div>
         </div>
-        <Accordion type="single" collapsible>
+        { 
+          basicInfoFormSumbitted ? 
+          <div className='flex gap-5 items-center my-5'>
+            <div className='px-2 py-4 rounded-xl text-[#f2f2f2] mx-auto w-full bg-[rebeccapurple]/50 text-center'>Basic Information</div>  
+            <CircleCheckBig  className='size-[40px] text-[#109e33]'/>
+          </div> :
+          <Accordion type="single" collapsible>
           <AccordionItem value="item-1">
             <AccordionTrigger><div className='px-2 py-4 rounded-xl text-[#f2f2f2] mx-auto w-full bg-[rebeccapurple]/50 '>Basic Information</div></AccordionTrigger>
             <AccordionContent>
@@ -176,8 +232,12 @@ const page = () => {
                           </FormItem>
                         )}
                       />
-                      <Button type='submit'>
-                        Save !
+                      <Button type='submit' className='bg-[rebeccapurple] w-fit text-white font-bold hover:bg-purple-400 outline-1 outline-offset-1 hover:outline outline-purple-700' disabled={isSubmitting.isBasicInfoFormSubmitted}>
+                        {
+                          isSubmitting.isBasicInfoFormSubmitted ? <div className='flex gap-2 items-center'>
+                            <Loader2 className='mx-2 w-4 h-4 animate-spin'/>Please wait
+                          </div> : 'Save !'
+                        }
                     </Button>
                     </form>
                   </Form>
@@ -186,6 +246,7 @@ const page = () => {
             </AccordionContent>
           </AccordionItem>
         </Accordion>
+        }
         <Accordion type="single" collapsible>
           <AccordionItem value="item-1">
             <AccordionTrigger><div className='px-2 py-4 rounded-xl text-[#f2f2f2] mx-auto w-full bg-[rebeccapurple]/50 '>Business Address</div></AccordionTrigger>

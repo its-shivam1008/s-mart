@@ -2,11 +2,14 @@ import StoreModel from "@/models/Store";
 import UserModel from "@/models/User";
 import dbConnect from "@/Db/Db";
 import { NextRequest, NextResponse } from "next/server";
+import ParentCategoryModel from "@/models/ParentCategory";
 
 export async function POST(req:Request){
     await dbConnect();
     try{
         const data = await req.json();
+        console.log(data)
+        console.log(data.session.user)
         const userByEmail = await UserModel.findOne({email:data.session.user.email});
         // checking the user is present in the db or not, if yes is he signed up as a store oner of not 
         if(!userByEmail){
@@ -17,7 +20,14 @@ export async function POST(req:Request){
         //validating the data using zod
         // todo:
 
+        //finding the id of the the respective category putting it into the payload and also putting the store logo as the imageUrl specified in the session
+        const category_Id = await ParentCategoryModel.findOne({name:data.payload.category.categoryName})
+        if(category_Id){
+            data.payload.category.categoryId = category_Id;
+            data.payload.storeLogo = data.session.image ? data.session.image : 'no Url Found As user Signed up With Creds'
+        }
         // saving the store information 
+        console.log(data)
         const newData = {...data.payload, associatedUser:{userEmail:userByEmail.email, userId:userByEmail._id}}
         const newStore = new StoreModel(newData);
         await newStore.save();
