@@ -72,7 +72,7 @@ const page = () => {
         const isNextRoutePathStore = localStorage.getItem('isNextRoutePathStore')
         console.log('this is ',Boolean(isNextRoutePathStore))
         if(Boolean(isNextRoutePathStore)){
-            router.push('/store/store-getting-started')
+            router.push('/store-getting-started')
         }else{
             router.push('/');
         }
