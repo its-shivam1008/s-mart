@@ -23,7 +23,7 @@ interface Store extends Document {
     businessAddress:{
         address:string;
         street:string;
-        pincode:number;
+        pincode:string;
         state:string;
         city:string;
         country:string;
@@ -89,7 +89,7 @@ const StoreSchema:Schema<Store> = new Schema({
             type:String
         },
         pincode:{
-            type:Number
+            type:String
         },
         state:{
             type:String

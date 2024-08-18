@@ -12,7 +12,7 @@ export const basicStoreInfo = z.object({
 export const businessAddress  = z.object({
     address:z.string(),
     street:z.string(),
-    pincode:z.number(),
+    pincode:z.string(),
     state:z.string(),
     city:z.string(),
     country:z.string(),
