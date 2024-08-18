@@ -45,18 +45,29 @@ export async function PUT(req:Request){
     await dbConnect();
     try{
         const data = await req.json();
-        if(data.session.user.role !== 'StoreOwner'){
+        console.log(data)
+        console.log(data.session.user)
+        const userByEmail = await UserModel.findOne({email:data.session.user.email});
+        // checking the user is present in the db or not, if yes is he signed up as a store oner of not 
+        if(!userByEmail){
+            return NextResponse.json({message: "user not saved try to sign up again", success:false},{ status:404});
+        }else if(userByEmail.role !== 'StoreOwner'){
             return NextResponse.json({message:"please SignUp as a Store Owner to continue.", success:false}, {status:404});
         }
+
+        // finding the store using the associated user
+        const store = await StoreModel.findOneAndUpdate({'associatedUser':{'userEmail':userByEmail.email,'userId':userByEmail._id}}, data.payload)
+
+        // if(data.session.user.role !== 'StoreOwner'){
+        //     return NextResponse.json({message:"please SignUp as a Store Owner to continue.", success:false}, {status:404});
+        // }
 
         //validating the data using zod
         // todo:
 
         // updating the store information 
-        const store = await StoreModel.findByIdAndUpdate(data.id, data.payload)
+        // const store = await StoreModel.findOneAndUpdate(data.id, data.payload)
 
-        // send a welcome email
-        // todo :
         if(!store){
             return NextResponse.json({message:"Store data not updated", success:false}, {status:400});
         }

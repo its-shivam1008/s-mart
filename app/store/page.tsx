@@ -1,5 +1,5 @@
 'use client'
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import {
   Accordion,
   AccordionContent,
@@ -44,8 +44,28 @@ const page = () => {
 
   const [isSubmitting, setIsSubmitting] = useState({isBasicInfoFormSubmitted:false, isBusinessAddressFormSubmitted:false, isPaymentIntegrationFormSumbitted:false})
   const [basicInfoFormSumbitted, setBasicInfoFormSumbitted] = useState(false)
+  const [businessAddressSubmitted, setBusinessAddressSubmitted] = useState(false);
+  const [paymentIntegrationFormSubmitted, setPaymentIntegrationFormSubmitted] = useState(false);
 
-  // zod implementation 
+  const [flagForSession, setFlagForSession] = useState(false)
+
+  useEffect(() => {
+    (async () => {
+    if(session && !flagForSession){
+      const res = await axios.get(`/api/store?email=${session.user.email}`)
+      setFlagForSession(true);
+      if(res.data.success){
+        res.data.getStoreData.owner_name ? setBasicInfoFormSumbitted(true): setBasicInfoFormSumbitted(false)
+        res.data.getStoreData.businessAddress.address ? setBusinessAddressSubmitted(true): setBusinessAddressSubmitted(false)
+        res.data.getStoreData.razorpay.id ? setPaymentIntegrationFormSubmitted(true): setPaymentIntegrationFormSubmitted(false)
+      }
+    }
+    })()
+  }, [session, flagForSession])
+  
+
+
+  // zod implementation for basicInformation of store
   const basicInfoForm = useForm<z.infer<typeof basicStoreInfo>>({
     resolver: zodResolver(basicStoreInfo),
     defaultValues: {
@@ -57,6 +77,7 @@ const page = () => {
     }
   })
 
+  // zod implementation for Business address of store
   const businessAddressForm = useForm<z.infer<typeof businessAddress>>({
     resolver:zodResolver(businessAddress),
     defaultValues:{
@@ -69,6 +90,7 @@ const page = () => {
     }
   })
 
+  // zod implementation for payment integration of store
   const paymentIntegrationForm = useForm<z.infer<typeof paymentIntegration>>({
     resolver:zodResolver(paymentIntegration),
     defaultValues:{
@@ -118,12 +140,91 @@ const page = () => {
       setIsSubmitting({isBasicInfoFormSubmitted:false, isBusinessAddressFormSubmitted:false, isPaymentIntegrationFormSumbitted:false})
     }
   }
-  const onSubmitBusinessAddress = () => {
+
+  const onSubmitBusinessAddress = async(businessAddrData: z.infer<typeof businessAddress>) => {
+    setIsSubmitting({isBasicInfoFormSubmitted: false, isBusinessAddressFormSubmitted: true, isPaymentIntegrationFormSumbitted:false })
+    try{
+      const data = {
+        payload:{
+          businessAddress:{
+            address:businessAddrData.address,
+            street:businessAddrData.street,
+            pincode:businessAddrData.pincode,
+            city:businessAddrData.city,
+            state:businessAddrData.state,
+            country:businessAddrData.country,
+          }
+        },
+        session
+      }
+      const response = await axios.put('/api/store',data)
+      if(!response.data.success){
+        toast({
+          variant: "destructive",
+          title:'Some error occured',
+          description:response.data.message
+        })
+      }else{
+        setBusinessAddressSubmitted(true)
+        toast({
+          title:'Success 🎉',
+          description:response.data.message
+        })
+      }
+      setIsSubmitting({isBasicInfoFormSubmitted:false, isBusinessAddressFormSubmitted:false, isPaymentIntegrationFormSumbitted:false})
+    }catch(err){
+      const axiosError = err as AxiosError<ApiResponse>
+      let errorMessage = axiosError.response?.data.message
+      toast({
+        variant: "destructive",
+        title:'Some error occured',
+        description:errorMessage
+      })
+      setIsSubmitting({isBasicInfoFormSubmitted:false, isBusinessAddressFormSubmitted:false, isPaymentIntegrationFormSumbitted:false})
+    }
 
   }
-  const onSubmitPaymentIntergration = () => {
+
+  const onSubmitPaymentIntergration = async(paymentIntData: z.infer<typeof paymentIntegration>) => {
+    setIsSubmitting({isBasicInfoFormSubmitted: false, isBusinessAddressFormSubmitted: false, isPaymentIntegrationFormSumbitted:true })
+    try{
+      const data = {
+        payload:{
+          razorpay:{
+            id:paymentIntData.id,
+            secret:paymentIntData.secret,
+          }
+        },
+        session
+      }
+      const response = await axios.put('/api/store',data)
+      if(!response.data.success){
+        toast({
+          variant: "destructive",
+          title:'Some error occured',
+          description:response.data.message
+        })
+      }else{
+        setPaymentIntegrationFormSubmitted(true)
+        toast({
+          title:'Success 🎉',
+          description:response.data.message
+        })
+      }
+      setIsSubmitting({isBasicInfoFormSubmitted:false, isBusinessAddressFormSubmitted:false, isPaymentIntegrationFormSumbitted:false})
+    }catch(err){
+      const axiosError = err as AxiosError<ApiResponse>
+      let errorMessage = axiosError.response?.data.message
+      toast({
+        variant: "destructive",
+        title:'Some error occured',
+        description:errorMessage
+      })
+      setIsSubmitting({isBasicInfoFormSubmitted:false, isBusinessAddressFormSubmitted:false, isPaymentIntegrationFormSumbitted:false})
+    }
 
   }
+
   return (
     <div className='w-full min-h-screen h-auto bg-[#f2f2f2] flex justify-center items-center'>
       <div className="w-[80%] h-[50%]  py-28 my-auto mx-auto">
@@ -247,7 +348,12 @@ const page = () => {
           </AccordionItem>
         </Accordion>
         }
-        <Accordion type="single" collapsible>
+        { businessAddressSubmitted ? 
+          <div className='flex gap-5 items-center my-5'>
+            <div className='px-2 py-4 rounded-xl text-[#f2f2f2] mx-auto w-full bg-[rebeccapurple]/50 text-center'>Business Address</div>  
+            <CircleCheckBig  className='size-[40px] text-[#109e33]'/>
+          </div> :
+          <Accordion type="single" collapsible>
           <AccordionItem value="item-1">
             <AccordionTrigger><div className='px-2 py-4 rounded-xl text-[#f2f2f2] mx-auto w-full bg-[rebeccapurple]/50 '>Business Address</div></AccordionTrigger>
             <AccordionContent>
@@ -345,8 +451,12 @@ const page = () => {
                           </FormItem>
                         )}
                       />
-                      <Button type='submit'>
-                        Save !
+                      <Button type='submit' className='bg-[rebeccapurple] w-fit text-white font-bold hover:bg-purple-400 outline-1 outline-offset-1 hover:outline outline-purple-700' disabled={isSubmitting.isBusinessAddressFormSubmitted}>
+                        {
+                          isSubmitting.isBusinessAddressFormSubmitted ? <div className='flex gap-2 items-center'>
+                            <Loader2 className='mx-2 w-4 h-4 animate-spin'/>Please wait
+                          </div> : 'Save !'
+                        }
                     </Button>
                     </form>
                   </Form>
@@ -355,7 +465,14 @@ const page = () => {
             </AccordionContent>
           </AccordionItem>
         </Accordion>
-        <Accordion type="single" collapsible>
+        }
+        {
+          paymentIntegrationFormSubmitted ? 
+          <div className='flex gap-5 items-center my-5'>
+            <div className='px-2 py-4 rounded-xl text-[#f2f2f2] mx-auto w-full bg-[rebeccapurple]/50 text-center'>Payment Integration</div>  
+            <CircleCheckBig  className='size-[40px] text-[#109e33]'/>
+          </div> :
+          <Accordion type="single" collapsible>
           <AccordionItem value="item-1">
             <AccordionTrigger><div className='px-2 py-4 rounded-xl text-[#f2f2f2] mx-auto w-full bg-[rebeccapurple]/50 '>Payment Integration</div></AccordionTrigger>
             <AccordionContent>
@@ -393,8 +510,12 @@ const page = () => {
                           </FormItem>
                         )}
                       />
-                      <Button type='submit'>
-                        Save !
+                      <Button type='submit' className='bg-[rebeccapurple] w-fit text-white font-bold hover:bg-purple-400 outline-1 outline-offset-1 hover:outline outline-purple-700' disabled={isSubmitting.isPaymentIntegrationFormSumbitted}>
+                        {
+                          isSubmitting.isPaymentIntegrationFormSumbitted ? <div className='flex gap-2 items-center'>
+                            <Loader2 className='mx-2 w-4 h-4 animate-spin'/>Please wait
+                          </div> : 'Save !'
+                        }
                     </Button>
                     </form>
                   </Form>
@@ -403,6 +524,7 @@ const page = () => {
             </AccordionContent>
           </AccordionItem>
         </Accordion>
+        }
       </div>
     </div>
   )
