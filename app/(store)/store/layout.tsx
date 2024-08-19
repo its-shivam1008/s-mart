@@ -23,12 +23,9 @@ export default function StoreLayout({
   return (
     <>
     <Sidebar>
-      <SessionWrapper>
-        {/* <body className={inter.className}> */}
-          <SmoothScrolling> {children} </SmoothScrolling>
-        <Toaster />
-        {/* </body>  */}
-      </SessionWrapper>
+      
+      {children} 
+        
     </Sidebar>
     </>
     // <html lang="en">
