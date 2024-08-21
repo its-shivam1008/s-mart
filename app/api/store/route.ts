@@ -24,7 +24,7 @@ export async function POST(req:Request){
         const category_Id = await ParentCategoryModel.findOne({name:data.payload.category.categoryName})
         if(category_Id){
             data.payload.category.categoryId = category_Id;
-            data.payload.storeLogo = data.session.image ? data.session.image : 'no Url Found As user Signed up With Creds'
+            data.payload.storeLogo = data.session.user.image ? data.session.user.image : 'no Url Found As user Signed up With Creds'
         }
         // saving the store information 
         console.log(data)

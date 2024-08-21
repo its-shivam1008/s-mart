@@ -55,9 +55,9 @@ const page = () => {
       const res = await axios.get(`/api/store?email=${session.user.email}`)
       setFlagForSession(true);
       if(res.data.success){
-        res.data.getStoreData.owner_name ? setBasicInfoFormSumbitted(true): setBasicInfoFormSumbitted(false)
-        res.data.getStoreData.businessAddress?.address ? setBusinessAddressSubmitted(true): setBusinessAddressSubmitted(false)
-        res.data.getStoreData.razorpay?.id ? setPaymentIntegrationFormSubmitted(true): setPaymentIntegrationFormSubmitted(false)
+        res.data.getStoreData?.owner_name ? setBasicInfoFormSumbitted(true): setBasicInfoFormSumbitted(false)
+        res.data.getStoreData?.businessAddress?.address ? setBusinessAddressSubmitted(true): setBusinessAddressSubmitted(false)
+        res.data.getStoreData?.razorpay?.id ? setPaymentIntegrationFormSubmitted(true): setPaymentIntegrationFormSubmitted(false)
       }
     }
     })()
