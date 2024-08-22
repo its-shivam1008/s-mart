@@ -24,10 +24,12 @@ import { zodResolver } from '@hookform/resolvers/zod';
 import { saveProduct } from '@/schemas/productSchema';
 import { useSession } from 'next-auth/react';
 import { productSubCategory } from '@/actions/ProductCat';
+import axios from 'axios';
 
 function page() {
 
   const [subCatArray, setSubCatArray] = useState<string[] | undefined>([]);
+  const [parentCateg, setParentCateg] = useState<string | undefined>('')
   const { data: session, status } = useSession()
   const [flag, setFlag] = useState(false)
 
@@ -39,6 +41,7 @@ function page() {
         const arrayOfSubCat = await productSubCategory(session.user.email as string)
         console.log(arrayOfSubCat)
         if(arrayOfSubCat?.success){
+          setParentCateg(arrayOfSubCat.parentCat)
           setSubCatArray(arrayOfSubCat.subCat)
         }
         setFlag(true)
@@ -56,14 +59,46 @@ function page() {
       description:'',
       specification:'',
       category:{
+        parentCategory:{
+          name:`${parentCateg}` // this results the empty string fIX needed TODO:
+        },
         subCategory:{
           name:''
-        },
+        }
       }
     }
   })
 
-  const onSubmit = () =>{
+  const fileRef = form.register("images")
+
+  const onSubmit = async(data:z.infer<typeof saveProduct>) =>{
+
+    console.log(data)
+    
+    const files = data.images; // `data.images` contains the list of files
+
+  const uploadPromises = Array.from(files).map(async (file) => {
+    const formData = new FormData();
+    formData.append('file', (file as any));
+    formData.append('upload_preset', 'product_image_upload'); // Cloudinary upload preset
+    formData.append('cloud_name', `${process.env.NEXT_PUBLIC_CLOUDINARY_CLOUD_NAME}`); // Cloudinary cloud name
+
+    try {
+    const response = await axios.post(
+    `https://api.cloudinary.com/v1_1/${process.env.NEXT_PUBLIC_CLOUDINARY_CLOUD_NAME}/image/upload`, // Replace YOUR_CLOUD_NAME with your actual cloud name
+    formData
+    );
+    console.log(response.data)
+    return response.data.secure_url; // This is the URL of the uploaded image
+    } catch (error) {
+    console.error('Error uploading to Cloudinary', error);
+    return null;
+    }
+  });
+  // Wait for all uploads to finish
+  const uploadedImageUrls = await Promise.all(uploadPromises);
+
+  console.log('Uploaded image URLs:', uploadedImageUrls);
 
   }
   
@@ -148,6 +183,7 @@ function page() {
                             <FormControl>
                               <Input type="number"
                                 {...field}
+                                onChange={event => field.onChange(+event.target.value)}
                               />
                             </FormControl>
                             <FormMessage />
@@ -163,6 +199,7 @@ function page() {
                             <FormControl>
                               <Input type="number"
                                 {...field}
+                                onChange={event => field.onChange(+event.target.value)}
                               />
                             </FormControl>
                             <FormMessage />
@@ -178,6 +215,7 @@ function page() {
                             <FormControl>
                               <Input type="number"
                                 {...field}
+                                onChange={event => field.onChange(+event.target.value)}
                               />
                             </FormControl>
                             <FormMessage />
@@ -193,6 +231,7 @@ function page() {
                             <FormControl>
                               <Input type="number"
                                 {...field}
+                                onChange={event => field.onChange(+event.target.value)}
                               />
                             </FormControl>
                             <FormMessage />
@@ -206,17 +245,19 @@ function page() {
                           <FormItem>
                             <FormLabel>Images</FormLabel>
                             <FormControl>
-                              <Input 
-                                {...field}
+                              <Input type='file' multiple accept='image/*'
+                                {...fileRef}
+                                // onChange={e => field.onChange(e.target.files)}
+                                // ref={field.ref}
+                                // onBlur={field.onBlur}
+                                // name={field.name}
                               />
                             </FormControl>
                             <FormMessage />
                           </FormItem>
                         )}
                       />
-                      <Button type='submit' className='bg-[rebeccapurple] w-fit text-white font-bold hover:bg-purple-400 outline-1 outline-offset-1 hover:outline outline-purple-700' >
-                        Save
-                    </Button>
+                      <Button type="submit">Submit</Button>
                     </form>
                   </Form>
         </div>

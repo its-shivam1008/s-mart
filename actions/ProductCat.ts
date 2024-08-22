@@ -19,7 +19,7 @@ export const productSubCategory =  async(email:string) =>{
                 category.subCategory.forEach((element) =>{
                     arrayOfSubCategoryNames.push(element.name)
                 })
-                return { message : "Got the sub categories", success:true, subCat:arrayOfSubCategoryNames}
+                return { message : "Got the sub categories", success:true, parentCat:category.name,subCat:arrayOfSubCategoryNames}
             }
         }else{
             return { message : 'Store not found', success:false}

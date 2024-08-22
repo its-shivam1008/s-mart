@@ -9,6 +9,8 @@ export const categorySchemaForProduct = z.object({
     })
 })
 
+const ACCEPTED_IMAGE_TYPES = ["image/jpeg", "image/jpg", "image/png", "image/webp"];
+
 export const saveProduct = z.object({
     name:z.string(),
     description:z.string().max(50,{message:'description not more than 50 words'}),
@@ -18,5 +20,6 @@ export const saveProduct = z.object({
     price:z.number(),
     discount:z.number({message:'write the percent of discount you have to provide in the product'}),
     shippingCharge:z.number(),
-    images:z.array(z.string())
+    images: z.any()
+        .refine(files => Array.from(files).every(file => ACCEPTED_IMAGE_TYPES.includes((file as any).type)), "Only these types are allowed .jpg, .jpeg, .png and .webp")
 })
