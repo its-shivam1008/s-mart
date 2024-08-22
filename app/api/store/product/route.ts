@@ -6,6 +6,22 @@ import { NextResponse, NextRequest } from "next/server";
 import { Products } from "@/models/Store";
 import { ObjectId, Types } from "mongoose";
 
+const checkUserIsStoreOwner = async (userEmail:string) =>{
+    try{
+        const user = await UserModel.findOne({email:userEmail});
+        if(user?.role !== 'StoreOwner'){
+            return {message:'Not a StoreOwner', success:false}
+        }
+        const userStore = await StoreModel.findOne({'associatedUser.userEmail':userEmail})
+        if(!userStore){
+            return {message:"No store foun with this email", success:false}
+        }
+        return {message:'It is a store Owner, his store found', success:true, storeId:userStore._id}
+    }catch(err){
+        return {message: "Internal server error", success:false};
+    }
+}
+
 
 export async function POST(req:Request){
     await dbConnect();
@@ -13,10 +29,8 @@ export async function POST(req:Request){
         const data = await req.json();
         // console.log(data)
         // checking the role of the user 
-        if(data.session.user.role !== 'StoreOwner'){
-            return NextResponse.json({message:"please SignUp as a Store Owner to continue.", success:false}, {status:404});
-        }
-        const store = await StoreModel.findById(data.payload.storeId);
+        const store_Id = await checkUserIsStoreOwner(data.session.user.email)
+        const store = await StoreModel.findById(store_Id.storeId);
         // checking the store exists or not 
         if(!store){
             return NextResponse.json({message: "Firstly , please create a store.", success:false},{ status:404});
