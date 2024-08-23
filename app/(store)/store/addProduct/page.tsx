@@ -149,15 +149,15 @@ function page() {
     <div className="min-h-screen bg-[#f2f2f2]">
       <div className='flex gap-5 flex-col'>
         <div className="title text-2xl text-black font-bold pt-5">Add a new product</div>
-        <div className='mx-10 my-10 px-10 py-10 bg-purple-400 bg-opacity-50 rounded-[16px] w-auto outline-2 outline-offset-4 hover:outline-[rebeccapurple] outline-transparent outline'>
+        <div className='md:mx-10 mx-auto my-10 md:p-10 p-3  bg-purple-400 bg-opacity-50 rounded-[16px] w-auto outline-2 outline-offset-4 hover:outline-[rebeccapurple] outline-transparent outline'>
           <Form {...form}>
             <form onSubmit={form.handleSubmit(onSubmit)} className='space-y-8'>
               <FormField
                 control={form.control}
                 name="name"
                 render={({ field }) => (
-                  <FormItem className='flex gap-3 items-center'>
-                    <FormLabel className='font-bold text-lg px-3'>Name</FormLabel>
+                  <FormItem className='md:flex md:gap-3 md:items-center'>
+                    <FormLabel className='md:font-bold md:text-lg md:px-3'>Name</FormLabel>
                     <FormControl>
                       <Input
                         {...field}
@@ -171,8 +171,8 @@ function page() {
                 control={form.control}
                 name="description"
                 render={({ field }) => (
-                  <FormItem className='flex gap-3 items-center'>
-                    <FormLabel className='font-bold text-lg px-3'>Description</FormLabel>
+                  <FormItem className='md:flex md:gap-3 md:items-center'>
+                    <FormLabel className='md:font-bold md:text-lg md:px-3'>Description</FormLabel>
                     <FormControl>
                       <Input
                         {...field}
@@ -186,8 +186,8 @@ function page() {
                 control={form.control}
                 name="specification"
                 render={({ field }) => (
-                  <FormItem className='flex gap-3 items-center'>
-                    <FormLabel className='font-bold text-lg px-3'>Specification</FormLabel>
+                  <FormItem className='md:flex md:gap-3 md:items-center'>
+                    <FormLabel className='md:font-bold md:text-lg md:px-3'>Specification</FormLabel>
                     <FormControl>
                       <Input
                         {...field}
@@ -201,8 +201,8 @@ function page() {
                 control={form.control}
                 name="images"
                 render={({ field }) => (
-                  <FormItem className='flex gap-3 items-center'>
-                    <FormLabel className='font-bold text-lg px-3'>Images</FormLabel>
+                  <FormItem className='md:flex md:gap-3 md:items-center'>
+                    <FormLabel className='md:font-bold md:text-lg md:px-3'>Images</FormLabel>
                     <FormControl>
                       <Input type='file' multiple accept='image/*'
                         {...fileRef}
@@ -216,13 +216,13 @@ function page() {
                   </FormItem>
                 )}
               />
-              <div className='grid grid-cols-2 gap-5'>              
+              <div className='md:grid md:grid-cols-2 md:gap-5'>              
               <FormField
                 control={form.control}
                 name="quantity"
                 render={({ field }) => (
-                  <FormItem className='flex gap-3 items-center'>
-                    <FormLabel className='font-bold text-lg px-3'>Quantity</FormLabel>
+                  <FormItem className='md:flex md:gap-3 md:items-center'>
+                    <FormLabel className='md:font-bold md:text-lg md:px-3'>Quantity</FormLabel>
                     <FormControl>
                       <Input type="number"
                         {...field}
@@ -237,8 +237,8 @@ function page() {
                 control={form.control}
                 name="price"
                 render={({ field }) => (
-                  <FormItem className='flex gap-3 items-center'>
-                    <FormLabel className='font-bold text-lg px-3'>Price</FormLabel>
+                  <FormItem className='md:flex md:gap-3 md:items-center'>
+                    <FormLabel className='md:font-bold md:text-lg md:px-3'>Price</FormLabel>
                     <FormControl>
                       <Input type="number"
                         {...field}
@@ -253,8 +253,8 @@ function page() {
                 control={form.control}
                 name="discount"
                 render={({ field }) => (
-                  <FormItem className='flex gap-3 items-center'>
-                    <FormLabel className='font-bold text-lg px-3'>Discount</FormLabel>
+                  <FormItem className='md:flex md:gap-3 md:items-center'>
+                    <FormLabel className='md:font-bold md:text-lg md:px-3'>Discount</FormLabel>
                     <FormControl>
                       <Input type="number"
                         {...field}
@@ -269,8 +269,8 @@ function page() {
                 control={form.control}
                 name="shippingCharge"
                 render={({ field }) => (
-                  <FormItem className='flex gap-3 items-center'>
-                    <FormLabel className='font-bold text-lg px-3'>Shipping Charge</FormLabel>
+                  <FormItem className='md:flex md:gap-3 md:items-center'>
+                    <FormLabel className='md:font-bold md:text-lg md:px-3'>Shipping Charge</FormLabel>
                     <FormControl>
                       <Input type="number"
                         {...field}
@@ -286,8 +286,8 @@ function page() {
                 control={form.control}
                 name="category.subCategory.name"
                 render={({ field }) => (
-                  <FormItem className='flex gap-3 items-center'>
-                    <FormLabel className='font-bold text-lg px-3'>Sub Category</FormLabel>
+                  <FormItem className='md:flex md:gap-3 md:items-center'>
+                    <FormLabel className='md:font-bold md:text-lg md:px-3'>Sub Category</FormLabel>
                     <Select onValueChange={field.onChange} defaultValue={field.value}>
                       <FormControl>
                         <SelectTrigger>
