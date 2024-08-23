@@ -148,16 +148,16 @@ function page() {
   return (
     <div className="min-h-screen bg-[#f2f2f2]">
       <div className='flex gap-5 flex-col'>
-        <div className="title text-2xl text-black font-bold">Add a new product</div>
-        <div className='mx-auto bg-blue-400 '>
+        <div className="title text-2xl text-black font-bold pt-5">Add a new product</div>
+        <div className='mx-10 my-10 px-10 py-10 bg-purple-400 bg-opacity-50 rounded-[16px] w-auto outline-2 outline-offset-4 hover:outline-[rebeccapurple] outline-transparent outline'>
           <Form {...form}>
-            <form onSubmit={form.handleSubmit(onSubmit)} className='space-y-4'>
+            <form onSubmit={form.handleSubmit(onSubmit)} className='space-y-8'>
               <FormField
                 control={form.control}
                 name="name"
                 render={({ field }) => (
-                  <FormItem>
-                    <FormLabel>Name</FormLabel>
+                  <FormItem className='flex gap-3 items-center'>
+                    <FormLabel className='font-bold text-lg px-3'>Name</FormLabel>
                     <FormControl>
                       <Input
                         {...field}
@@ -171,8 +171,8 @@ function page() {
                 control={form.control}
                 name="description"
                 render={({ field }) => (
-                  <FormItem>
-                    <FormLabel>Description</FormLabel>
+                  <FormItem className='flex gap-3 items-center'>
+                    <FormLabel className='font-bold text-lg px-3'>Description</FormLabel>
                     <FormControl>
                       <Input
                         {...field}
@@ -186,8 +186,8 @@ function page() {
                 control={form.control}
                 name="specification"
                 render={({ field }) => (
-                  <FormItem>
-                    <FormLabel>Specification</FormLabel>
+                  <FormItem className='flex gap-3 items-center'>
+                    <FormLabel className='font-bold text-lg px-3'>Specification</FormLabel>
                     <FormControl>
                       <Input
                         {...field}
@@ -199,30 +199,30 @@ function page() {
               />
               <FormField
                 control={form.control}
-                name="category.subCategory.name"
+                name="images"
                 render={({ field }) => (
-                  <FormItem>
-                    <FormLabel>Sub Category</FormLabel>
-                    <Select onValueChange={field.onChange} defaultValue={field.value}>
-                      <FormControl>
-                        <SelectTrigger>
-                          <SelectValue placeholder="Select a sub category for your products" />
-                        </SelectTrigger>
-                      </FormControl>
-                      <SelectContent>
-                        {flag && subCatArray?.map((ele) => <SelectItem value={ele}>{ele}</SelectItem>)}
-                      </SelectContent>
-                    </Select>
+                  <FormItem className='flex gap-3 items-center'>
+                    <FormLabel className='font-bold text-lg px-3'>Images</FormLabel>
+                    <FormControl>
+                      <Input type='file' multiple accept='image/*'
+                        {...fileRef}
+                      // onChange={e => field.onChange(e.target.files)}
+                      // ref={field.ref}
+                      // onBlur={field.onBlur}
+                      // name={field.name}
+                      />
+                    </FormControl>
                     <FormMessage />
                   </FormItem>
                 )}
               />
+              <div className='grid grid-cols-2 gap-5'>              
               <FormField
                 control={form.control}
                 name="quantity"
                 render={({ field }) => (
-                  <FormItem>
-                    <FormLabel>Quantity</FormLabel>
+                  <FormItem className='flex gap-3 items-center'>
+                    <FormLabel className='font-bold text-lg px-3'>Quantity</FormLabel>
                     <FormControl>
                       <Input type="number"
                         {...field}
@@ -237,8 +237,8 @@ function page() {
                 control={form.control}
                 name="price"
                 render={({ field }) => (
-                  <FormItem>
-                    <FormLabel>Price</FormLabel>
+                  <FormItem className='flex gap-3 items-center'>
+                    <FormLabel className='font-bold text-lg px-3'>Price</FormLabel>
                     <FormControl>
                       <Input type="number"
                         {...field}
@@ -253,8 +253,8 @@ function page() {
                 control={form.control}
                 name="discount"
                 render={({ field }) => (
-                  <FormItem>
-                    <FormLabel>Discount</FormLabel>
+                  <FormItem className='flex gap-3 items-center'>
+                    <FormLabel className='font-bold text-lg px-3'>Discount</FormLabel>
                     <FormControl>
                       <Input type="number"
                         {...field}
@@ -269,8 +269,8 @@ function page() {
                 control={form.control}
                 name="shippingCharge"
                 render={({ field }) => (
-                  <FormItem>
-                    <FormLabel>Shipping Charge</FormLabel>
+                  <FormItem className='flex gap-3 items-center'>
+                    <FormLabel className='font-bold text-lg px-3'>Shipping Charge</FormLabel>
                     <FormControl>
                       <Input type="number"
                         {...field}
@@ -281,21 +281,23 @@ function page() {
                   </FormItem>
                 )}
               />
+              </div>
               <FormField
                 control={form.control}
-                name="images"
+                name="category.subCategory.name"
                 render={({ field }) => (
-                  <FormItem>
-                    <FormLabel>Images</FormLabel>
-                    <FormControl>
-                      <Input type='file' multiple accept='image/*'
-                        {...fileRef}
-                      // onChange={e => field.onChange(e.target.files)}
-                      // ref={field.ref}
-                      // onBlur={field.onBlur}
-                      // name={field.name}
-                      />
-                    </FormControl>
+                  <FormItem className='flex gap-3 items-center'>
+                    <FormLabel className='font-bold text-lg px-3'>Sub Category</FormLabel>
+                    <Select onValueChange={field.onChange} defaultValue={field.value}>
+                      <FormControl>
+                        <SelectTrigger>
+                          <SelectValue placeholder="Select a sub category for your products" />
+                        </SelectTrigger>
+                      </FormControl>
+                      <SelectContent>
+                        {flag && subCatArray?.map((ele) => <SelectItem value={ele}>{ele}</SelectItem>)}
+                      </SelectContent>
+                    </Select>
                     <FormMessage />
                   </FormItem>
                 )}
