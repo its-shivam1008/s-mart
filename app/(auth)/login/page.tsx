@@ -20,6 +20,7 @@ import { zodResolver } from '@hookform/resolvers/zod';
 import { z } from 'zod';
 import Link from 'next/link';
 import { useToast } from "@/components/ui/use-toast"
+import { checkUserTypeWithStoreFormFilled } from '@/actions/checkUserType';
 
 
 
@@ -69,6 +70,18 @@ const page = () => {
     if(session){
         console.log(session);
 
+        (async () =>{
+            const response = await checkUserTypeWithStoreFormFilled(session.user.email as string)
+            if(response?.userRole == 'User'){
+                router.push('/')
+            }else if(response?.userRole == 'StoreOwner'){
+                if(response?.success){
+                    router.push('/store')
+                }else{
+                    router.push('/store-getting-started')
+                }
+            }
+        })()
         const isNextRoutePathStore = localStorage.getItem('isNextRoutePathStore')
         console.log('this is ',Boolean(isNextRoutePathStore))
         if(Boolean(isNextRoutePathStore)){
