@@ -14,7 +14,7 @@ const checkUserIsStoreOwner = async (userEmail:string) =>{
         }
         const userStore = await StoreModel.findOne({'associatedUser.userEmail':userEmail})
         if(!userStore){
-            return {message:"No store foun with this email", success:false}
+            return {message:"User is StoreOWner but, No store found with this email", success:false}
         }
         return {message:'It is a store Owner, his store found', success:true, storeId:userStore._id}
     }catch(err){
@@ -65,7 +65,8 @@ export async function PUT(req:Request){
         const data = await req.json();
         // console.log(data)
         // checking the role of the user 
-        if(data.session.user.role !== 'StoreOwner'){
+        const storeOwner = await checkUserIsStoreOwner(data.session.user.email)
+        if(!storeOwner.success){
             return NextResponse.json({message:"please SignUp as a Store Owner to continue.", success:false}, {status:404});
         }
         // updating the Product data 
@@ -107,18 +108,19 @@ export async function GET(req:NextRequest){
         // extracting the value from the queries
         const queryParam = {
             productId: searchParams.get('productId'),
-            storeId: searchParams.get('storeId'),
+            userEmail: searchParams.get('userEmail'),
             allProducts: searchParams.get('allProducts'),
             role: searchParams.get('role')
         }
         // checking the role of the user 
-        if(queryParam.role !== 'StoreOwner'){
+        const storeOwner = await checkUserIsStoreOwner(queryParam.userEmail as string)
+        if(!storeOwner.success){
             return NextResponse.json({message:"please SignUp as a Store Owner to continue.", success:false}, {status:404});
         }
         // if storeOwner  wants all the products of the store
         if(queryParam.allProducts){
             // obtaining all the products related to a store. api call looks like => http://localhost:3000/api/store/product/?storeId=66a5128d2ee095f27a5f5d90&role=StoreOwner&allProducts=true allProducts=true is necessary parameter to pass to get all the products
-            const products = await ProductModel.find({storeId:queryParam.storeId});
+            const products = await ProductModel.find({storeId:storeOwner.storeId});
             if (products) {
                 return NextResponse.json({message:"All products fetched", products, success:true}, {status:200});
             }else{
@@ -147,18 +149,19 @@ export async function DELETE(req:Request){
         // extracting the value from the queries
         const queryParam = {
             productId: searchParams.get('productId'),
-            storeId: searchParams.get('storeId'),
+            userEmail: searchParams.get('userEmail'),
             role: searchParams.get('role')
         }
         // checking the role of the user 
-        if(queryParam.role !== 'StoreOwner'){
+        const storeOwner = await checkUserIsStoreOwner(queryParam.userEmail as string)
+        if(!storeOwner.success){
             return NextResponse.json({message:"please SignUp as a Store Owner to continue.", success:false}, {status:404});
         }
         // deleting the product from products
         const deletedProduct = await ProductModel.findByIdAndDelete(queryParam.productId);
         if(deletedProduct){
             // if it is deleted from products also updating the list of products in the store
-            const updatedStore = await StoreModel.findByIdAndUpdate(queryParam.storeId, {$pull:{product:{productId:queryParam.productId}}})
+            const updatedStore = await StoreModel.findByIdAndUpdate(storeOwner.storeId, {$pull:{product:{productId:queryParam.productId}}})
             if(updatedStore){
                 return NextResponse.json({message:"Deleted the product successfully", success:true}, {status:200})
             }else{
