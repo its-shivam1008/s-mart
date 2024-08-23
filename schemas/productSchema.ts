@@ -21,5 +21,8 @@ export const saveProduct = z.object({
     discount:z.number({message:'write the percent of discount you have to provide in the product'}),
     shippingCharge:z.number(),
     images: z.any()
+    .refine(value => value.length > 0, {
+        message: "At least one image is required",
+      })
         .refine(files => Array.from(files).every(file => ACCEPTED_IMAGE_TYPES.includes((file as any).type)), "Only these types are allowed .jpg, .jpeg, .png and .webp")
 })

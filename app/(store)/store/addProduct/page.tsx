@@ -71,9 +71,6 @@ function page() {
         parentCategory: {
           name: `${parentCateg}` // this results the empty string fIX needed TODO:
         },
-        subCategory: {
-          name: ''
-        }
       }
     }
   })
@@ -121,7 +118,7 @@ function page() {
             name: parentCateg,
           },
           subCategory: {
-            name:  addProdData.category.subCategory,
+            name:  addProdData.category.subCategory.name,
           },
         },
         price:  addProdData.price,
