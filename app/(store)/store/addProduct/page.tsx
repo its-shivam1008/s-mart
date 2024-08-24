@@ -64,9 +64,6 @@ function page() {
   const form = useForm<z.infer<typeof saveProduct>>({
     resolver: zodResolver(saveProduct),
     defaultValues: {
-      name: '',
-      description: '',
-      specification: '',
       category: {
         parentCategory: {
           name: `${parentCateg}` // this results the empty string fIX needed TODO:

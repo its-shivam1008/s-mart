@@ -13,8 +13,8 @@ const ACCEPTED_IMAGE_TYPES = ["image/jpeg", "image/jpg", "image/png", "image/web
 
 export const saveProduct = z.object({
     name:z.string(),
-    description:z.string().max(50,{message:'description not more than 50 words'}),
-    specification:z.string().max(50,{message:'description not more than 50 words'}),
+    description:z.string().max(100,{message:'Description not more than 100 characters'}),
+    specification:z.string().max(150,{message:'Specification not more than 150 characters'}),
     quantity:z.number(),
     category:categorySchemaForProduct,
     price:z.number(),
