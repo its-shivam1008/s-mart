@@ -32,6 +32,10 @@ const page = () => {
 
   const [clickEdit, setClickEdit] = useState(false)
 
+  const [isEditButtonClicked, setIsEditButtonClicked] = useState(false)
+
+  const [previousFormData, setPreviousFormData] = useState({name:'', description:'', specification:'', images:[''], quantity:0, price:0, shippingCharge:0, discount:0})
+
   useEffect(() => {
     if(session && !flag){
       (async () =>{
@@ -46,17 +50,40 @@ const page = () => {
       }
       )()
       setFlag(true)
+      console.log(previousFormData)
     }
-  }, [session, flag])
+  }, [session, flag, previousFormData])
 
 
   const form = useForm<z.infer<typeof updateProduct>>({
-    resolver:zodResolver(updateProduct)
+    resolver:zodResolver(updateProduct),
+    defaultValues:{
+      name:previousFormData.name,
+      description:previousFormData.description,
+      specification:previousFormData.specification,
+      images:previousFormData.images,
+      quantity:previousFormData.quantity,
+      price:previousFormData.price,
+      shippingCharge:previousFormData.shippingCharge,
+      discount:previousFormData.discount
+    }
   })
 
   const fileRef = form.register("images")
 
+  const handleEditButton = async (productId:any) =>{
+    setClickEdit(true);
+    setIsEditButtonClicked(true);
+    const response = await axios.get(`/api/store/product?productId=${productId}&userEmail=${session?.user.email}`)
+    if(response.data.success){
+      console.log('prv data',response.data.product)
+      setPreviousFormData(response.data.product)
+    }
+    setIsEditButtonClicked(false);
+  }
+
   const onSubmitEditProduct = () => {
+    
 
   }
   
@@ -69,7 +96,9 @@ const page = () => {
         {clickEdit && 
           <Modal>
             <div className="w-auto flex justify-end"><button type="button" onClick={() => setClickEdit(false)} title='close'><X className='text-white size-8'/></button></div>
-            <div className='bg-purple-300 p-4 rounded-[16px] w-auto'>
+            { isEditButtonClicked ? <div className='flex justify-center items-center'><div className='flex flex-col gap-2 items-center'><Loader2 className='size-8 animate-spin text-purple-400'/><div className='font-semibold text-purple-400'>Please wait</div></div></div>
+               : 
+               <div className='bg-purple-300 p-4 rounded-[16px] w-auto'>
           <Form {...form}>
             <form onSubmit={form.handleSubmit(onSubmitEditProduct)} className='space-y-8'>
               <FormField
@@ -211,7 +240,8 @@ const page = () => {
             </Button>
             </form>
           </Form>
-            </div>
+            </div> 
+            }
           </Modal>
         }
         {productArray.length > 0 && !isLoading && productArray.map((ele:any) => {
@@ -219,10 +249,10 @@ const page = () => {
           <div className='image w-30 h-20 shadow-xl rounded-[12px]'>
           <Image className="rounded-[12px]" src={ele?.images[0]} alt='noImg found' width={0} height={0} sizes="100vw" style={{ width: '100%', height: '100%', objectFit:'cover'}}/>
           </div>
-          <div className='flex md:flex-row flex-col justify-between md:space-x-60 w-auto'>
+          <div className='flex md:flex-row flex-col justify-between md:space-x-40 w-auto'>
             <div className="title font-bold text-xl">{ele?.name}</div>
-            <div className="buttons flex justify-around md:space-x-60 w-auto space-x-5">
-              <button type="button" onClick={() => setClickEdit(true)} className='edit text-white hover:text-green-500 hover:bg-[#f2f2f2] flex gap-2 items-center bg-purple-400 rounded-[10px] px-3 md:py-2 py-1 outline-1 outline-offset-4 hover:outline-green-500 transition-colors duration-500 outline-transparent outline' title='edit'><Pencil className='size-5'/>Edit</button>
+            <div className="buttons flex justify-around md:space-x-40 w-auto space-x-5">
+              <button type="button" onClick={() => handleEditButton(ele._id)} className='edit text-white hover:text-green-500 hover:bg-[#f2f2f2] flex gap-2 items-center bg-purple-400 rounded-[10px] px-3 md:py-2 py-1 outline-1 outline-offset-4 hover:outline-green-500 transition-colors duration-500 outline-transparent outline' title='edit'><Pencil className='size-5'/>Edit</button>
               <button type="button" className='delete text-white hover:text-red-500 hover:bg-[#f2f2f2] flex gap-2 items-center bg-purple-400 rounded-[10px] px-3 md:py-2 py-1 outline-1 outline-offset-4 hover:outline-red-500 transition-colors duration-500 outline-transparent outline' title='delete'><Trash2  className='size-5 text-red-500'/>Delete</button>
             </div>
           </div>
