@@ -110,7 +110,7 @@ export async function GET(req:NextRequest){
             productId: searchParams.get('productId'),
             userEmail: searchParams.get('userEmail'),
             allProducts: searchParams.get('allProducts'),
-            role: searchParams.get('role')
+            // role: searchParams.get('role')
         }
         // checking the role of the user 
         const storeOwner = await checkUserIsStoreOwner(queryParam.userEmail as string)
@@ -130,7 +130,7 @@ export async function GET(req:NextRequest){
             // else storeOwner  wants only one product. api call looks like => http://localhost:3000/api/store/product?productId=66a5fd8ac96764d1687ff36a&role=StoreOwner
             const product = await ProductModel.findById(queryParam.productId);
             if (product) {
-                return NextResponse.json({message:"All products fetched", product, success:true}, {status:200});
+                return NextResponse.json({message:"Product fetched", product, success:true}, {status:200});
             }else{
                 return NextResponse.json({message:"unable to find any product of your store", success:false}, {status:404});
             }
