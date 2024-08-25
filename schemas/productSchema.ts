@@ -26,3 +26,19 @@ export const saveProduct = z.object({
       })
         .refine(files => Array.from(files).every(file => ACCEPTED_IMAGE_TYPES.includes((file as any).type)), "Only these types are allowed .jpg, .jpeg, .png and .webp")
 })
+
+
+export const updateProduct = z.object({
+    name:z.string().optional(),
+    description:z.string().max(100,{message:'Description not more than 100 characters'}).optional(),
+    specification:z.string().max(150,{message:'Specification not more than 150 characters'}).optional(),
+    quantity:z.number().optional(),
+    price:z.number().optional(),
+    discount:z.number({message:'write the percent of discount you have to provide in the product'}).optional(),
+    shippingCharge:z.number().optional(),
+    images: z.any()
+    .refine(value => value.length > 0, {
+        message: "At least one image is required",
+      })
+        .refine(files => Array.from(files).every(file => ACCEPTED_IMAGE_TYPES.includes((file as any).type)), "Only these types are allowed .jpg, .jpeg, .png and .webp").optional()
+})

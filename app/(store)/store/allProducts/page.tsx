@@ -1,10 +1,25 @@
 'use client';
 import Image from 'next/image';
 import React, { useEffect, useState } from 'react'
-import { Loader2, Pencil, Trash2 } from 'lucide-react';
+import { Loader2, Pencil, Trash2, X } from 'lucide-react';
 import { useSession } from 'next-auth/react';
 import axios from 'axios';
 import Modal from '@/components/Modal';
+import { Button } from "@/components/ui/button"
+import {
+  Form,
+  FormControl,
+  FormDescription,
+  FormField,
+  FormItem,
+  FormLabel,
+  FormMessage,
+} from "@/components/ui/form";
+import { Input } from "@/components/ui/input";
+import { useForm } from 'react-hook-form';
+import * as z from 'zod'
+import { zodResolver } from '@hookform/resolvers/zod';
+import { updateProduct } from '@/schemas/productSchema';
 
 const page = () => {
 
@@ -12,6 +27,8 @@ const page = () => {
   const [flag, setFlag] = useState(false)
   const [productArray, setProductArray] = useState([]);
   const [isLoading, setIsLoading] = useState(false)
+
+  const [isFormSubmitting, setIsFormSubmitting] = useState(false)
 
   const [clickEdit, setClickEdit] = useState(false)
 
@@ -31,6 +48,17 @@ const page = () => {
       setFlag(true)
     }
   }, [session, flag])
+
+
+  const form = useForm<z.infer<typeof updateProduct>>({
+    resolver:zodResolver(updateProduct)
+  })
+
+  const fileRef = form.register("images")
+
+  const onSubmitEditProduct = () => {
+
+  }
   
 
   return (
@@ -40,8 +68,150 @@ const page = () => {
       <div className='md:mx-10 mx-auto my-10 md:p-10 p-3  bg-purple-500 bg-opacity-50 rounded-[16px] w-auto outline-2 outline-offset-4 hover:outline-[rebeccapurple] outline-transparent outline'>
         {clickEdit && 
           <Modal>
-            <div>lol</div>
-            <button type="button" onClick={() => setClickEdit(false)} title='close'>close</button>
+            <div className="w-auto flex justify-end"><button type="button" onClick={() => setClickEdit(false)} title='close'><X className='text-white size-8'/></button></div>
+            <div className='bg-purple-300 p-4 rounded-[16px] w-auto'>
+          <Form {...form}>
+            <form onSubmit={form.handleSubmit(onSubmitEditProduct)} className='space-y-8'>
+              <FormField
+                control={form.control}
+                name="name"
+                render={({ field }) => (
+                  <FormItem className='md:flex md:gap-3 md:items-center'>
+                    <FormLabel className='md:font-bold md:text-lg md:px-3'>Name</FormLabel>
+                    <FormControl>
+                      <Input
+                        {...field}
+                      />
+                    </FormControl>
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
+              <FormField
+                control={form.control}
+                name="description"
+                render={({ field }) => (
+                  <FormItem className='md:flex md:gap-3 md:items-center'>
+                    <FormLabel className='md:font-bold md:text-lg md:px-3'>Description</FormLabel>
+                    <FormControl>
+                      <Input
+                        {...field}
+                      />
+                    </FormControl>
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
+              <FormField
+                control={form.control}
+                name="specification"
+                render={({ field }) => (
+                  <FormItem className='md:flex md:gap-3 md:items-center'>
+                    <FormLabel className='md:font-bold md:text-lg md:px-3'>Specification</FormLabel>
+                    <FormControl>
+                      <Input
+                        {...field}
+                      />
+                    </FormControl>
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
+              <FormField
+                control={form.control}
+                name="images"
+                render={({ field }) => (
+                  <FormItem className='md:flex md:gap-3 md:items-center'>
+                    <FormLabel className='md:font-bold md:text-lg md:px-3'>Images</FormLabel>
+                    <FormControl>
+                      <Input type='file' multiple accept='image/*'
+                        {...fileRef}
+                      // onChange={e => field.onChange(e.target.files)}
+                      // ref={field.ref}
+                      // onBlur={field.onBlur}
+                      // name={field.name}
+                      />
+                    </FormControl>
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
+              <div className='md:grid md:grid-cols-2 md:gap-5'>              
+              <FormField
+                control={form.control}
+                name="quantity"
+                render={({ field }) => (
+                  <FormItem className='md:flex md:gap-3 md:items-center'>
+                    <FormLabel className='md:font-bold md:text-lg md:px-3'>Quantity</FormLabel>
+                    <FormControl>
+                      <Input type="number"
+                        {...field}
+                        onChange={event => field.onChange(+event.target.value)}
+                      />
+                    </FormControl>
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
+              <FormField
+                control={form.control}
+                name="price"
+                render={({ field }) => (
+                  <FormItem className='md:flex md:gap-3 md:items-center'>
+                    <FormLabel className='md:font-bold md:text-lg md:px-3'>Price</FormLabel>
+                    <FormControl>
+                      <Input type="number"
+                        {...field}
+                        onChange={event => field.onChange(+event.target.value)}
+                      />
+                    </FormControl>
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
+              <FormField
+                control={form.control}
+                name="discount"
+                render={({ field }) => (
+                  <FormItem className='md:flex md:gap-3 md:items-center'>
+                    <FormLabel className='md:font-bold md:text-lg md:px-3'>Discount</FormLabel>
+                    <FormControl>
+                      <Input type="number"
+                        {...field}
+                        onChange={event => field.onChange(+event.target.value)}
+                      />
+                    </FormControl>
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
+              <FormField
+                control={form.control}
+                name="shippingCharge"
+                render={({ field }) => (
+                  <FormItem className='md:flex md:gap-3 md:items-center'>
+                    <FormLabel className='md:font-bold md:text-lg md:px-3'>Shipping Charge</FormLabel>
+                    <FormControl>
+                      <Input type="number"
+                        {...field}
+                        onChange={event => field.onChange(+event.target.value)}
+                      />
+                    </FormControl>
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
+              </div>
+              <Button type='submit' className='bg-[rebeccapurple] w-fit text-white font-bold hover:bg-purple-400 outline-1 outline-offset-1 hover:outline outline-purple-700' disabled={isFormSubmitting}>
+                        {
+                          isFormSubmitting? <div className='flex gap-2 items-center'>
+                            <Loader2 className='mx-2 w-4 h-4 animate-spin'/>Please wait
+                          </div> : 'Save !'
+                        }
+            </Button>
+            </form>
+          </Form>
+            </div>
           </Modal>
         }
         {productArray.length > 0 && !isLoading && productArray.map((ele:any) => {
@@ -60,7 +230,7 @@ const page = () => {
         })}
       </div>
         {productArray.length === 0 && !isLoading && <div className='font-bold text-xl text-purple-400 text-center'>No products are listed by you. Add some products to show here</div>}
-        {isLoading && <div className='flex justify-center items-center'><div className='flex flex-col gap-2'><Loader2 className='size-8 animate-spin text-purple-400'/><div className='font-semibold text-purple-400'>Please wait</div></div></div>}
+        {isLoading && <div className='flex justify-center items-center'><div className='flex flex-col gap-2 items-center'><Loader2 className='size-8 animate-spin text-purple-400'/><div className='font-semibold text-purple-400'>Please wait</div></div></div>}
       </div>
     </div>
   )
