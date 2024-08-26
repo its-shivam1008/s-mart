@@ -29,6 +29,7 @@ import { useToast } from '@/components/ui/use-toast';
 import { Loader2 } from 'lucide-react';
 import { checkUserType } from '@/actions/checkUserType';
 import { useRouter } from 'next/navigation';
+import { uploadImageToCloudinary } from '@/actions/CloudinaryProductImage';
 
 function page() {
 
@@ -80,16 +81,15 @@ function page() {
     console.log(addProdData)
 
     const files = addProdData.images; // `addProdData.images` contains the list of files
-
     const uploadPromises = Array.from(files).map(async (file) => {
       const formData = new FormData();
       formData.append('file', (file as any));
       formData.append('upload_preset', 'product_image_upload'); // Cloudinary upload preset
       formData.append('cloud_name', `${process.env.NEXT_PUBLIC_CLOUDINARY_CLOUD_NAME}`); // Cloudinary cloud name
-
+  
       try {
         const response = await axios.post(
-          `https://api.cloudinary.com/v1_1/${process.env.NEXT_PUBLIC_CLOUDINARY_CLOUD_NAME}/image/upload`, // Replace YOUR_CLOUD_NAME with your actual cloud name
+          `https://api.cloudinary.com/v1_1/${process.env.NEXT_PUBLIC_CLOUDINARY_CLOUD_NAME}/image/upload`, // Replace  cloud name
           formData
         );
         console.log(response.data)

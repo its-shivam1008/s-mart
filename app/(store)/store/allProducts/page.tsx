@@ -20,7 +20,7 @@ import { useForm } from 'react-hook-form';
 import * as z from 'zod'
 import { zodResolver } from '@hookform/resolvers/zod';
 import { updateProduct } from '@/schemas/productSchema';
-import { deleteImageFromCloudinary, deleteProductImageFromUiAndDB } from '@/actions/deleteProductImage';
+import { deleteImageFromCloudinary, deleteProductImageFromUiAndDB, uploadImageToCloudinary } from '@/actions/CloudinaryProductImage';
 import { useToast } from '@/components/ui/use-toast';
 
 const page = () => {
@@ -36,6 +36,8 @@ const page = () => {
 
   const [isEditButtonClicked, setIsEditButtonClicked] = useState(false)
   const [productIdEdit, setProductIdEdit] = useState('');
+
+  const [uploadImgURLS, setUploadImgURLS] = useState<any[]>([])
 
   const { toast } = useToast()
 
@@ -127,9 +129,80 @@ const page = () => {
     })
   }
 
-  const onSubmitEditProduct = () => {
-  
+  const onSubmitEditProduct = async (updateData: z.infer<typeof updateProduct>) => {
+    setIsFormSubmitting(true)
+    if(updateData.images.length > 0){
+      // converting the udateData.images to formData as we can only send plain objects to server side so we are making it as form data
+      const uploadPromises = Array.from(updateData.images).map(async (file) => {
+        const formData = new FormData();
+        formData.append('file', (file as any));
+        formData.append('upload_preset', 'product_image_upload'); // Cloudinary upload preset
+        formData.append('cloud_name', `${process.env.NEXT_PUBLIC_CLOUDINARY_CLOUD_NAME}`); // Cloudinary cloud name
+    
+        try {
+          const response = await axios.post(
+            `https://api.cloudinary.com/v1_1/${process.env.NEXT_PUBLIC_CLOUDINARY_CLOUD_NAME}/image/upload`, // Replace  cloud name
+            formData
+          );
+          console.log(response.data)
+          return response.data.secure_url; // This is the URL of the uploaded image
+        } catch (error) {
+          console.error('Error uploading to Cloudinary', error);
+          return null;
+        }
+      });
+      // Wait for all uploads to finish
+      const uploadedImageUrls = await Promise.all(uploadPromises);
+      setUploadImgURLS(uploadedImageUrls)
+    }
+    var data = {}
+    if(updateData.name === previousFormData.name){
+      data = {
+        payload: {
+          // name: updateData.name,
+          description:  updateData.description,
+          specification:  updateData.specification,
+          quantity:  updateData.quantity,
+          price:  updateData.price,
+          discount:  updateData.discount,
+          shippingCharge:  updateData.shippingCharge,
+          images:  uploadImgURLS.length > 0 ? uploadImgURLS : previousFormData.images,
+        },
+        session,
+        productId:productIdEdit
+      }
+    }else{
+      data={
+        payload: {
+          name: updateData.name,
+          description:  updateData.description,
+          specification:  updateData.specification,
+          quantity:  updateData.quantity,
+          price:  updateData.price,
+          discount:  updateData.discount,
+          shippingCharge:  updateData.shippingCharge,
+          images:  uploadImgURLS.length > 0 ? uploadImgURLS : previousFormData.images,
+        },
+        session,
+        productId:productIdEdit
+      }
+    }
 
+    const response = await axios.put('/api/store/product',data);
+    if(!response.data.success){
+      toast({
+        variant: "destructive",
+        title:'Some error occured',
+        description:response.data.message
+      })
+      setIsFormSubmitting(false)
+    }else{
+      toast({
+        title:'Success 🎉',
+        description:response.data.message
+      })
+      setIsFormSubmitting(false)
+    }
   }
   
 
