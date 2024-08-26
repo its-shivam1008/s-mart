@@ -107,15 +107,16 @@ const page = () => {
     const resOfCloudinary = await deleteImageFromCloudinary(imageUrl)
     const resOfDb = await deleteProductImageFromUiAndDB(productIdEdit,imageUrl)
     if(resOfDb.success && resOfCloudinary.result === 'ok'){
+      const product = JSON.parse(resOfDb?.stringifyProduct as string)
       setPreviousFormData({
-        name:resOfDb?.product?.name as string,
-        description:resOfDb?.product?.description as string,
-        specification:resOfDb?.product?.specification as string,
-        quantity:resOfDb?.product?.quantity as number,
-        price:resOfDb?.product?.price as number,
-        shippingCharge:resOfDb?.product?.shippingCharge as number,
-        discount:resOfDb?.product?.discount as number,
-        images:resOfDb?.product?.images as string[]
+        name:product?.name as string,
+        description:product?.description as string,
+        specification:product?.specification as string,
+        quantity:product?.quantity as number,
+        price:product?.price as number,
+        shippingCharge:product?.shippingCharge as number,
+        discount:product?.discount as number,
+        images:product?.images as string[]
       })
     }
     console.log(resOfCloudinary, resOfDb)

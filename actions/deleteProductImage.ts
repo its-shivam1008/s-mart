@@ -42,7 +42,8 @@ export const deleteProductImageFromUiAndDB = async(productId:any, imageURL:any) 
   try{
     const product = await ProductModel.findByIdAndUpdate(productId, {$pull:{images: imageURL}}, {new: true});
     if(product){
-      return {message:'Image url deleted', product, success:true}
+      const stringifyProduct = JSON.stringify(product)
+      return {message:'Image url deleted', stringifyProduct, success:true}
     }else{
       return {message:'Product not found', success:false}
     }
