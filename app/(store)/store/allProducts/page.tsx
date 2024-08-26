@@ -35,7 +35,6 @@ const page = () => {
   const [isEditButtonClicked, setIsEditButtonClicked] = useState(false)
 
   const [previousFormData, setPreviousFormData] = useState({name:'', description:'', specification:'', images:[''], quantity:0, price:0, shippingCharge:0, discount:0})
-  const [prData, setPrData] = useState({name:'', description:'', specification:'', images:[''], quantity:0, price:0, shippingCharge:0, discount:0})
 
   useEffect(() => {
     if(session && !flag){
