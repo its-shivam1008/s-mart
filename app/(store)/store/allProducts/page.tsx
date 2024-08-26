@@ -35,6 +35,7 @@ const page = () => {
   const [isEditButtonClicked, setIsEditButtonClicked] = useState(false)
 
   const [previousFormData, setPreviousFormData] = useState({name:'', description:'', specification:'', images:[''], quantity:0, price:0, shippingCharge:0, discount:0})
+  const [prData, setPrData] = useState({name:'', description:'', specification:'', images:[''], quantity:0, price:0, shippingCharge:0, discount:0})
 
   useEffect(() => {
     if(session && !flag){
@@ -50,11 +51,12 @@ const page = () => {
       }
       )()
       setFlag(true)
-      console.log(previousFormData)
     }
-  }, [session, flag, previousFormData])
+  }, [session, flag])
 
-
+  
+  
+  
   const form = useForm<z.infer<typeof updateProduct>>({
     resolver:zodResolver(updateProduct),
     defaultValues:{
@@ -68,6 +70,16 @@ const page = () => {
       discount:previousFormData.discount
     }
   })
+  useEffect(() => {
+    form.setValue('name', previousFormData.name);
+    form.setValue('description', previousFormData.description);
+    form.setValue('specification', previousFormData.specification);
+    form.setValue('images', previousFormData.images);
+    form.setValue('quantity', previousFormData.quantity);
+    form.setValue('price', previousFormData.price);
+    form.setValue('shippingCharge', previousFormData.shippingCharge);
+    form.setValue('discount', previousFormData.discount);
+  }, [previousFormData])
 
   const fileRef = form.register("images")
 
@@ -78,6 +90,7 @@ const page = () => {
     if(response.data.success){
       console.log('prv data',response.data.product)
       setPreviousFormData(response.data.product)
+      
     }
     setIsEditButtonClicked(false);
   }
