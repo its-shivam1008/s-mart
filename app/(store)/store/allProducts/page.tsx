@@ -1,7 +1,7 @@
 'use client';
 import Image from 'next/image';
 import React, { useEffect, useState } from 'react'
-import { Loader2, Pencil, Trash2, X } from 'lucide-react';
+import { Loader2, Pencil, Trash, Trash2, X } from 'lucide-react';
 import { useSession } from 'next-auth/react';
 import axios from 'axios';
 import Modal from '@/components/Modal';
@@ -20,6 +20,8 @@ import { useForm } from 'react-hook-form';
 import * as z from 'zod'
 import { zodResolver } from '@hookform/resolvers/zod';
 import { updateProduct } from '@/schemas/productSchema';
+import { deleteImageFromCloudinary } from '@/actions/deleteProductImage';
+import { useToast } from '@/components/ui/use-toast';
 
 const page = () => {
 
@@ -33,6 +35,8 @@ const page = () => {
   const [clickEdit, setClickEdit] = useState(false)
 
   const [isEditButtonClicked, setIsEditButtonClicked] = useState(false)
+
+  const { toast } = useToast()
 
   const [previousFormData, setPreviousFormData] = useState({name:'', description:'', specification:'', images:[''], quantity:0, price:0, shippingCharge:0, discount:0})
 
@@ -62,7 +66,6 @@ const page = () => {
       name:previousFormData.name,
       description:previousFormData.description,
       specification:previousFormData.specification,
-      images:previousFormData.images,
       quantity:previousFormData.quantity,
       price:previousFormData.price,
       shippingCharge:previousFormData.shippingCharge,
@@ -73,7 +76,6 @@ const page = () => {
     form.setValue('name', previousFormData.name);
     form.setValue('description', previousFormData.description);
     form.setValue('specification', previousFormData.specification);
-    form.setValue('images', previousFormData.images);
     form.setValue('quantity', previousFormData.quantity);
     form.setValue('price', previousFormData.price);
     form.setValue('shippingCharge', previousFormData.shippingCharge);
@@ -94,6 +96,15 @@ const page = () => {
     setIsEditButtonClicked(false);
   }
 
+  const deleteImage = async (imageUrl:string) =>{
+    const response = await deleteImageFromCloudinary(imageUrl)
+    console.log(response)
+    toast({
+      variant: "destructive",
+      title:'Image deleted',
+    })
+  }
+
   const onSubmitEditProduct = () => {
     
 
@@ -112,7 +123,7 @@ const page = () => {
                : 
                <div className='bg-purple-300 p-4 rounded-[16px] w-auto'>
           <Form {...form}>
-            <form onSubmit={form.handleSubmit(onSubmitEditProduct)} className='space-y-8'>
+            <form onSubmit={form.handleSubmit(onSubmitEditProduct)} className='space-y-4'>
               <FormField
                 control={form.control}
                 name="name"
@@ -158,12 +169,19 @@ const page = () => {
                   </FormItem>
                 )}
               />
+              <div className='flex justify-around overflow-x-auto py-2'>
+                {previousFormData.images.length > 0 &&  previousFormData.images.map((ele)=>{
+                  return <div className='relative'><Trash onClick={() => deleteImage(ele)} className='text-red-500 size-5 absolute -top-2 -right-2'/><div className='image w-30 h-20 shadow-xl rounded-[12px]'>
+                  <Image className="rounded-[12px]" src={ele} alt='noImg found' width={0} height={0} sizes="100vw" style={{ width: '100%', height: '100%', objectFit:'cover'}}/>
+                  </div></div>
+                })}
+              </div>
               <FormField
                 control={form.control}
                 name="images"
                 render={({ field }) => (
                   <FormItem className='md:flex md:gap-3 md:items-center'>
-                    <FormLabel className='md:font-bold md:text-lg md:px-3'>Images</FormLabel>
+                    <FormLabel className='md:font-bold md:text-lg md:px-3'> Add more Images</FormLabel>
                     <FormControl>
                       <Input type='file' multiple accept='image/*'
                         {...fileRef}
@@ -257,7 +275,7 @@ const page = () => {
           </Modal>
         }
         {productArray.length > 0 && !isLoading && productArray.map((ele:any) => {
-          return <div key={ele._id} className='product flex gap-4 md:gap-0 md:items-center justify-around md:justify-around bg-[#f2f2f2] p-3 rounded-[16px] my-2 '>
+          return <div key={ele._id} className='product flex gap-4 md:gap-0 md:items-center justify-around md:justify-around bg-[#f2f2f2] p-3 rounded-[16px] my-5 '>
           <div className='image w-30 h-20 shadow-xl rounded-[12px]'>
           <Image className="rounded-[12px]" src={ele?.images[0]} alt='noImg found' width={0} height={0} sizes="100vw" style={{ width: '100%', height: '100%', objectFit:'cover'}}/>
           </div>

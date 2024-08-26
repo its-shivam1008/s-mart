@@ -1,19 +1,21 @@
+'use server'
 import axios from 'axios';
 
 export const deleteImageFromCloudinary = async (imageUrl:any) => {
   try {
     // Extracting the public ID from the image URL
     const publicId = imageUrl.split('/').pop().split('.')[0];
+    const data =  {
+      public_id: publicId,
+      api_key: process.env.NEXT_PUBLIC_CLOUDINARY_API_KEY, // Cloudinary API key
+      timestamp: Math.floor(Date.now() / 1000),
+      signature: generateSignature(publicId, process.env.CLOUDINARY_API_SECRET) // Generating the signature
+    }
     
     // Making a DELETE request to Cloudinary
-    const response = await axios.delete(`https://api.cloudinary.com/v1_1/${process.env.NEXT_PUBLIC_CLOUDINARY_CLOUD_NAME}/image/destroy`, {
-      data: {
-        public_id: publicId,
-        api_key: process.env.NEXT_PUBLIC_CLOUDINARY_API_KEY, // Cloudinary API key
-        timestamp: Math.floor(Date.now() / 1000),
-        signature: generateSignature(publicId, process.env.CLOUDINARY_API_SECRET) // Generating the signature
-      }
-    });
+    const response = await axios.post(`https://api.cloudinary.com/v1_1/${process.env.NEXT_PUBLIC_CLOUDINARY_CLOUD_NAME}/image/destroy`, 
+      data
+    );
 
     console.log('Delete response:', response.data);
     return response.data;
