@@ -20,7 +20,7 @@ import { useForm } from 'react-hook-form';
 import * as z from 'zod'
 import { zodResolver } from '@hookform/resolvers/zod';
 import { updateProduct } from '@/schemas/productSchema';
-import { deleteImageFromCloudinary } from '@/actions/deleteProductImage';
+import { deleteImageFromCloudinary, deleteProductImageFromUiAndDB } from '@/actions/deleteProductImage';
 import { useToast } from '@/components/ui/use-toast';
 
 const page = () => {
@@ -35,6 +35,7 @@ const page = () => {
   const [clickEdit, setClickEdit] = useState(false)
 
   const [isEditButtonClicked, setIsEditButtonClicked] = useState(false)
+  const [productIdEdit, setProductIdEdit] = useState('');
 
   const { toast } = useToast()
 
@@ -87,6 +88,7 @@ const page = () => {
   const handleEditButton = async (productId:any) =>{
     setClickEdit(true);
     setIsEditButtonClicked(true);
+    setProductIdEdit(productId)
     const response = await axios.get(`/api/store/product?productId=${productId}&userEmail=${session?.user.email}`)
     if(response.data.success){
       console.log('prv data',response.data.product)
@@ -97,8 +99,27 @@ const page = () => {
   }
 
   const deleteImage = async (imageUrl:string) =>{
-    const response = await deleteImageFromCloudinary(imageUrl)
-    console.log(response)
+    toast({
+      title:'Please wait...',
+      description:'Deleting the image'
+    })
+    setIsEditButtonClicked(true)
+    const resOfCloudinary = await deleteImageFromCloudinary(imageUrl)
+    const resOfDb = await deleteProductImageFromUiAndDB(productIdEdit,imageUrl)
+    if(resOfDb.success && resOfCloudinary.result === 'ok'){
+      setPreviousFormData({
+        name:resOfDb?.product?.name as string,
+        description:resOfDb?.product?.description as string,
+        specification:resOfDb?.product?.specification as string,
+        quantity:resOfDb?.product?.quantity as number,
+        price:resOfDb?.product?.price as number,
+        shippingCharge:resOfDb?.product?.shippingCharge as number,
+        discount:resOfDb?.product?.discount as number,
+        images:resOfDb?.product?.images as string[]
+      })
+    }
+    console.log(resOfCloudinary, resOfDb)
+    setIsEditButtonClicked(false)
     toast({
       variant: "destructive",
       title:'Image deleted',
@@ -106,7 +127,7 @@ const page = () => {
   }
 
   const onSubmitEditProduct = () => {
-    
+  
 
   }
   
@@ -171,7 +192,7 @@ const page = () => {
               />
               <div className='flex justify-around overflow-x-auto py-2'>
                 {previousFormData.images.length > 0 &&  previousFormData.images.map((ele)=>{
-                  return <div className='relative'><Trash onClick={() => deleteImage(ele)} className='text-red-500 size-5 absolute -top-2 -right-2'/><div className='image w-30 h-20 shadow-xl rounded-[12px]'>
+                  return <div className='relative'><Trash onClick={() => deleteImage(ele)} className='text-red-500 size-5 cursor-pointer absolute -top-2 -right-2'/><div className='image w-30 h-20 shadow-xl rounded-[12px]'>
                   <Image className="rounded-[12px]" src={ele} alt='noImg found' width={0} height={0} sizes="100vw" style={{ width: '100%', height: '100%', objectFit:'cover'}}/>
                   </div></div>
                 })}

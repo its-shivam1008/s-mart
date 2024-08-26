@@ -1,4 +1,6 @@
 'use server'
+import dbConnect from '@/Db/Db';
+import ProductModel from '@/models/Product';
 import axios from 'axios';
 
 export const deleteImageFromCloudinary = async (imageUrl:any) => {
@@ -34,3 +36,17 @@ const generateSignature = (publicId:any, apiSecret:any) => {
     .digest('hex');
   return signature;
 };
+
+export const deleteProductImageFromUiAndDB = async(productId:any, imageURL:any) =>{
+  await dbConnect();
+  try{
+    const product = await ProductModel.findByIdAndUpdate(productId, {$pull:{images: imageURL}}, {new: true});
+    if(product){
+      return {message:'Image url deleted', product, success:true}
+    }else{
+      return {message:'Product not found', success:false}
+    }
+  }catch(err){
+    return {message: 'some error occured', success:false, error:err}
+  }
+}
