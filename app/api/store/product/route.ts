@@ -5,6 +5,7 @@ import dbConnect from "@/Db/Db";
 import { NextResponse, NextRequest } from "next/server";
 import { Products } from "@/models/Store";
 import { ObjectId, Types } from "mongoose";
+import { deleteImageFromCloudinary } from "@/actions/CloudinaryProductImage";
 
 const checkUserIsStoreOwner = async (userEmail:string) =>{
     try{
@@ -167,6 +168,14 @@ export async function DELETE(req:Request){
         const storeOwner = await checkUserIsStoreOwner(queryParam.userEmail as string)
         if(!storeOwner.success){
             return NextResponse.json({message:storeOwner.message, success:false}, {status:404});
+        }
+        //before deleting, delete images from cloud
+        const product = await ProductModel.findById(queryParam.productId);
+        if(!product){
+            return NextResponse.json({message:"CANNOT Delete the product successfully", success:false}, {status:400})
+        }
+        for(let a of product.images){
+            await deleteImageFromCloudinary(a);
         }
         // deleting the product from products
         const deletedProduct = await ProductModel.findByIdAndDelete(queryParam.productId);
