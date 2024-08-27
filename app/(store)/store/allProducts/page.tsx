@@ -274,6 +274,7 @@ const page = () => {
           }
           {clickEdit &&
             <Modal>
+              <div className='min-[0px]:max-md:h-screen min-[0px]:max-md:w-[95%] mx-auto'>              
               <div className="w-auto flex justify-end"><button type="button" onClick={() => setClickEdit(false)} title='close'><X className='text-white size-8' /></button></div>
               {isEditButtonClicked ? <div className='flex justify-center items-center'><div className='flex flex-col gap-2 items-center'><Loader2 className='size-8 animate-spin text-purple-400' /><div className='font-semibold text-purple-400'>Please wait</div></div></div>
                 :
@@ -325,7 +326,7 @@ const page = () => {
                           </FormItem>
                         )}
                       />
-                      <div className='flex justify-around overflow-x-auto py-2'>
+                      <div className='flex justify-around space-x-2 overflow-x-auto py-2'>
                         {previousFormData.images.length > 0 && previousFormData.images.map((ele) => {
                           return <div className='relative'><Trash onClick={() => deleteImage(ele)} className='text-red-500 size-5 cursor-pointer absolute -top-2 -right-2' /><div className='image w-30 h-20 shadow-xl rounded-[12px]'>
                             <Image className="rounded-[12px]" src={ele} alt='noImg found' width={0} height={0} sizes="100vw" style={{ width: '100%', height: '100%', objectFit: 'cover' }} />
@@ -428,6 +429,7 @@ const page = () => {
                   </Form>
                 </div>
               }
+              </div>
             </Modal>
           }
           {productArray.length > 0 && !isLoading && productArray.map((ele: any) => {
