@@ -166,7 +166,7 @@ export async function DELETE(req:Request){
         // checking the role of the user 
         const storeOwner = await checkUserIsStoreOwner(queryParam.userEmail as string)
         if(!storeOwner.success){
-            return NextResponse.json({message:"please SignUp as a Store Owner to continue.", success:false}, {status:404});
+            return NextResponse.json({message:storeOwner.message, success:false}, {status:404});
         }
         // deleting the product from products
         const deletedProduct = await ProductModel.findByIdAndDelete(queryParam.productId);
