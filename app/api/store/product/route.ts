@@ -30,12 +30,16 @@ export async function POST(req:Request){
         // console.log(data)
         // checking the role of the user 
         const store_Id = await checkUserIsStoreOwner(data.session.user.email)
+        if(!store_Id.success){
+            return NextResponse.json({message: store_Id.message, success:false},{ status:404});
+        }
         const store = await StoreModel.findById(store_Id.storeId);
         // checking the store exists or not 
         if(!store){
             return NextResponse.json({message: "Firstly , please create a store.", success:false},{ status:404});
         }
         //saving the data in product
+        data.payload.storeId = store._id // saving the store id in the payload so that it also get stored along with othe payload data 
         const productData = new ProductModel(data.payload);
         const saveProduct = await productData.save();
 
