@@ -74,6 +74,13 @@ export async function PUT(req:Request){
         if(!updateProduct){
             return NextResponse.json({message:"Product not found", success:false}, {status:404});
         }
+        // pushing the image urls if any of the imags saved in the cloudinary
+        if(data.images.length > 0 && updateProduct.images[0] !== data.images[0]){
+            for(let a of data.images){
+                updateProduct.images.push(a)
+            }
+            await updateProduct.save()
+        }
         // console.log(updateProduct);
         
         // also updating the array of products in the store model
@@ -92,7 +99,7 @@ export async function PUT(req:Request){
         }
 
        
-        return NextResponse.json({message:"Product Updated", success:true}, {status:201})
+        return NextResponse.json({message:"Product Updated", product:updateProduct,  success:true}, {status:201})
         
     }catch(err){
         console.log(err);

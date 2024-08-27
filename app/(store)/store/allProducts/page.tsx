@@ -61,8 +61,6 @@ const page = () => {
   }, [session, flag])
 
   
-  
-  
   const form = useForm<z.infer<typeof updateProduct>>({
     resolver:zodResolver(updateProduct),
     defaultValues:{
@@ -131,7 +129,9 @@ const page = () => {
 
   const onSubmitEditProduct = async (updateData: z.infer<typeof updateProduct>) => {
     setIsFormSubmitting(true)
+    var uploadedImageUrls = []
     if(updateData.images.length > 0){
+      setIsEditButtonClicked(true)
       // converting the udateData.images to formData as we can only send plain objects to server side so we are making it as form data
       const uploadPromises = Array.from(updateData.images).map(async (file) => {
         const formData = new FormData();
@@ -152,8 +152,7 @@ const page = () => {
         }
       });
       // Wait for all uploads to finish
-      const uploadedImageUrls = await Promise.all(uploadPromises);
-      setUploadImgURLS(uploadedImageUrls)
+      uploadedImageUrls = await Promise.all(uploadPromises);
     }
     var data = {}
     if(updateData.name === previousFormData.name){
@@ -166,8 +165,8 @@ const page = () => {
           price:  updateData.price,
           discount:  updateData.discount,
           shippingCharge:  updateData.shippingCharge,
-          images:  uploadImgURLS.length > 0 ? uploadImgURLS : previousFormData.images,
         },
+        images:  uploadedImageUrls.length > 0 ? uploadedImageUrls : previousFormData.images,
         session,
         productId:productIdEdit
       }
@@ -181,15 +180,16 @@ const page = () => {
           price:  updateData.price,
           discount:  updateData.discount,
           shippingCharge:  updateData.shippingCharge,
-          images:  uploadImgURLS.length > 0 ? uploadImgURLS : previousFormData.images,
         },
+        images:  uploadedImageUrls.length > 0 ? uploadedImageUrls : previousFormData.images,
         session,
         productId:productIdEdit
       }
     }
-
+    setIsEditButtonClicked(true)
     const response = await axios.put('/api/store/product',data);
     if(!response.data.success){
+      setIsEditButtonClicked(false)
       toast({
         variant: "destructive",
         title:'Some error occured',
@@ -197,11 +197,22 @@ const page = () => {
       })
       setIsFormSubmitting(false)
     }else{
+      setPreviousFormData({
+        name:response.data.product?.name as string,
+        description:response.data.product?.description as string,
+        specification:response.data.product?.specification as string,
+        quantity:response.data.product?.quantity as number,
+        price:response.data.product?.price as number,
+        shippingCharge:response.data.product?.shippingCharge as number,
+        discount:response.data.product?.discount as number,
+        images:response.data.product?.images as string[]
+      })
       toast({
         title:'Success 🎉',
         description:response.data.message
       })
       setIsFormSubmitting(false)
+      setIsEditButtonClicked(false)
     }
   }
   
