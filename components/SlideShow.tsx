@@ -3,7 +3,7 @@ import Image from 'next/image'
 import React, { useEffect, useRef, useState } from 'react'
 
 const SlideShow = () => {
-    const images = ['/categoryImages/categoryHome.jpg', '/categoryImages/categoryFashion.jpeg', '/categoryImages/categorySports.jpg']
+    const images = ['/categoryImages/imageSlider1.jpg', '/categoryImages/imageSlider2.jpg', '/categoryImages/imageSlider3.jpg',  '/categoryImages/imageSlider4.jpg', '/categoryImages/imageSlider5.jpg', '/categoryImages/imageSlider6.jpg']
     const [index, setIndex] = useState(0);
     const timeoutRef = useRef<any>();
 
@@ -26,7 +26,7 @@ const SlideShow = () => {
       }, [index]);
 
   return (
-    <div className="slideshow overflow-hidden max-w-[500px] mx-auto my-0">
+    <div className="slideshow overflow-hidden w-full max-h-[80vh]  mx-auto my-0">
       <div className={`slideshowSlider whitespace-nowrap  [transition:ease_1000ms]`} style={{ transform: `translate3d(${-index * 100}%, 0, 0)` }}>
         {images.map((img, index) => (
             <div className="slide  h-[400px] w-full inline-block rounded-[40px]" key={index}>
@@ -38,7 +38,7 @@ const SlideShow = () => {
         {images.map((_, idx) => (
           <div  key={idx} onClick={() => {
             setIndex(idx);
-          }} className={`slideshowDot ${index === idx ? "bg-[#6a0dad]" : ""} inline-block h-5 w-5 cursor-pointer bg-[#c4c4c4] mt-[15px] mb-0 mx-[7px] rounded-[50%]`}></div>
+          }} className={`slideshowDot ${index === idx ? "bg-[rebeccapurple]" : ""} inline-block h-5 w-5 cursor-pointer bg-[#c4c4c4] mt-[15px] mb-0 mx-[7px] rounded-[50%]`}></div>
         ))}
       </div>
     </div>
