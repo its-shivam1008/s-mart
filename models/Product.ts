@@ -6,7 +6,7 @@ interface Reviews {
     ratings:number;
 }
 
-interface Product extends Document{
+export interface Product extends Document{
     name:string;
     description:string;
     specification:string;
