@@ -26,10 +26,10 @@ const SlideShow = () => {
       }, [index]);
 
   return (
-    <div className="slideshow overflow-hidden w-full max-h-[75vh]  mx-auto my-0">
+    <div className="slideshow overflow-hidden w-full max-h-fit  mx-auto my-0">
       <div className={`slideshowSlider whitespace-nowrap  [transition:ease_1000ms]`} style={{ transform: `translate3d(${-index * 100}%, 0, 0)` }}>
         {images.map((img, index) => (
-            <div className="slide  max-h-[70vh] w-full inline-block rounded-[40px]" key={index}>
+            <div className="slide h-[80vh] w-full inline-block rounded-[40px]" key={index}>
                 <Image src={img} alt='noImg found' width={0} height={0} sizes="100vw" style={{ width: '100%', height: '100%', objectFit:'cover'}}/>
             </div>
         ))}

@@ -6,7 +6,7 @@ interface Reviews {
     ratings:number;
 }
 
-export interface Product extends Document{
+interface Product extends Document{
     name:string;
     description:string;
     specification:string;
@@ -14,14 +14,14 @@ export interface Product extends Document{
     category:{
         parentCategory:{
             name:string;
-            id:Types.ObjectId;
+            id:Schema.Types.ObjectId;
         };
         subCategory:{
             name:string;
-            id:Types.ObjectId;
+            id:Schema.Types.ObjectId;
         };
     };
-    storeId:Types.ObjectId;
+    storeId:Schema.Types.ObjectId;
     price:number;
     discount:number;
     shippingCharge:number;
@@ -52,14 +52,14 @@ const ProductSchema:Schema<Product> = new Schema({
         parentCategory:{
             name:String,
             id:{
-                type:Types.ObjectId,
+                type:Schema.Types.ObjectId,
                 ref:'ParentCategory'
             }
         },
         subCategory:{
             name:String,
             id:{
-                type:Types.ObjectId,
+                type:Schema.Types.ObjectId,
                 ref:'SubCategory'
             }
         }
