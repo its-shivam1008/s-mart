@@ -28,7 +28,7 @@ const page = () => {
   }, [])
   
   return (
-    <div>
+    <div> 
       {/* <SlideShow/>         */}
       <ProductComponent productData={products}/>
     </div>
