@@ -46,7 +46,7 @@ const page = () => {
   
   return (
     <div> 
-      {/* <SlideShow/>         */}
+      <SlideShow/>        
       <ProductComponent productData={products}/>
       { loading && <Loading />}
     </div>
