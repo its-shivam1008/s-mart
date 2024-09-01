@@ -1,6 +1,6 @@
 import mongoose, {Schema, Document, Types} from "mongoose";
 
-interface Reviews {
+export interface Reviews {
     userEmail:string;
     review:string;
     star:number;
