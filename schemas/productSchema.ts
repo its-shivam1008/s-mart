@@ -41,6 +41,6 @@ export const updateProduct = z.object({
 })
 
 export const addReviewSchema = z.object({
-    review:z.string().max(150,{message:'Review not more than 200 characters'}).optional(),
+    review:z.string().max(200,{message:'Review not more than 200 characters'}).optional(),
     star:z.number().optional()
 })

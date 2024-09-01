@@ -31,7 +31,7 @@ const page = ({ params }: any) => {
   const [rating, setRating] = useState<number>(0)
   const { data: session, status } = useSession()
   const [hover, setHover] = useState<null | number>(null)
-  const [productData, setProductData] = useState({ name: '', images: [''], description: '', specification: '', price: 0, discount: 0, quantity:0})
+  const [productData, setProductData] = useState({ averageStar: 0, name: '', images: [''], description: '', specification: '', price: 0, discount: 0, quantity: 0, userReviews: [{userEmail:'', star:0, review:''}] })
 
   const [isLoadingAddReview, setIsLoadingAddReview] = useState(false)
 
@@ -55,25 +55,25 @@ const page = ({ params }: any) => {
     }
   })
 
-  const addReviewOnSubmit = async (data:z.infer<typeof addReviewSchema>) => {
+  const addReviewOnSubmit = async (data: z.infer<typeof addReviewSchema>) => {
     setIsLoadingAddReview(true)
     const userReviewData = {
-      userEmail:session?.user.email,
-      review:data.review,
-      star:rating
+      userEmail: session?.user.email,
+      review: data.review,
+      star: rating
     }
     const response = await addReviewOfProduct(params.productId, userReviewData)
-    if(!response.success){
+    if (!response.success) {
       setIsLoadingAddReview(false)
       toast({
         variant: "destructive",
-        title:'Some error occured',
-        description:response.message
+        title: 'Some error occured',
+        description: response.message
       })
-    }else{
+    } else {
       toast({
-        title:'Review added',
-        description:response.message
+        title: 'Review added',
+        description: response.message
       })
       setIsLoadingAddReview(false)
     }
@@ -91,7 +91,17 @@ const page = ({ params }: any) => {
           </div>
         </div>
         <div className="bg-green-800 p-5 flex flex-col justify-between">
-          <div className="text-2xl font-bold">{productData.name}</div>
+          <div className='flex flex-col gap-3'>
+            <div className="text-2xl font-bold">{productData.name}</div>
+            <div className="ratingsProduct flex gap-2">
+              <div className="flex gap-1">
+                {[...Array(Math.round(productData.averageStar))].map((star, index) => {
+                  return (<Star key={index} fill="#ffc107" className='size-4' />)
+                })}
+              </div>
+              {Math.round(productData.averageStar)}
+            </div>
+          </div>
           <div className="text-lg">{productData.description}</div>
           <div className="price and button flex justify-between items-center">
             <div className="text-xl">{productData.price}</div>
@@ -110,7 +120,8 @@ const page = ({ params }: any) => {
             <div className='text-lg'>{productData.specification}</div>
           </div>
           <div className="Review space-y-5">
-            { !session ? <div className='space-y-8'>
+            {!session ? 
+            <div className='space-y-8'>
               <div className="Rating flex gap-2">
                 {[...Array(5)].map((star, index) => {
                   const currentRating = index + 1;
@@ -146,21 +157,40 @@ const page = ({ params }: any) => {
                     <Button type="submit" className='flex gap-2 items-center w-full bg-purple-600' disabled={isLoadingAddReview}>
                       {
                         isLoadingAddReview ? <div className='flex gap-2 items-center'>
-                        <Loader2 className='mx-2 w-4 h-4 animate-spin'/>Please wait
-                      </div> : <>Add <Send /></>
+                          <Loader2 className='mx-2 w-4 h-4 animate-spin' />Please wait
+                        </div> : <>Add <Send /></>
                       }
                     </Button>
                   </form>
                 </Form>
               </div>
-            </div> : <div className='text-xl font-bold text-purple-400'>Login / Sign-up to add a review</div>
+            </div> : <div className='flex justify-center items-center text-xl font-bold'>Login / Sign-up to add a review</div>
             }
           </div>
         </div>
         <div className='my-4 space-y-4'>
-          <div className="text-xl font-bold">All Reviews</div>
+          <div className="text-xl font-bold">User Reviews</div>
           <hr color='black' />
-          <div className='text-lg'>{productData.specification}</div>
+          <div className={`${productData.userReviews.length === 0 ? 'justify-center items-center' : ''} p-3 flex flex-col gap-5 mt-5`}>{
+              productData.userReviews.length > 0 ? 
+              
+              productData.userReviews.map((ele, index) => {
+                return (
+                  <div key={index} className='p-4 rounded-[12px] border-2 border-purple-300 flex flex-col gap-2'>
+                    <div className="text-lg font-bold">{ele.userEmail}</div>
+                    <div className="flex gap-1">
+                     { [...Array(ele.star)].map((items, idx)=>{
+                        return (<Star key={idx} fill="#ffc107" className='size-2' />)
+                     })}
+                    </div>
+                    <div className="text-md">{ele.review}</div>
+                  </div>
+                )
+              })
+
+              : <div className='flex justify-center items-center text-xl font-bold'>No product reviews</div>
+            
+            }</div>
         </div>
       </div>
     </div>}

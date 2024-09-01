@@ -3,7 +3,7 @@ import mongoose, {Schema, Document, Types} from "mongoose";
 interface Reviews {
     userEmail:string;
     review:string;
-    ratings:number;
+    star:number;
 }
 
 interface Product extends Document{
