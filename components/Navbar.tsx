@@ -2,6 +2,7 @@
 import React, { useEffect, useRef, useState } from 'react'
 import gsap from 'gsap'
 import { useGSAP } from '@gsap/react'
+import Link from 'next/link'
 
 const Navbar = () => {
 
@@ -86,7 +87,7 @@ const Navbar = () => {
         <div className='w-[90%] bg-white bg-opacity-40  backdrop-filter backdrop-blur-md  mx-auto rounded-full flex font-bold text-xl tracking-wide items-center justify-around h-12'>
             <div className="icons">Logo</div>
             <div className='pages md:flex hidden gap-10'>
-                <div className='elements font-normal'>Products</div>
+                <Link href='/products' className='elements font-normal  hover:text-blue-500 transition-colors duration-700'>Products</Link>
                 <div className='elements font-normal'>Categories</div>
                 <div className='elements font-normal'>Cart</div>
                 <div className='elements font-normal'>Ask Ai</div>

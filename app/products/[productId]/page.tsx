@@ -24,6 +24,7 @@ import { zodResolver } from '@hookform/resolvers/zod';
 import { useSession } from 'next-auth/react';
 import { Reviews } from '@/models/Product'
 import Image from 'next/image'
+import Link from 'next/link'
 
 
 const page = ({ params }: any) => {
@@ -47,6 +48,9 @@ const page = ({ params }: any) => {
       const res: any = await fetchOneProduct(params.productId)
       const productsJSONObjects = JSON.parse(res.product as string)
       if (res.success) {
+        // setProductData(res.product)
+        // console.log(res.product)
+        console.log(productsJSONObjects)
         setProductData(productsJSONObjects)
         setIsLoading(false)
       }
@@ -55,12 +59,16 @@ const page = ({ params }: any) => {
 
   useEffect(() => {
     if (session && !flag) {
+      console.log(session);
       (async () => {
         const res2 = await showReviewOfProduct(params.productId, (session?.user.email as string))
+        console.log(res2)
         if (res2.success) {
-          setUserReview(res2.review as any)
+          const reviewJSONObjects = JSON.parse(res2.review as string)
+          setUserReview(reviewJSONObjects)
+          setIsUserHasReview(true)
         }
-      })
+      })()
       setFlag(true)
     }
   }, [session, flag])
@@ -102,18 +110,18 @@ const page = ({ params }: any) => {
 
   const images = ['/categoryImages/imageSlider1.jpg', '/categoryImages/imageSlider2.jpg', '/categoryImages/imageSlider3.jpg', '/categoryImages/imageSlider4.jpg', '/categoryImages/imageSlider5.jpg', '/categoryImages/imageSlider6.jpg']
   return (<>
-    {!isLoading && <div className="min-h-screen bg-green-500 flex items-start">
-      <div className="mt-20 bg-blue-300 w-full container md:grid md:grid-cols-[4fr,5fr] ">
-        <div className="bg-[#f2f2f2] shadow-emerald-500 h-fit flex items-center py-4 rounded-[20px]">
+    {!isLoading && <div className="min-h-screen  flex items-start">
+      <div className="mt-20  w-full container md:grid md:grid-cols-[4fr,5fr] gap-4">
+        <div className="bg-[#f2f2f2] shadow-purple-500 shadow-2xl h-fit flex items-center py-4 rounded-[20px]">
           <div className='w-[90%] mx-auto rounded-[12px] h-fit'>
             <SlideShow arrayOfImages={productData.images} imageHeight='h-80' />
           </div>
         </div>
-        <div className="bg-green-800 p-5 flex flex-col justify-between">
+        <div className=" p-5 flex flex-col justify-between">
           <div className='flex flex-col gap-3'>
             <div className="text-2xl font-bold">{productData.name}</div>
             <div className="ratingsProduct flex gap-2">
-              <div className="flex gap-1">
+              <div className="flex gap-1 items-center">
                 {[...Array(Math.round(productData.averageStar))].map((star, index) => {
                   return (<Star key={index} fill="#ffc107" className='size-4' />)
                 })}
@@ -133,7 +141,7 @@ const page = ({ params }: any) => {
             </button>
           </div>
         </div>
-        <div className='my-4 space-y-10'>
+        <div className='mt-10 space-y-10'>
           <div className="space-y-4">
             <div className="text-xl font-bold">Specification</div>
             <div className='text-lg'>{productData.specification}</div>
@@ -141,12 +149,13 @@ const page = ({ params }: any) => {
           <div className="Review space-y-5">
             {session ?
               isUserHasReview ?
-                <div classsName='w-full h-fit p-4 flex flex-col gap-2 rounded-[12px]'>
+                <div className='w-full h-fit p-4 flex flex-col gap-2 rounded-[12px] border-2 border-[rebeccapurple]'>
                   <div className="flex gap-2">
                     <div className='image size-10 shadow-xl rounded-full'>
                       <Image className="rounded-full" src={session.user.image as string} alt='noImg found' width={0} height={0} sizes="100vw" style={{ width: '100%', height: '100%', objectFit: 'cover' }} />
                     </div>
                     <div className="text-xl">{session.user.username}</div>
+                  </div>
                     <div className='flex gap-1'>
                     {[...Array(userReview.star)].map((items, idx) => {
                         return (<Star key={idx} fill="#ffc107" className='size-3' />)
@@ -155,7 +164,6 @@ const page = ({ params }: any) => {
                     <div className="text-lg">
                       {userReview.review}
                     </div>
-                  </div>
                 </div>
                 : <div className='space-y-8'>
                   <div className="Rating flex gap-2">
@@ -201,11 +209,11 @@ const page = ({ params }: any) => {
                     </Form>
                   </div>
                 </div>
-              : <div className='flex justify-center items-center text-xl font-bold'>Login / Sign-up to add a review</div>
+              : <div className='flex justify-center items-center text-xl font-bold'><Link href='/login' className='text-blue-400 hover:text-blue-600 transition-colors duration-300 mr-2'>Login / Sign-up</Link> to add a review</div>
             }
           </div>
         </div>
-        <div className='my-4 space-y-4'>
+        <div className='mt-10 ml-5 space-y-4'>
           <div className="text-xl font-bold">User Reviews</div>
           <hr color='black' />
           <div className={`${productData.userReviews.length === 0 ? 'justify-center items-center' : ''} p-3 flex flex-col gap-5 mt-5`}>{

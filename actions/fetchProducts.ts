@@ -30,7 +30,18 @@ export const fetchOneProduct = async (productId: string) => {
             { $unwind: '$userReviews' },
             {
                 $group: {
-                    averageStar: { $avg: '$userReviews.star' } // Calculate the average star rating
+                    _id: new mongoose.Types.ObjectId(productId),
+                    averageStar: { $avg: '$userReviews.star' },
+                    name: { $first: '$name' },
+                    description: { $first: '$description' },
+                    specification: { $first: '$specification' },
+                    shippingCharge: { $first: '$shippingCharge' },
+                    quantity: { $first: '$quantity' },
+                    images: { $first: '$images' },
+                    price: { $first: '$price' },
+                    discount: { $first: '$discount' },
+                    userReviews: { $push: '$userReviews' },
+                    // averageStar: { $avg: '$userReviews.star' } // Calculate the average star rating
                 }
             },
             {
@@ -51,7 +62,8 @@ export const fetchOneProduct = async (productId: string) => {
             }
         ]);
         if (product) {
-            const productsJsonString = JSON.stringify(product)
+            const productsJsonString = JSON.stringify(product[0])
+            // console.log(productsJsonString)
             return { message: "Product fetched", product: productsJsonString, success: true };
         } else {
             return { message: "unable to find any product of your store", success: false };
@@ -84,10 +96,13 @@ export const showReviewOfProduct = async (productId: string, userEmail: string) 
             return { message: 'Product not found', success: false }
         }
         const filteredReview = product.userReviews.filter(review => review.userEmail === userEmail)
-        if (!filteredReview) {
+        // console.log(filteredReview)
+        if (filteredReview.length===0) {
             return { message: 'No review found', success: false }
         }
-        return { message: 'fetched the review', success: true, review: filteredReview }
+        const reviewJsonString = JSON.stringify(filteredReview[0])
+        // console.log(reviewJsonString)
+        return { message: 'fetched the review', success: true, review: reviewJsonString }
     } catch (err) {
         return { message: 'Some error occured', error: err, success: false }
     }
