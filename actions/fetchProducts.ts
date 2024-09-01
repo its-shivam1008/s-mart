@@ -19,3 +19,17 @@ export const fetchProductsFromDB = async (offset:number) =>{
         return {message: 'some error occured', err, success:false}
     }
 }
+
+export const fetchOneProduct = async (productId:string) => {
+    await dbConnect();
+    try{
+        const product = await ProductModel.findById(productId);
+        if (product) {
+            return {message:"Product fetched", product, success:true};
+        }else{
+            return {message:"unable to find any product of your store", success:false};
+        }
+    }catch(err){
+        return {message:"Some error occured", error:err, success:false};
+    }
+}

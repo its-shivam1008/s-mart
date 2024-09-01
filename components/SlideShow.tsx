@@ -46,6 +46,7 @@ const SlideShow:FunctionComponent<ArrayOfImages> = ({arrayOfImages, imageHeight}
           }} className={`slideshowDot ${index === idx ? "bg-[rebeccapurple]" : ""} inline-block h-5 w-5 cursor-pointer bg-[#c4c4c4] mt-[15px] mb-0 mx-[7px] rounded-[50%]`}></div>
         ))}
       </div>
+      <div className="hidden h-[80vh]"></div>
     </div>
   )
 }
