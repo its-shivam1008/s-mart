@@ -2,7 +2,7 @@
 import { fetchOneProduct } from '@/actions/fetchProducts'
 import SlideShow from '@/components/SlideShow'
 import axios from 'axios'
-import { ShoppingBag } from 'lucide-react'
+import { ShoppingBag, Star } from 'lucide-react'
 import React, { useEffect, useState } from 'react'
 // import { useRouter } from 'next/navigation'
 
@@ -10,6 +10,8 @@ const page = ({ params }: any) => {
   // const router = useRouter()
 
   const [isLoading, setIsLoading] = useState(false)
+  const [rating, setRating] = useState<null | number>(null)
+  const [hover, setHover] = useState<null | number>(null)
   const [productData, setProductData] = useState({ name: '', images: [''], description: '', specification: '', price: 0, discount: 0 })
 
   useEffect(() => {
@@ -54,14 +56,27 @@ const page = ({ params }: any) => {
             <div className="text-xl font-bold">Specification</div>
             <div className='text-lg'>{productData.specification}</div>
           </div>
-          <div className="addReview">
-            <div className="Rating">
+          <div className="Review">
+            <div className="Rating flex gap-2">
+              {[...Array(5)].map((star, index) => {
+                const currentRating = index +1;
+                return(
+                  <label key={index}>
+                    <input className='hidden' type="radio" title='Star' name='rating' id='rating' value={currentRating} onClick={() => setRating(currentRating)} />
+                    <Star className='cursor-pointer size-10' fill={currentRating <= (hover as number || rating as number) ? "#ffc107" : "transparent"} color={currentRating <= (hover as number || rating as number) ? "#ffc107" : "rebeccapurple"} onMouseEnter={() => setHover(currentRating)} onMouseLeave={() => setHover(null)}/>
+                  </label>
+                )
+              })
+              }
+            </div>
+            <div className="addReview">
               
             </div>
           </div>
         </div>
         <div className='my-4 space-y-4'>
-          <div className="text-xl font-bold">Lol</div>
+          <div className="text-xl font-bold">All Reviews</div>
+          <hr color='black'/>
           <div className='text-lg'>{productData.specification}</div>
         </div>
       </div>
