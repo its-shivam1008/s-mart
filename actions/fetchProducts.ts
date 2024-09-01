@@ -1,49 +1,94 @@
 'use server'
 import dbConnect from "@/Db/Db"
 import ProductModel from "@/models/Product";
+import mongoose from "mongoose";
 
-export const fetchProductsFromDB = async (offset:number) =>{
+export const fetchProductsFromDB = async (offset: number) => {
     await dbConnect();
-    try{
+    try {
         const products = await ProductModel.aggregate([{ $sample: { size: offset } }]);
-        if(!products){
-            return {success:false, message:'No products found'};
+        if (!products) {
+            return { success: false, message: 'No products found' };
         }
         // var arrayOfProducts:string[] =[]
         // products.forEach((element) =>{
         //     arrayOfProducts.push(element.name)
         // })
         const productsJsonString = JSON.stringify(products)
-        return {products:productsJsonString, success:true, message:'products fetched'};
-    }catch(err){
-        return {message: 'some error occured', err, success:false}
+        return { products: productsJsonString, success: true, message: 'products fetched' };
+    } catch (err) {
+        return { message: 'some error occured', err, success: false }
     }
 }
 
-export const fetchOneProduct = async (productId:string) => {
+export const fetchOneProduct = async (productId: string) => {
     await dbConnect();
-    try{
-        const product = await ProductModel.findById(productId);
+    try {
+        // const product = await ProductModel.findById(productId);
+        const product = await ProductModel.aggregate([
+            { $match: { _id: new mongoose.Types.ObjectId(productId) } },
+            { $unwind: '$userReviews' },
+            {
+                $group: {
+                    averageStar: { $avg: '$userReviews.star' } // Calculate the average star rating
+                }
+            },
+            {
+                $project: {
+                    name: 1,
+                    description: 1,
+                    specification: 1,
+                    shippingCharge: 1,
+                    quantity: 1,
+                    images: 1,
+                    price: 1,
+                    discount: 1,
+                    userReviews: {
+                        $slice: ['$userReviews', 10]
+                    },
+                    averageStar: 1
+                }
+            }
+        ]);
         if (product) {
             const productsJsonString = JSON.stringify(product)
-            return {message:"Product fetched", product:productsJsonString, success:true};
-        }else{
-            return {message:"unable to find any product of your store", success:false};
+            return { message: "Product fetched", product: productsJsonString, success: true };
+        } else {
+            return { message: "unable to find any product of your store", success: false };
         }
-    }catch(err){
-        return {message:"Some error occured", error:err, success:false};
+    } catch (err) {
+        return { message: "Some error occured", error: err, success: false };
     }
 }
 
-export const addReviewOfProduct = async (productId:string, payload:any)  => {
+export const addReviewOfProduct = async (productId: string, payload: any) => {
     await dbConnect();
-    try{
-        const response = ProductModel.findByIdAndUpdate(productId, payload)
-        if(!response){
-            return {message:'Review added', success:true}
+    try {
+        const response = await ProductModel.findById(productId)
+        if (!response) {
+            return { message: 'Cannot add review', success: false }
         }
-        return {message:'Cannot add review', success:false}
-    }catch(err){
-        return {message:'Some error occured', error:err, success:false}
+        response.userReviews.push(payload)
+        await response.save()
+        return { message: 'Review added', success: true }
+    } catch (err) {
+        return { message: 'Some error occured', error: err, success: false }
+    }
+}
+
+export const showReviewOfProduct = async (productId: string, userEmail: string) => {
+    await dbConnect();
+    try {
+        const product = await ProductModel.findById(productId);
+        if (!product) {
+            return { message: 'Product not found', success: false }
+        }
+        const filteredReview = product.userReviews.filter(review => review.userEmail === userEmail)
+        if (!filteredReview) {
+            return { message: 'No review found', success: false }
+        }
+        return { message: 'fetched the review', success: true, review: filteredReview }
+    } catch (err) {
+        return { message: 'Some error occured', error: err, success: false }
     }
 }

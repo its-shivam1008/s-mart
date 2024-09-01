@@ -1,8 +1,8 @@
 'use client'
-import { fetchOneProduct } from '@/actions/fetchProducts'
+import { addReviewOfProduct, fetchOneProduct } from '@/actions/fetchProducts'
 import SlideShow from '@/components/SlideShow'
 import axios from 'axios'
-import { Send, ShoppingBag, Star } from 'lucide-react'
+import { Loader2, Send, ShoppingBag, Star } from 'lucide-react'
 import React, { useEffect, useState } from 'react'
 // import { useRouter } from 'next/navigation'
 import { useToast } from "@/components/ui/use-toast"
@@ -31,7 +31,9 @@ const page = ({ params }: any) => {
   const [rating, setRating] = useState<number>(0)
   const { data: session, status } = useSession()
   const [hover, setHover] = useState<null | number>(null)
-  const [productData, setProductData] = useState({ name: '', images: [''], description: '', specification: '', price: 0, discount: 0 })
+  const [productData, setProductData] = useState({ name: '', images: [''], description: '', specification: '', price: 0, discount: 0, quantity:0})
+
+  const [isLoadingAddReview, setIsLoadingAddReview] = useState(false)
 
   useEffect(() => {
     (async () => {
@@ -54,7 +56,27 @@ const page = ({ params }: any) => {
   })
 
   const addReviewOnSubmit = async (data:z.infer<typeof addReviewSchema>) => {
-    
+    setIsLoadingAddReview(true)
+    const userReviewData = {
+      userEmail:session?.user.email,
+      review:data.review,
+      star:rating
+    }
+    const response = await addReviewOfProduct(params.productId, userReviewData)
+    if(!response.success){
+      setIsLoadingAddReview(false)
+      toast({
+        variant: "destructive",
+        title:'Some error occured',
+        description:response.message
+      })
+    }else{
+      toast({
+        title:'Review added',
+        description:response.message
+      })
+      setIsLoadingAddReview(false)
+    }
   }
 
 
@@ -121,7 +143,13 @@ const page = ({ params }: any) => {
                         </FormItem>
                       )}
                     />
-                    <Button type="submit" className='flex gap-2 items-center w-full bg-purple-600'>Add <Send /></Button>
+                    <Button type="submit" className='flex gap-2 items-center w-full bg-purple-600' disabled={isLoadingAddReview}>
+                      {
+                        isLoadingAddReview ? <div className='flex gap-2 items-center'>
+                        <Loader2 className='mx-2 w-4 h-4 animate-spin'/>Please wait
+                      </div> : <>Add <Send /></>
+                      }
+                    </Button>
                   </form>
                 </Form>
               </div>

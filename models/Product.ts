@@ -1,7 +1,7 @@
 import mongoose, {Schema, Document, Types} from "mongoose";
 
 interface Reviews {
-    userId:Types.ObjectId;
+    userEmail:string;
     review:string;
     ratings:number;
 }
@@ -84,8 +84,8 @@ const ProductSchema:Schema<Product> = new Schema({
     },
     userReviews:[
         {
-            userId:{
-                type:Schema.Types.ObjectId,
+            userEmail:{
+                type:String,
                 ref:'User',
                 required:true
             },
