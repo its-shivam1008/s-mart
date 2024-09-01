@@ -93,7 +93,7 @@ const ProductSchema:Schema<Product> = new Schema({
                 type:String,
                 required:true
             },
-            ratings:{
+            star:{
                 type:Number,
                 required:true
             }

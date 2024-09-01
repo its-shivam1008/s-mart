@@ -34,3 +34,16 @@ export const fetchOneProduct = async (productId:string) => {
         return {message:"Some error occured", error:err, success:false};
     }
 }
+
+export const addReviewOfProduct = async (productId:string, payload:any)  => {
+    await dbConnect();
+    try{
+        const response = ProductModel.findByIdAndUpdate(productId, payload)
+        if(!response){
+            return {message:'Review added', success:true}
+        }
+        return {message:'Cannot add review', success:false}
+    }catch(err){
+        return {message:'Some error occured', error:err, success:false}
+    }
+}

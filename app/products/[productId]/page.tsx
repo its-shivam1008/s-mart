@@ -2,15 +2,34 @@
 import { fetchOneProduct } from '@/actions/fetchProducts'
 import SlideShow from '@/components/SlideShow'
 import axios from 'axios'
-import { ShoppingBag, Star } from 'lucide-react'
+import { Send, ShoppingBag, Star } from 'lucide-react'
 import React, { useEffect, useState } from 'react'
 // import { useRouter } from 'next/navigation'
+import { useToast } from "@/components/ui/use-toast"
+import { Button } from "@/components/ui/button"
+import {
+  Form,
+  FormControl,
+  FormDescription,
+  FormField,
+  FormItem,
+  FormLabel,
+  FormMessage,
+} from "@/components/ui/form"
+import { Textarea } from "@/components/ui/textarea"
+import { addReviewSchema } from '@/schemas/productSchema'
+import { useForm } from 'react-hook-form';
+import * as z from 'zod'
+import { zodResolver } from '@hookform/resolvers/zod';
+import { useSession } from 'next-auth/react';
+
 
 const page = ({ params }: any) => {
   // const router = useRouter()
-
+  const { toast } = useToast()
   const [isLoading, setIsLoading] = useState(false)
-  const [rating, setRating] = useState<null | number>(null)
+  const [rating, setRating] = useState<number>(0)
+  const { data: session, status } = useSession()
   const [hover, setHover] = useState<null | number>(null)
   const [productData, setProductData] = useState({ name: '', images: [''], description: '', specification: '', price: 0, discount: 0 })
 
@@ -25,6 +44,18 @@ const page = ({ params }: any) => {
       }
     })()
   }, [])
+
+  const form = useForm<z.infer<typeof addReviewSchema>>({
+    resolver: zodResolver(addReviewSchema),
+    defaultValues: {
+      review: '',
+      star: rating
+    }
+  })
+
+  const addReviewOnSubmit = async (data:z.infer<typeof addReviewSchema>) => {
+    
+  }
 
 
 
@@ -51,32 +82,56 @@ const page = ({ params }: any) => {
             </button>
           </div>
         </div>
-        <div className='my-4 space-y-8'>
+        <div className='my-4 space-y-10'>
           <div className="space-y-4">
             <div className="text-xl font-bold">Specification</div>
             <div className='text-lg'>{productData.specification}</div>
           </div>
-          <div className="Review">
-            <div className="Rating flex gap-2">
-              {[...Array(5)].map((star, index) => {
-                const currentRating = index +1;
-                return(
-                  <label key={index}>
-                    <input className='hidden' type="radio" title='Star' name='rating' id='rating' value={currentRating} onClick={() => setRating(currentRating)} />
-                    <Star className='cursor-pointer size-10' fill={currentRating <= (hover as number || rating as number) ? "#ffc107" : "transparent"} color={currentRating <= (hover as number || rating as number) ? "#ffc107" : "rebeccapurple"} onMouseEnter={() => setHover(currentRating)} onMouseLeave={() => setHover(null)}/>
-                  </label>
-                )
-              })
-              }
-            </div>
-            <div className="addReview">
-              
-            </div>
+          <div className="Review space-y-5">
+            { !session ? <div className='space-y-8'>
+              <div className="Rating flex gap-2">
+                {[...Array(5)].map((star, index) => {
+                  const currentRating = index + 1;
+                  return (
+                    <label key={index}>
+                      <input className='hidden' type="radio" title='Star' name='rating' id='rating' value={currentRating} onClick={() => setRating(currentRating)} />
+                      <Star className='cursor-pointer size-10' fill={currentRating <= (hover as number || rating as number) ? "#ffc107" : "transparent"} color={currentRating <= (hover as number || rating as number) ? "#ffc107" : "black"} onMouseEnter={() => setHover(currentRating)} onMouseLeave={() => setHover(null)} />
+                    </label>
+                  )
+                })
+                }
+              </div>
+              <div className="addReview">
+                <Form {...form}>
+                  <form onSubmit={form.handleSubmit(addReviewOnSubmit)} className="w-2/3 space-y-6">
+                    <FormField
+                      control={form.control}
+                      name="review"
+                      render={({ field }) => (
+                        <FormItem>
+                          <FormLabel className='text-xl'>Add a Review</FormLabel>
+                          <FormControl>
+                            <Textarea
+                              placeholder="Tell us a little bit about the product"
+                              className="resize-none border-2 border-purple-400"
+                              {...field}
+                            />
+                          </FormControl>
+                          <FormMessage />
+                        </FormItem>
+                      )}
+                    />
+                    <Button type="submit" className='flex gap-2 items-center w-full bg-purple-600'>Add <Send /></Button>
+                  </form>
+                </Form>
+              </div>
+            </div> : <div className='text-xl font-bold text-purple-400'>Login / Sign-up to add a review</div>
+            }
           </div>
         </div>
         <div className='my-4 space-y-4'>
           <div className="text-xl font-bold">All Reviews</div>
-          <hr color='black'/>
+          <hr color='black' />
           <div className='text-lg'>{productData.specification}</div>
         </div>
       </div>

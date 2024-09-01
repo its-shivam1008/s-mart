@@ -39,3 +39,8 @@ export const updateProduct = z.object({
     images: z.any()
         .refine(files => Array.from(files).every(file => ACCEPTED_IMAGE_TYPES.includes((file as any).type)), "Only these types are allowed .jpg, .jpeg, .png and .webp").optional()
 })
+
+export const addReviewSchema = z.object({
+    review:z.string().max(150,{message:'Review not more than 200 characters'}).optional(),
+    star:z.number().optional()
+})
