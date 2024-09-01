@@ -25,6 +25,7 @@ import { useSession } from 'next-auth/react';
 import { Reviews } from '@/models/Product'
 import Image from 'next/image'
 import Link from 'next/link'
+import Loading from '@/components/Loading'
 
 
 const page = ({ params }: any) => {
@@ -41,6 +42,7 @@ const page = ({ params }: any) => {
   const [flag, setFlag] = useState(false)
   const [userReview, setUserReview] = useState({ userEmail: '', star: 0, review: '' })
   const [isUserHasReview, setIsUserHasReview] = useState(false)
+  const [isUserReviewLoading, setIsUserReviewLoading] = useState(false)
 
   useEffect(() => {
     (async () => {
@@ -57,18 +59,21 @@ const page = ({ params }: any) => {
     })()
   }, [])
 
-  useEffect(() => {
-    if (session && !flag) {
-      console.log(session);
-      (async () => {
-        const res2 = await showReviewOfProduct(params.productId, (session?.user.email as string))
+  const fetchUserReview = async (productId:string, userEmail:string) =>{
+    const res2 = await showReviewOfProduct(productId,userEmail)
         console.log(res2)
         if (res2.success) {
           const reviewJSONObjects = JSON.parse(res2.review as string)
           setUserReview(reviewJSONObjects)
           setIsUserHasReview(true)
         }
-      })()
+        setIsUserReviewLoading(false)
+  }
+
+  useEffect(() => {
+    if (session && !flag) {
+      console.log(session);
+      fetchUserReview(params.productId, (session?.user.email as string))
       setFlag(true)
     }
   }, [session, flag])
@@ -103,6 +108,8 @@ const page = ({ params }: any) => {
         description: response.message
       })
       setIsLoadingAddReview(false)
+      setIsUserReviewLoading(true)
+      await fetchUserReview(params.productId, (session?.user.email as string))
     }
   }
 
@@ -110,7 +117,7 @@ const page = ({ params }: any) => {
 
   const images = ['/categoryImages/imageSlider1.jpg', '/categoryImages/imageSlider2.jpg', '/categoryImages/imageSlider3.jpg', '/categoryImages/imageSlider4.jpg', '/categoryImages/imageSlider5.jpg', '/categoryImages/imageSlider6.jpg']
   return (<>
-    {!isLoading && <div className="min-h-screen  flex items-start">
+    {isLoading ? <div className='h-screen flex justify-center items-center'><Loading /></div> : <div className="min-h-screen  flex items-start">
       <div className="mt-20  w-full container md:grid md:grid-cols-[4fr,5fr] gap-4">
         <div className="bg-[#f2f2f2] shadow-purple-500 shadow-2xl h-fit flex items-center py-4 rounded-[20px]">
           <div className='w-[90%] mx-auto rounded-[12px] h-fit'>
@@ -165,50 +172,50 @@ const page = ({ params }: any) => {
                       {userReview.review}
                     </div>
                 </div>
-                : <div className='space-y-8'>
-                  <div className="Rating flex gap-2">
-                    {[...Array(5)].map((star, index) => {
-                      const currentRating = index + 1;
-                      return (
-                        <label key={index}>
-                          <input className='hidden' type="radio" title='Star' name='rating' id='rating' value={currentRating} onClick={() => setRating(currentRating)} />
-                          <Star className='cursor-pointer size-10' fill={currentRating <= (hover as number || rating as number) ? "#ffc107" : "transparent"} color={currentRating <= (hover as number || rating as number) ? "#ffc107" : "black"} onMouseEnter={() => setHover(currentRating)} onMouseLeave={() => setHover(null)} />
-                        </label>
-                      )
-                    })
-                    }
-                  </div>
-                  <div className="addReview">
-                    <Form {...form}>
-                      <form onSubmit={form.handleSubmit(addReviewOnSubmit)} className="w-2/3 space-y-6">
-                        <FormField
-                          control={form.control}
-                          name="review"
-                          render={({ field }) => (
-                            <FormItem>
-                              <FormLabel className='text-xl'>Add a Review</FormLabel>
-                              <FormControl>
-                                <Textarea
-                                  placeholder="Tell us a little bit about the product"
-                                  className="resize-none border-2 border-purple-400"
-                                  {...field}
-                                />
-                              </FormControl>
-                              <FormMessage />
-                            </FormItem>
-                          )}
-                        />
-                        <Button type="submit" className='flex gap-2 items-center w-full bg-purple-600' disabled={isLoadingAddReview}>
-                          {
-                            isLoadingAddReview ? <div className='flex gap-2 items-center'>
-                              <Loader2 className='mx-2 w-4 h-4 animate-spin' />Please wait
-                            </div> : <>Add <Send /></>
-                          }
-                        </Button>
-                      </form>
-                    </Form>
-                  </div>
+                : isUserReviewLoading ? <Loading /> : <div className='space-y-8'>
+                <div className="Rating flex gap-2">
+                  {[...Array(5)].map((star, index) => {
+                    const currentRating = index + 1;
+                    return (
+                      <label key={index}>
+                        <input className='hidden' type="radio" title='Star' name='rating' id='rating' value={currentRating} onClick={() => setRating(currentRating)} />
+                        <Star className='cursor-pointer size-10' fill={currentRating <= (hover as number || rating as number) ? "#ffc107" : "transparent"} color={currentRating <= (hover as number || rating as number) ? "#ffc107" : "black"} onMouseEnter={() => setHover(currentRating)} onMouseLeave={() => setHover(null)} />
+                      </label>
+                    )
+                  })
+                  }
                 </div>
+                <div className="addReview">
+                  <Form {...form}>
+                    <form onSubmit={form.handleSubmit(addReviewOnSubmit)} className="w-2/3 space-y-6">
+                      <FormField
+                        control={form.control}
+                        name="review"
+                        render={({ field }) => (
+                          <FormItem>
+                            <FormLabel className='text-xl'>Add a Review</FormLabel>
+                            <FormControl>
+                              <Textarea
+                                placeholder="Tell us a little bit about the product"
+                                className="resize-none border-2 border-purple-400"
+                                {...field}
+                              />
+                            </FormControl>
+                            <FormMessage />
+                          </FormItem>
+                        )}
+                      />
+                      <Button type="submit" className='flex gap-2 items-center w-full bg-purple-600' disabled={isLoadingAddReview}>
+                        {
+                          isLoadingAddReview ? <div className='flex gap-2 items-center'>
+                            <Loader2 className='mx-2 w-4 h-4 animate-spin' />Please wait
+                          </div> : <>Add <Send /></>
+                        }
+                      </Button>
+                    </form>
+                  </Form>
+                </div>
+              </div>
               : <div className='flex justify-center items-center text-xl font-bold'><Link href='/login' className='text-blue-400 hover:text-blue-600 transition-colors duration-300 mr-2'>Login / Sign-up</Link> to add a review</div>
             }
           </div>
