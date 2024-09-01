@@ -25,7 +25,8 @@ export const fetchOneProduct = async (productId:string) => {
     try{
         const product = await ProductModel.findById(productId);
         if (product) {
-            return {message:"Product fetched", product, success:true};
+            const productsJsonString = JSON.stringify(product)
+            return {message:"Product fetched", product:productsJsonString, success:true};
         }else{
             return {message:"unable to find any product of your store", success:false};
         }

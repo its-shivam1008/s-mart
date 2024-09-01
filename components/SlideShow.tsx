@@ -34,7 +34,7 @@ const SlideShow:FunctionComponent<ArrayOfImages> = ({arrayOfImages, imageHeight}
     <div className="slideshow overflow-hidden w-full max-h-fit  mx-auto my-0">
       <div className={`slideshowSlider whitespace-nowrap  [transition:ease_1000ms]`} style={{ transform: `translate3d(${-index * 100}%, 0, 0)` }}>
         {arrayOfImages.map((img, index) => (
-            <div className={`slide h-${imageHeight} w-full inline-block space-x-2`} key={index}>
+            <div className={`slide ${imageHeight} w-full inline-block space-x-2`} key={index}>
                 <Image src={img} alt='noImg found' className='rounded-[12px]' width={0} height={0} sizes="100vw" style={{ width: '100%', height: '100%', objectFit:'cover'}}/>
             </div>
         ))}

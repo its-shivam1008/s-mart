@@ -47,7 +47,7 @@ const page = () => {
   const images = ['/categoryImages/imageSlider1.jpg', '/categoryImages/imageSlider2.jpg', '/categoryImages/imageSlider3.jpg',  '/categoryImages/imageSlider4.jpg', '/categoryImages/imageSlider5.jpg', '/categoryImages/imageSlider6.jpg']
   return (
     <div> 
-      <SlideShow arrayOfImages={images} imageHeight='[80vh]'/>        
+      <SlideShow arrayOfImages={images} imageHeight='h-[80vh]'/>        
       <ProductComponent productData={products}/>
       { loading && <Loading />}
     </div>
