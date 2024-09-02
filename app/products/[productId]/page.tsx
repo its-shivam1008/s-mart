@@ -133,6 +133,10 @@ const page = ({ params }: any) => {
     }
   }
 
+  const handleBuy = () => {
+    
+  }
+
 
 
   const images = ['/categoryImages/imageSlider1.jpg', '/categoryImages/imageSlider2.jpg', '/categoryImages/imageSlider3.jpg', '/categoryImages/imageSlider4.jpg', '/categoryImages/imageSlider5.jpg', '/categoryImages/imageSlider6.jpg']
@@ -159,7 +163,7 @@ const page = ({ params }: any) => {
           <div className="text-lg">{productData.description}</div>
           <div className="price and button flex justify-between items-center">
             <div className="text-xl">{productData.price}</div>
-            <button type='button' className="relative inline-flex items-center justify-start px-6 py-1.5 overflow-hidden font-medium transition-all bg-purple-500 rounded-xl group">
+            <button type='button' onClick={handleBuy} className="relative inline-flex items-center justify-start px-6 py-1.5 overflow-hidden font-medium transition-all bg-purple-500 rounded-xl group">
               <span className="absolute top-0 right-0 inline-block w-5 h-5 transition-all duration-500 ease-in-out bg-purple-700 rounded group-hover:-mr-4 group-hover:-mt-4">
                 <span className="absolute top-0 right-0 w-5 h-5 rotate-45 translate-x-1/2 -translate-y-1/2 bg-white"></span>
               </span>

@@ -18,7 +18,7 @@ export const saveProduct = z.object({
     quantity:z.number(),
     category:categorySchemaForProduct,
     price:z.number(),
-    discount:z.number({message:'write the percent of discount you have to provide in the product'}),
+    discount:z.number({message:'write the percent of discount you have to provide in the product'}).max(99, {message:'Discount cannot be more than 99%'}).min(0,{message:'Discount not less than 0%'}),
     shippingCharge:z.number(),
     images: z.any()
     .refine(value => value.length > 0, {
@@ -34,7 +34,7 @@ export const updateProduct = z.object({
     specification:z.string().max(150,{message:'Specification not more than 150 characters'}).optional(),
     quantity:z.number().optional(),
     price:z.number().optional(),
-    discount:z.number({message:'write the percent of discount you have to provide in the product'}).optional(),
+    discount:z.number({message:'write the percent of discount you have to provide in the product'}).max(99, {message:'Discount cannot be more than 99%'}).min(0,{message:'Discount not less than 0%'}).optional(),
     shippingCharge:z.number().optional(),
     images: z.any()
         .refine(files => Array.from(files).every(file => ACCEPTED_IMAGE_TYPES.includes((file as any).type)), "Only these types are allowed .jpg, .jpeg, .png and .webp").optional()

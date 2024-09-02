@@ -74,11 +74,18 @@ export async function PUT(req:Request){
         if(!storeOwner.success){
             return NextResponse.json({message:"please SignUp as a Store Owner to continue.", success:false}, {status:404});
         }
-        // updating the Product data 
-        const updateProduct = await ProductModel.findByIdAndUpdate(data.productId, data.payload);
+        // finding the product 
+        const updateProduct = await ProductModel.findById(data.productId);
         if(!updateProduct){
             return NextResponse.json({message:"Product not found", success:false}, {status:404});
         }
+        if(data.payload){
+            // copying the data.payload to updateProduct 
+            Object.assign(updateProduct, data.payload)
+            // saving the updated product document
+            await updateProduct.save();
+        }
+        
         // pushing the image urls if any of the imags saved in the cloudinary
         if(data.images.length > 0 && updateProduct.images[0] !== data.images[0]){
             for(let a of data.images){
