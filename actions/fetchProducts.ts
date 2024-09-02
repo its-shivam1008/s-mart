@@ -39,6 +39,7 @@ export const fetchOneProduct = async (productId: string) => {
                     quantity: { $first: '$quantity' },
                     images: { $first: '$images' },
                     price: { $first: '$price' },
+                    priceAfterDiscount: { $first: '$priceAfterDiscount' },
                     discount: { $first: '$discount' },
                     userReviews: { $push: '$userReviews' },
                     // averageStar: { $avg: '$userReviews.star' } // Calculate the average star rating
@@ -53,6 +54,7 @@ export const fetchOneProduct = async (productId: string) => {
                     quantity: 1,
                     images: 1,
                     price: 1,
+                    priceAfterDiscount: 1,
                     discount: 1,
                     userReviews: {
                         $slice: ['$userReviews', 10]

@@ -35,7 +35,7 @@ const page = ({ params }: any) => {
   const [rating, setRating] = useState<number>(0)
   const { data: session, status } = useSession()
   const [hover, setHover] = useState<null | number>(null)
-  const [productData, setProductData] = useState({ averageStar: 0, name: '', images: [''], description: '', specification: '', price: 0, discount: 0, quantity: 0, userReviews: [{ userEmail: '', star: 0, review: '' }] })
+  const [productData, setProductData] = useState({ priceAfterDiscount: 0, averageStar: 0, name: '', images: [''], description: '', specification: '', price: 0, discount: 0, quantity: 0, userReviews: [{ userEmail: '', star: 0, review: '' }] })
 
   const [isLoadingAddReview, setIsLoadingAddReview] = useState(false)
 
@@ -60,15 +60,15 @@ const page = ({ params }: any) => {
     })()
   }, [])
 
-  const fetchUserReview = async (productId:string, userEmail:string) =>{
-    const res2 = await showReviewOfProduct(productId,userEmail)
-        console.log(res2)
-        if (res2.success) {
-          const reviewJSONObjects = JSON.parse(res2.review as string)
-          setUserReview(reviewJSONObjects)
-          setIsUserHasReview(true)
-        }
-        setIsUserReviewLoading(false)
+  const fetchUserReview = async (productId: string, userEmail: string) => {
+    const res2 = await showReviewOfProduct(productId, userEmail)
+    console.log(res2)
+    if (res2.success) {
+      const reviewJSONObjects = JSON.parse(res2.review as string)
+      setUserReview(reviewJSONObjects)
+      setIsUserHasReview(true)
+    }
+    setIsUserReviewLoading(false)
   }
 
   useEffect(() => {
@@ -114,17 +114,17 @@ const page = ({ params }: any) => {
     }
   }
 
-  const handleDeleteReview = async () =>{
+  const handleDeleteReview = async () => {
     setIsUserHasReview(false);
     setIsUserReviewLoading(true);
-    const res3:any = await deleteReviewOfProduct(params.productId, (session?.user.email as string));
-    if(res3.success){
+    const res3: any = await deleteReviewOfProduct(params.productId, (session?.user.email as string));
+    if (res3.success) {
       await fetchUserReview(params.productId, (session?.user.email as string))
       toast({
         title: 'Review deleted',
         description: res3.message
       })
-    }else{
+    } else {
       toast({
         variant: "destructive",
         title: 'Some error occured',
@@ -134,7 +134,7 @@ const page = ({ params }: any) => {
   }
 
   const handleBuy = () => {
-    
+
   }
 
 
@@ -151,18 +151,27 @@ const page = ({ params }: any) => {
         <div className=" p-5 flex flex-col justify-between">
           <div className='flex flex-col gap-3'>
             <div className="text-2xl font-bold">{productData.name}</div>
-            <div className="ratingsProduct flex gap-2">
-              <div className="flex gap-1 items-center">
-                {[...Array(Math.round(productData.averageStar))].map((star, index) => {
-                  return (<Star key={index} fill="#ffc107" className='size-4' />)
-                })}
+            <div className="flex flex-col gap-1">
+              <div className="ratingsProduct flex gap-2">
+                <div className="flex gap-1 items-center">
+                  {[...Array(Math.round(productData.averageStar))].map((star, index) => {
+                    return (<Star key={index} fill="#ffc107" className='size-4' />)
+                  })}
+                </div>
+                {Math.round(productData.averageStar)}
               </div>
-              {Math.round(productData.averageStar)}
+              <div className={`${productData.quantity < 100 ? 'text-red-500': 'hidden'} text-md`}>Only {productData.quantity} are left</div>
             </div>
           </div>
           <div className="text-lg">{productData.description}</div>
           <div className="price and button flex justify-between items-center">
-            <div className="text-xl">{productData.price}</div>
+            <div className='flex gap-1 flex-col'>
+              <div className='flex gap-2'>
+                <div className="text-md line-through">{productData.price}</div>
+                <div className="text-md text-green-600">{productData.discount}% off</div>
+              </div>
+              <div className='text-xl'>{productData.priceAfterDiscount}</div>
+            </div>
             <button type='button' onClick={handleBuy} className="relative inline-flex items-center justify-start px-6 py-1.5 overflow-hidden font-medium transition-all bg-purple-500 rounded-xl group">
               <span className="absolute top-0 right-0 inline-block w-5 h-5 transition-all duration-500 ease-in-out bg-purple-700 rounded group-hover:-mr-4 group-hover:-mt-4">
                 <span className="absolute top-0 right-0 w-5 h-5 rotate-45 translate-x-1/2 -translate-y-1/2 bg-white"></span>
@@ -181,8 +190,8 @@ const page = ({ params }: any) => {
             {session ?
               isUserHasReview ?
                 <div className='w-full h-fit p-4 flex flex-col gap-2 rounded-[12px] border-2 border-[rebeccapurple] relative'>
-                  <div className='absolute top-2 right-2 cursor-pointer' onClick={() => setUserReviewDeleteBtn(!userReviewDeleteBtn)}><EllipsisVertical className='size-5 text-gray-500'/>
-                    <div onClick={handleDeleteReview} className={`${userReviewDeleteBtn ? '' : 'hidden'} flex cursor-pointer items-center gap-1 bg-[#f2f2f2] px-3 py-2 rounded-[8px] absolute top-5 right-4 shadow-lg`}>Delete <Trash className='text-red-500 size-4'/></div>
+                  <div className='absolute top-2 right-2 cursor-pointer' onClick={() => setUserReviewDeleteBtn(!userReviewDeleteBtn)}><EllipsisVertical className='size-5 text-gray-500' />
+                    <div onClick={handleDeleteReview} className={`${userReviewDeleteBtn ? '' : 'hidden'} flex cursor-pointer items-center gap-1 bg-[#f2f2f2] px-3 py-2 rounded-[8px] absolute top-5 right-4 shadow-lg`}>Delete <Trash className='text-red-500 size-4' /></div>
                   </div>
                   <div className="flex gap-2">
                     <div className='image size-10 shadow-xl rounded-full'>
@@ -190,59 +199,59 @@ const page = ({ params }: any) => {
                     </div>
                     <div className="text-xl">{session.user.username}</div>
                   </div>
-                    <div className='flex gap-1'>
+                  <div className='flex gap-1'>
                     {[...Array(userReview.star)].map((items, idx) => {
-                        return (<Star key={idx} fill="#ffc107" className='size-3' />)
-                      })}
-                    </div>
-                    <div className="text-lg">
-                      {userReview.review}
-                    </div>
+                      return (<Star key={idx} fill="#ffc107" className='size-3' />)
+                    })}
+                  </div>
+                  <div className="text-lg">
+                    {userReview.review}
+                  </div>
                 </div>
                 : isUserReviewLoading ? <Loading /> : <div className='space-y-8'>
-                <div className="Rating flex gap-2">
-                  {[...Array(5)].map((star, index) => {
-                    const currentRating = index + 1;
-                    return (
-                      <label key={index}>
-                        <input className='hidden' type="radio" title='Star' name='rating' id='rating' value={currentRating} onClick={() => setRating(currentRating)} />
-                        <Star className='cursor-pointer size-10' fill={currentRating <= (hover as number || rating as number) ? "#ffc107" : "transparent"} color={currentRating <= (hover as number || rating as number) ? "#ffc107" : "black"} onMouseEnter={() => setHover(currentRating)} onMouseLeave={() => setHover(null)} />
-                      </label>
-                    )
-                  })
-                  }
+                  <div className="Rating flex gap-2">
+                    {[...Array(5)].map((star, index) => {
+                      const currentRating = index + 1;
+                      return (
+                        <label key={index}>
+                          <input className='hidden' type="radio" title='Star' name='rating' id='rating' value={currentRating} onClick={() => setRating(currentRating)} />
+                          <Star className='cursor-pointer size-10' fill={currentRating <= (hover as number || rating as number) ? "#ffc107" : "transparent"} color={currentRating <= (hover as number || rating as number) ? "#ffc107" : "black"} onMouseEnter={() => setHover(currentRating)} onMouseLeave={() => setHover(null)} />
+                        </label>
+                      )
+                    })
+                    }
+                  </div>
+                  <div className="addReview">
+                    <Form {...form}>
+                      <form onSubmit={form.handleSubmit(addReviewOnSubmit)} className="w-2/3 space-y-6">
+                        <FormField
+                          control={form.control}
+                          name="review"
+                          render={({ field }) => (
+                            <FormItem>
+                              <FormLabel className='text-xl'>Add a Review</FormLabel>
+                              <FormControl>
+                                <Textarea
+                                  placeholder="Tell us a little bit about the product"
+                                  className="resize-none border-2 border-purple-400"
+                                  {...field}
+                                />
+                              </FormControl>
+                              <FormMessage />
+                            </FormItem>
+                          )}
+                        />
+                        <Button type="submit" className='flex gap-2 items-center w-full bg-purple-600' disabled={isLoadingAddReview}>
+                          {
+                            isLoadingAddReview ? <div className='flex gap-2 items-center'>
+                              <Loader2 className='mx-2 w-4 h-4 animate-spin' />Please wait
+                            </div> : <>Add <Send /></>
+                          }
+                        </Button>
+                      </form>
+                    </Form>
+                  </div>
                 </div>
-                <div className="addReview">
-                  <Form {...form}>
-                    <form onSubmit={form.handleSubmit(addReviewOnSubmit)} className="w-2/3 space-y-6">
-                      <FormField
-                        control={form.control}
-                        name="review"
-                        render={({ field }) => (
-                          <FormItem>
-                            <FormLabel className='text-xl'>Add a Review</FormLabel>
-                            <FormControl>
-                              <Textarea
-                                placeholder="Tell us a little bit about the product"
-                                className="resize-none border-2 border-purple-400"
-                                {...field}
-                              />
-                            </FormControl>
-                            <FormMessage />
-                          </FormItem>
-                        )}
-                      />
-                      <Button type="submit" className='flex gap-2 items-center w-full bg-purple-600' disabled={isLoadingAddReview}>
-                        {
-                          isLoadingAddReview ? <div className='flex gap-2 items-center'>
-                            <Loader2 className='mx-2 w-4 h-4 animate-spin' />Please wait
-                          </div> : <>Add <Send /></>
-                        }
-                      </Button>
-                    </form>
-                  </Form>
-                </div>
-              </div>
               : <div className='flex justify-center items-center text-xl font-bold'><Link href='/login' className='text-blue-400 hover:text-blue-600 transition-colors duration-300 mr-2'>Login / Sign-up</Link> to add a review</div>
             }
           </div>
