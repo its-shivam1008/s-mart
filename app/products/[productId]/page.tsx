@@ -1,5 +1,5 @@
 'use client'
-import { addReviewOfProduct, fetchOneProduct, showReviewOfProduct } from '@/actions/fetchProducts'
+import { addReviewOfProduct, deleteReviewOfProduct, fetchOneProduct, showReviewOfProduct } from '@/actions/fetchProducts'
 import SlideShow from '@/components/SlideShow'
 import axios from 'axios'
 import { EllipsisVertical, Loader2, Send, ShoppingBag, Star, Trash } from 'lucide-react'
@@ -115,7 +115,22 @@ const page = ({ params }: any) => {
   }
 
   const handleDeleteReview = async () =>{
-    
+    setIsUserHasReview(false);
+    setIsUserReviewLoading(true);
+    const res3:any = await deleteReviewOfProduct(params.productId, (session?.user.email as string));
+    if(res3.success){
+      await fetchUserReview(params.productId, (session?.user.email as string))
+      toast({
+        title: 'Review deleted',
+        description: res3.message
+      })
+    }else{
+      toast({
+        variant: "destructive",
+        title: 'Some error occured',
+        description: res3.message
+      })
+    }
   }
 
 
@@ -162,8 +177,8 @@ const page = ({ params }: any) => {
             {session ?
               isUserHasReview ?
                 <div className='w-full h-fit p-4 flex flex-col gap-2 rounded-[12px] border-2 border-[rebeccapurple] relative'>
-                  <div className='absolute top-2 right-2' onClick={() => setUserReviewDeleteBtn(true)}><EllipsisVertical className='size-5 text-gray-500'/>
-                    <div onClick={handleDeleteReview} className={`${userReviewDeleteBtn ? '' : 'hidden'} flex items-center gap-1 bg-[#f2f2f2] px-3 py-2 rounded-[8px] absolute top-5 right-4 shadow-lg`}>Delete <Trash className='text-red-500 size-4'/></div>
+                  <div className='absolute top-2 right-2 cursor-pointer' onClick={() => setUserReviewDeleteBtn(!userReviewDeleteBtn)}><EllipsisVertical className='size-5 text-gray-500'/>
+                    <div onClick={handleDeleteReview} className={`${userReviewDeleteBtn ? '' : 'hidden'} flex cursor-pointer items-center gap-1 bg-[#f2f2f2] px-3 py-2 rounded-[8px] absolute top-5 right-4 shadow-lg`}>Delete <Trash className='text-red-500 size-4'/></div>
                   </div>
                   <div className="flex gap-2">
                     <div className='image size-10 shadow-xl rounded-full'>
