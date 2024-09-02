@@ -2,7 +2,7 @@
 import { addReviewOfProduct, fetchOneProduct, showReviewOfProduct } from '@/actions/fetchProducts'
 import SlideShow from '@/components/SlideShow'
 import axios from 'axios'
-import { Loader2, Send, ShoppingBag, Star } from 'lucide-react'
+import { EllipsisVertical, Loader2, Send, ShoppingBag, Star, Trash } from 'lucide-react'
 import React, { useEffect, useState } from 'react'
 // import { useRouter } from 'next/navigation'
 import { useToast } from "@/components/ui/use-toast"
@@ -43,6 +43,7 @@ const page = ({ params }: any) => {
   const [userReview, setUserReview] = useState({ userEmail: '', star: 0, review: '' })
   const [isUserHasReview, setIsUserHasReview] = useState(false)
   const [isUserReviewLoading, setIsUserReviewLoading] = useState(false)
+  const [userReviewDeleteBtn, setUserReviewDeleteBtn] = useState(false)
 
   useEffect(() => {
     (async () => {
@@ -113,6 +114,10 @@ const page = ({ params }: any) => {
     }
   }
 
+  const handleDeleteReview = async () =>{
+    
+  }
+
 
 
   const images = ['/categoryImages/imageSlider1.jpg', '/categoryImages/imageSlider2.jpg', '/categoryImages/imageSlider3.jpg', '/categoryImages/imageSlider4.jpg', '/categoryImages/imageSlider5.jpg', '/categoryImages/imageSlider6.jpg']
@@ -156,7 +161,10 @@ const page = ({ params }: any) => {
           <div className="Review space-y-5">
             {session ?
               isUserHasReview ?
-                <div className='w-full h-fit p-4 flex flex-col gap-2 rounded-[12px] border-2 border-[rebeccapurple]'>
+                <div className='w-full h-fit p-4 flex flex-col gap-2 rounded-[12px] border-2 border-[rebeccapurple] relative'>
+                  <div className='absolute top-2 right-2' onClick={() => setUserReviewDeleteBtn(true)}><EllipsisVertical className='size-5 text-gray-500'/>
+                    <div onClick={handleDeleteReview} className={`${userReviewDeleteBtn ? '' : 'hidden'} flex items-center gap-1 bg-[#f2f2f2] px-3 py-2 rounded-[8px] absolute top-5 right-4 shadow-lg`}>Delete <Trash className='text-red-500 size-4'/></div>
+                  </div>
                   <div className="flex gap-2">
                     <div className='image size-10 shadow-xl rounded-full'>
                       <Image className="rounded-full" src={session.user.image as string} alt='noImg found' width={0} height={0} sizes="100vw" style={{ width: '100%', height: '100%', objectFit: 'cover' }} />

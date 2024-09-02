@@ -107,3 +107,19 @@ export const showReviewOfProduct = async (productId: string, userEmail: string) 
         return { message: 'Some error occured', error: err, success: false }
     }
 }
+
+export const deleteReviewOfProduct = async (productId:string, userEmailToDelete:string) =>{
+    await dbConnect();
+    try{
+       const deleteReview =  await ProductModel.updateOne(
+            { _id: productId },
+            { $pull: { userReviews: { userEmail: userEmailToDelete } } }
+          );
+        if(!deleteReview){
+            return { message: 'No review found', success: false }
+        }
+        return { message: 'Review Deleted', success: true }
+    } catch (err) {
+        return { message: 'Some error occured', error: err, success: false }
+    }
+}
