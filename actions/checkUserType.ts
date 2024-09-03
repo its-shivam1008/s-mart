@@ -45,9 +45,11 @@ export const checkUserAddressFormFilled = async (userEmail:string) =>{
             return {message:'Cannot find user', success:false};
         }
         if(!user.address.address || !user.address.city || !user.address.pincode || !user.address.state || !user.address.street){
-            return {message:'Some address field(s) are not filled', success:false, address:user.address}
+            const addressString = JSON.stringify(user.address)
+            return {message:'Some address field(s) are not filled', success:false, address:addressString}
         }else{
-            return {message:'Address is present', success:true, address:user.address}
+            const addressString = JSON.stringify(user.address)
+            return {message:'Address is present', success:true, address:addressString}
         }
     }catch(err){
         return {message:'some error occured', error:err}

@@ -20,6 +20,7 @@ import * as z from 'zod'
 import axios, { AxiosError } from 'axios'
 import { useToast } from '@/components/ui/use-toast'
 import { userAddress } from '@/schemas/signUpSchema';
+import Loading from '@/components/Loading';
 
 const page = () => {
     const [flag, setFlag] = useState(false)
@@ -28,24 +29,25 @@ const page = () => {
     const [isSubmitting, setIsSubmitting] = useState(false)
     const { toast } = useToast()
 
-    const [previousFormData, setPreviousFormData] = useState({address:'', pincode:0, state:'', street:'', city:''})
+    const [previousFormData, setPreviousFormData] = useState({ address: '', pincode: 0, state: '', street: '', city: '' })
 
     const isAddressFilled = async (userEmail: string) => {
         const res = await checkUserAddressFormFilled(userEmail)
         if (res.success) {
+            const addressObject = JSON.parse(res.address as string)
             setIsAddressFillFlag(true)
             setPreviousFormData({
-                address:res.address.address as string,
-                street:res.address.street as string,
-                state:res.address.state as string,
-                city:res.address.city as string,
-                pincode:res.address.pincode as number,
-              })
-        }else{
+                address: addressObject.address as string,
+                street: addressObject.street as string,
+                state: addressObject.state as string,
+                city: addressObject.city as string,
+                pincode: addressObject.pincode as number,
+            })
+        } else {
             toast({
                 title: 'Fill the Delivery address',
                 // description: "A"
-              })
+            })
         }
     }
 
@@ -59,7 +61,7 @@ const page = () => {
         userAddressForm.setValue('pincode', previousFormData.pincode);
         userAddressForm.setValue('state', previousFormData.state);
         userAddressForm.setValue('city', previousFormData.city);
-      }, [previousFormData])
+    }, [previousFormData])
 
     useEffect(() => {
         if (session && !flag) {
@@ -71,13 +73,40 @@ const page = () => {
 
     const onSubmitUserAddress = async (userAddressData: z.infer<typeof userAddress>) => {
         setIsSubmitting(true)
+        const addressData = {
+            address: { ...userAddressData }
+        }
+        const response = await axios.put(`/api/user/profile?userEmail=${session?.user.email}`, addressData)
+        if (response.data.success) {
+            toast({
+                title: 'Success 🥳',
+                description: "Address updated successfully"
+            })
+            setPreviousFormData({
+                address: response.data.user.address.address as string,
+                street: response.data.user.address.street as string,
+                state: response.data.user.address.state as string,
+                city: response.data.user.address.city as string,
+                pincode: response.data.user.address.pincode as number,
+            })
+            setIsSubmitting(false)
+        }else{
+            toast({
+                variant: "destructive",
+                title: 'Some error occured',
+                description: response.data.message
+            })
+            setIsSubmitting(false)
+        }
+
 
     }
     return (
         <div className='mt-14 md:grid md:grid-cols-2 flex flex-col gap-4 min-h-screen bg-blue-400'>
             <div className='cartItems bg-green-400'>lol</div>
-            <div className='addForm bg-green-600'>
-                <div className='flex flex-col justify-center items-center h-fit py-8 px-2 bg-gray-100'>
+            <div className='addForm bg-green-600 flex justify-center items-center'>
+                {
+                    isSubmitting ? <Loading /> : <div className='flex flex-col justify-center items-center h-fit py-8 px-2 bg-gray-100'>
                     <div className='w-full max-w-md px-8 py-3 space-y-4 bg-white rounded-lg shadow-md '>
                         <Form {...userAddressForm}>
                             <form onSubmit={userAddressForm.handleSubmit(onSubmitUserAddress)} className='space-y-4'>
@@ -173,6 +202,7 @@ const page = () => {
                         </Form>
                     </div>
                 </div>
+                }
             </div>
         </div>
     )
