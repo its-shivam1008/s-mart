@@ -8,8 +8,8 @@ export async function POST(req:Request){
     await dbConnect();
     try{
         const data = await req.json();
-        console.log(data)
-        console.log(data.session.user)
+        // console.log(data)
+        // console.log(data.session.user)
         const userByEmail = await UserModel.findOne({email:data.session.user.email});
         // checking the user is present in the db or not, if yes is he signed up as a store oner of not 
         if(!userByEmail){

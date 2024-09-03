@@ -10,15 +10,15 @@ interface Payment extends Document{
         productId:Types.ObjectId;
     },
     fromUser:{
-        username:string;
-        userId:Types.ObjectId;
+        userEmail:string;
+        // userId:Types.ObjectId;
     },
     orderId:String;
     isPaymentVerified:boolean;
     dateofPayment:Date;
     amount:Number;
     paymentMethod:string;
-    transactionId:string;
+    // transactionId:string;
 }
 
 const PaymentSchema:Schema<Payment> = new Schema({
@@ -31,8 +31,7 @@ const PaymentSchema:Schema<Payment> = new Schema({
         productId:Schema.Types.ObjectId
     },
     fromUser:{
-        username:String,
-        userId:Schema.Types.ObjectId
+        userEmail:String,
     },
     orderId:{
         type:String,
@@ -53,9 +52,9 @@ const PaymentSchema:Schema<Payment> = new Schema({
         type:String,
         enum:["razorpay", "stripe", "paytm", "bharatpe", "phonepe"]
     },
-    transactionId:{
-        type:String
-    }
+    // transactionId:{
+    //     type:String
+    // }
 })
 
 const PaymentModel = (mongoose.models.Payment as mongoose.Model<Payment>) || mongoose.model<Payment>("Payments", PaymentSchema);
