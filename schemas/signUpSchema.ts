@@ -11,3 +11,11 @@ export const signUpSchema = z.object({
     password:z.string().min(6,{message:"Password must be atleast of 6 characters"}),
     role:z.string().default('User').optional()
 })
+
+export const userAddress = z.object({
+    address:z.string(),
+    street:z.string(),
+    pincode:z.number(),
+    state:z.string(),
+    city:z.string(),
+})

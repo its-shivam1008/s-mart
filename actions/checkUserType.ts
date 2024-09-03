@@ -37,3 +37,19 @@ export const checkUserTypeWithStoreFormFilled = async (userEmail:string) =>{
         return {message:'some error occured', error:err}
     }
 }
+export const checkUserAddressFormFilled = async (userEmail:string) =>{
+    await dbConnect()
+    try{
+        const user = await UserModel.findOne({email :userEmail})
+        if(!user){
+            return {message:'Cannot find user', success:false};
+        }
+        if(!user.address.address || !user.address.city || !user.address.pincode || !user.address.state || !user.address.street){
+            return {message:'Some address field(s) are not filled', success:false, address:user.address}
+        }else{
+            return {message:'Address is present', success:true, address:user.address}
+        }
+    }catch(err){
+        return {message:'some error occured', error:err}
+    }
+}

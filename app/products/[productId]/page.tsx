@@ -4,7 +4,7 @@ import SlideShow from '@/components/SlideShow'
 import axios from 'axios'
 import { EllipsisVertical, Loader2, Send, ShoppingBag, Star, Trash } from 'lucide-react'
 import React, { useEffect, useState } from 'react'
-// import { useRouter } from 'next/navigation'
+import { useRouter } from 'next/navigation'
 import { useToast } from "@/components/ui/use-toast"
 import { Button } from "@/components/ui/button"
 import {
@@ -29,7 +29,7 @@ import Loading from '@/components/Loading'
 
 
 const page = ({ params }: any) => {
-  // const router = useRouter()
+  const router = useRouter()
   const { toast } = useToast()
   const [isLoading, setIsLoading] = useState(false)
   const [rating, setRating] = useState<number>(0)
@@ -134,7 +134,15 @@ const page = ({ params }: any) => {
   }
 
   const handleBuy = () => {
-
+    if(session){
+      router.push('/checkout')
+    }else{
+      toast({
+        title: 'Login / Signup',
+        description: "Login or signup to continue shopping."
+      })
+      router.push('/login')
+    }
   }
 
 
