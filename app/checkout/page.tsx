@@ -32,9 +32,12 @@ const page = () => {
     const [previousFormData, setPreviousFormData] = useState({ address: '', pincode: 0, state: '', street: '', city: '' })
 
     const isAddressFilled = async (userEmail: string) => {
+        setIsSubmitting(true)
         const res = await checkUserAddressFormFilled(userEmail)
+        // console.log(res,'res')
         if (res.success) {
             const addressObject = JSON.parse(res.address as string)
+            // console.log('addObj',addressObject)
             setIsAddressFillFlag(true)
             setPreviousFormData({
                 address: addressObject.address as string,
@@ -43,11 +46,13 @@ const page = () => {
                 city: addressObject.city as string,
                 pincode: addressObject.pincode as number,
             })
+            setIsSubmitting(false)
         } else {
             toast({
                 title: 'Fill the Delivery address',
                 // description: "A"
             })
+            setIsSubmitting(false)
         }
     }
 
@@ -74,7 +79,9 @@ const page = () => {
     const onSubmitUserAddress = async (userAddressData: z.infer<typeof userAddress>) => {
         setIsSubmitting(true)
         const addressData = {
-            address: { ...userAddressData }
+            payload: {
+                address: { ...userAddressData }
+            }
         }
         const response = await axios.put(`/api/user/profile?userEmail=${session?.user.email}`, addressData)
         if (response.data.success) {
@@ -82,12 +89,13 @@ const page = () => {
                 title: 'Success 🥳',
                 description: "Address updated successfully"
             })
+            // console.log(response.data)
             setPreviousFormData({
-                address: response.data.user.address.address as string,
-                street: response.data.user.address.street as string,
-                state: response.data.user.address.state as string,
-                city: response.data.user.address.city as string,
-                pincode: response.data.user.address.pincode as number,
+                address: response.data.updatedUser.address.address as string,
+                street: response.data.updatedUser.address.street as string,
+                state: response.data.updatedUser.address.state as string,
+                city: response.data.updatedUser.address.city as string,
+                pincode: response.data.updatedUser.address.pincode as number,
             })
             setIsSubmitting(false)
         }else{
@@ -102,12 +110,13 @@ const page = () => {
 
     }
     return (
-        <div className='mt-14 md:grid md:grid-cols-2 flex flex-col gap-4 min-h-screen bg-blue-400'>
+        <div className='md:grid md:grid-cols-2 flex flex-col gap-4 min-h-screen h-fit bg-blue-400'>
             <div className='cartItems bg-green-400'>lol</div>
-            <div className='addForm bg-green-600 flex justify-center items-center'>
+            <div className='addForm bg-purple-200 flex justify-center items-center'>
                 {
-                    isSubmitting ? <Loading /> : <div className='flex flex-col justify-center items-center h-fit py-8 px-2 bg-gray-100'>
-                    <div className='w-full max-w-md px-8 py-3 space-y-4 bg-white rounded-lg shadow-md '>
+                    isSubmitting ? <Loading /> : <div className='flex flex-col justify-center items-center h-fit py-8 px-2 mt-8 space-y-4 bg-purple-200'>
+                        <div className="text-lg font-bold">Fill your delivery address</div>
+                    <div className='w-full max-w-md px-8 py-3 space-y-2 bg-white rounded-lg shadow-2xl '>
                         <Form {...userAddressForm}>
                             <form onSubmit={userAddressForm.handleSubmit(onSubmitUserAddress)} className='space-y-4'>
                                 <FormField
@@ -119,7 +128,7 @@ const page = () => {
                                             <FormControl>
                                                 <Input
                                                     {...field}
-                                                    onChange={event => field.onChange(+event.target.value)}
+                                                    // onChange={event => field.onChange(+event.target.value)}
                                                 />
                                             </FormControl>
                                             <FormMessage />
@@ -135,7 +144,7 @@ const page = () => {
                                             <FormControl>
                                                 <Input placeholder="Avenue park street"
                                                     {...field}
-                                                    onChange={event => field.onChange(+event.target.value)}
+                                                    // onChange={event => field.onChange(+event.target.value)}
                                                 />
                                             </FormControl>
                                             <FormMessage />
@@ -168,7 +177,7 @@ const page = () => {
                                             <FormControl>
                                                 <Input placeholder="Jaipur"
                                                     {...field}
-                                                    onChange={event => field.onChange(+event.target.value)}
+                                                    // onChange={event => field.onChange(+event.target.value)}
                                                 />
                                             </FormControl>
                                             <FormMessage />
@@ -184,7 +193,7 @@ const page = () => {
                                             <FormControl>
                                                 <Input placeholder="Rajasthan"
                                                     {...field}
-                                                    onChange={event => field.onChange(+event.target.value)}
+                                                    // onChange={event => field.onChange(+event.target.value)}
                                                 />
                                             </FormControl>
                                             <FormMessage />
