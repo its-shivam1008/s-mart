@@ -68,11 +68,60 @@ const ProductCards: FunctionComponent<CardInfo> = ({ cardInfo }) => {
             setIsHandleLike(true);
         }
       }
+      const cart = getCart()
+      for(let b of cart){
+        if(b === _id){
+            setIsAddCart(true);
+        }
+      }
     }, [])
 
     const handleClearWishList = () => {
         clearWishlist();
     }
+
+    function saveCart(cart: string[]) {
+        localStorage.setItem('cart', JSON.stringify(cart));
+    }
+    function getCart() {
+        const cart = localStorage.getItem('cart');
+        return cart ? JSON.parse(cart) : [];
+    }
+    function addToCart(item: string) {
+        let cart = getCart();
+        if (!cart.includes(item)) {
+            cart.push(item);
+            saveCart(cart);
+            console.log(item + ' added to cart!');
+        } else {
+            console.log(item + ' is already in the cart.');
+        }
+    }
+    function removeFromCart(item: string) {
+        let cart = getCart();
+        const index = cart.indexOf(item);
+        if (index > -1) {
+            cart.splice(index, 1);
+            saveCart(cart);
+            console.log(item + ' removed from cart!');
+        } else {
+            console.log(item + ' was not found in the cart.');
+        }
+    }
+    function clearCart() {
+        localStorage.removeItem('cart');
+        console.log('cart cleared!');
+    }
+
+    const handleAddToCart = (productId: string, newHandleCart:boolean)  => {
+        if (newHandleCart) {
+            addToCart(productId);
+        } else {
+            removeFromCart(productId)
+        }
+        console.log(getCart());
+    }
+    
     
 
     return (
@@ -94,7 +143,13 @@ const ProductCards: FunctionComponent<CardInfo> = ({ cardInfo }) => {
                 <div className="price text-xl font-bold">{price}</div>
                 <div className="description text-sm">{description.length > 20 ? `${description.substring(0, 30)}...` : description}</div>
             </Link>
-            <button title='Add to cart' type="button" className='rounded-[8px] flex items-center px-full py-2 gap-2 hover:text-black hover:bg-[#f2f2f2] transition-colors duration-300 border-2 hover:border-black bg-black font-bold text-white'>{!isAddCart ? <div className='flex items-center gap-2 mx-auto'><ShoppingCart /><div>Add to cart</div></div> : 'Remove item'}</button>
+            <button onClick={() => {
+                    setIsAddCart(prevIsCart => {
+                        const newIsCart = !prevIsCart;
+                        handleAddToCart(_id, newIsCart);
+                        return newIsCart;
+                    });
+                }} title='Add to cart' type="button" className='rounded-[8px] flex items-center px-full py-2 gap-2 hover:text-black hover:bg-[#f2f2f2] transition-colors duration-300 border-2 hover:border-black bg-black font-bold text-white'>{!isAddCart ? <div className='flex items-center gap-2 mx-auto'><ShoppingCart /><div>Add to cart</div></div> : <div className='mx-auto'>Remove item</div>}</button>
         </div>
     )
 }
