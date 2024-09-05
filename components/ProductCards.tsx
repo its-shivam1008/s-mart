@@ -1,8 +1,11 @@
 'use client'
+import { addItemToWishList, getItemFromWishList, removeItemFromWishList } from '@/actions/addToCartAndWishList'
 import { Heart, ShoppingCart } from 'lucide-react'
 import Image from 'next/image'
 import Link from 'next/link'
 import React, { FunctionComponent, useEffect, useState } from 'react'
+import { useSession } from 'next-auth/react';
+import { Types } from 'mongoose'
 
 interface CardInfo {
     cardInfo: any
@@ -13,6 +16,7 @@ const ProductCards: FunctionComponent<CardInfo> = ({ cardInfo }) => {
     // console.log(images[0].split('//').join())
     const [isAddCart, setIsAddCart] = useState(false)
     const [isHandleLike, setIsHandleLike] = useState(false)
+    const { data: session, status } = useSession()
     const [isPresentInWishListAlready, setIsPresentInWishListAlready] = useState(false)
 
 
@@ -51,29 +55,52 @@ const ProductCards: FunctionComponent<CardInfo> = ({ cardInfo }) => {
 
     // clearWishlist()
 
-    const handleLike = (productId: string, newHandleLike:boolean) => {
-
-        if (newHandleLike) {
-            addToWishlist(productId);
+    const handleLike = async (productId: string, newHandleLike: boolean) => {
+        if (session) {
+            if (newHandleLike) {
+                await addItemToWishList(session.user.email as string, productId)
+            } else {
+                await removeItemFromWishList(session.user.email as string, productId)
+            }
+            // console.log(getWishlist());
         } else {
-            removeFromWishlist(productId)
+            if (newHandleLike) {
+                addToWishlist(productId);
+            } else {
+                removeFromWishlist(productId)
+            }
+            console.log(getWishlist());
         }
-        console.log(getWishlist());
     }
 
     useEffect(() => {
-      const wishlist = getWishlist()
-      for(let a of wishlist){
-        if(a === _id){
-            setIsHandleLike(true);
+        if (session) {
+            (async () => {
+                clearWishlist();
+                const res = await getItemFromWishList(session.user.email as string)
+                if(res.success){
+                    const wishlistObject = JSON.parse(res.wishlist as string)
+                    for (let a of wishlistObject) {
+                        if (a === _id) {
+                            setIsHandleLike(true);
+                        }
+                    }
+                }
+            })()
+        } else {
+            const wishlist = getWishlist()
+            for (let a of wishlist) {
+                if (a === _id) {
+                    setIsHandleLike(true);
+                }
+            }
         }
-      }
-      const cart = getCart()
-      for(let b of cart){
-        if(b === _id){
-            setIsAddCart(true);
+        const cart = getCart()
+        for (let b of cart) {
+            if (b === _id) {
+                setIsAddCart(true);
+            }
         }
-      }
     }, [])
 
     const handleClearWishList = () => {
@@ -113,7 +140,7 @@ const ProductCards: FunctionComponent<CardInfo> = ({ cardInfo }) => {
         console.log('cart cleared!');
     }
 
-    const handleAddToCart = (productId: string, newHandleCart:boolean)  => {
+    const handleAddToCart = (productId: string, newHandleCart: boolean) => {
         if (newHandleCart) {
             addToCart(productId);
         } else {
@@ -121,8 +148,8 @@ const ProductCards: FunctionComponent<CardInfo> = ({ cardInfo }) => {
         }
         console.log(getCart());
     }
-    
-    
+
+
 
     return (
         <div className="relative eleProd my-5 w-48 h-fit p-4 rounded-[12px] flex flex-col gap-2 justify-center shadow-lg outline outline-offset-4 outline-transparent hover:outline-[rebeccapurple] transition-all duration-500 mx-auto hover:scale-105 hover:shadow-2xl hover:shadow-[rebeccapurple] cursor-pointer">
@@ -133,7 +160,7 @@ const ProductCards: FunctionComponent<CardInfo> = ({ cardInfo }) => {
                         handleLike(_id, newIsHandleLike);
                         return newIsHandleLike;
                     });
-                }} className='size-5' fill={`${isHandleLike? '#ff0033' : 'transparent'}`} />
+                }} className='size-5' fill={`${isHandleLike ? '#ff0033' : 'transparent'}`} />
             </div>
             <Link href={`/products/${_id}`} className='w-fit h-fit'>
                 <div className="title text-lg font-semibold">{name.length > 15 ? `${name.substring(0, 13)}...` : name}</div>
@@ -144,12 +171,12 @@ const ProductCards: FunctionComponent<CardInfo> = ({ cardInfo }) => {
                 <div className="description text-sm">{description.length > 20 ? `${description.substring(0, 30)}...` : description}</div>
             </Link>
             <button onClick={() => {
-                    setIsAddCart(prevIsCart => {
-                        const newIsCart = !prevIsCart;
-                        handleAddToCart(_id, newIsCart);
-                        return newIsCart;
-                    });
-                }} title='Add to cart' type="button" className='rounded-[8px] flex items-center px-full py-2 gap-2 hover:text-black hover:bg-[#f2f2f2] transition-colors duration-300 border-2 hover:border-black bg-black font-bold text-white'>{!isAddCart ? <div className='flex items-center gap-2 mx-auto'><ShoppingCart /><div>Add to cart</div></div> : <div className='mx-auto'>Remove item</div>}</button>
+                setIsAddCart(prevIsCart => {
+                    const newIsCart = !prevIsCart;
+                    handleAddToCart(_id, newIsCart);
+                    return newIsCart;
+                });
+            }} title='Add to cart' type="button" className='rounded-[8px] flex items-center px-full py-2 gap-2 hover:text-black hover:bg-[#f2f2f2] transition-colors duration-300 border-2 hover:border-black bg-black font-bold text-white'>{!isAddCart ? <div className='flex items-center gap-2 mx-auto'><ShoppingCart /><div>Add to cart</div></div> : <div className='mx-auto'>Remove item</div>}</button>
         </div>
     )
 }

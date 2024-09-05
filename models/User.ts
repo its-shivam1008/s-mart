@@ -29,6 +29,7 @@ export interface User extends Document{
     isVerified:boolean;
     signUpWith:string;
     cart:CartObj[];
+    wishlist:Types.ObjectId[];
     createdAt:Date;
     updatedAt:Date;
     comparePassword(candidatePassword: string): Promise<boolean>;
@@ -122,6 +123,9 @@ const UserSchema:Schema<User> = new Schema({
                 required:true
             }
         }
+    ],
+    wishlist:[
+        Schema.Types.ObjectId
     ],
     createdAt:{
         type:Date,
