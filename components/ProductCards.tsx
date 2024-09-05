@@ -13,6 +13,8 @@ const ProductCards: FunctionComponent<CardInfo> = ({ cardInfo }) => {
     // console.log(images[0].split('//').join())
     const [isAddCart, setIsAddCart] = useState(false)
     const [isHandleLike, setIsHandleLike] = useState(false)
+    const [isPresentInWishListAlready, setIsPresentInWishListAlready] = useState(false)
+
 
     function saveWishlist(wishlist: string[]) {
         localStorage.setItem('wishlist', JSON.stringify(wishlist));
@@ -49,19 +51,28 @@ const ProductCards: FunctionComponent<CardInfo> = ({ cardInfo }) => {
 
     // clearWishlist()
 
-    const handleLike = (name: string, newHandleLike:boolean) => {
+    const handleLike = (productId: string, newHandleLike:boolean) => {
 
         if (newHandleLike) {
-            addToWishlist(name);
+            addToWishlist(productId);
         } else {
-            removeFromWishlist(name)
+            removeFromWishlist(productId)
         }
         console.log(getWishlist());
     }
 
     useEffect(() => {
-      getWishlist()
+      const wishlist = getWishlist()
+      for(let a of wishlist){
+        if(a === _id){
+            setIsHandleLike(true);
+        }
+      }
     }, [])
+
+    const handleClearWishList = () => {
+        clearWishlist();
+    }
     
 
     return (
@@ -70,10 +81,10 @@ const ProductCards: FunctionComponent<CardInfo> = ({ cardInfo }) => {
                 <Heart onClick={() => {
                     setIsHandleLike(prevIsHandleLike => {
                         const newIsHandleLike = !prevIsHandleLike;
-                        handleLike(name, newIsHandleLike);
+                        handleLike(_id, newIsHandleLike);
                         return newIsHandleLike;
                     });
-                }} className='size-5' fill={`${isHandleLike ? '#ff0033' : 'transparent'}`} />
+                }} className='size-5' fill={`${isHandleLike? '#ff0033' : 'transparent'}`} />
             </div>
             <Link href={`/products/${_id}`} className='w-fit h-fit'>
                 <div className="title text-lg font-semibold">{name.length > 15 ? `${name.substring(0, 13)}...` : name}</div>
