@@ -1,5 +1,5 @@
 'use client'
-import { addItemToWishList, getItemFromWishList, removeItemFromWishList } from '@/actions/addToCartAndWishList'
+import { addItemToCart, addItemToWishList, getItemFromCart, getItemFromWishList, removeItemFromCart, removeItemFromWishList } from '@/actions/addToCartAndWishList'
 import { Heart, ShoppingCart } from 'lucide-react'
 import Image from 'next/image'
 import Link from 'next/link'
@@ -14,7 +14,7 @@ interface CardInfo {
 }
 
 const ProductCards: FunctionComponent<CardInfo> = ({ cardInfo }) => {
-    const { name, images, price, description, _id } = cardInfo
+    const { name, images, price, description, _id, priceAfterDiscount } = cardInfo
     // console.log(images[0].split('//').join())
     const [isAddCart, setIsAddCart] = useState(false)
     const [isHandleLike, setIsHandleLike] = useState(false)
@@ -55,60 +55,6 @@ const ProductCards: FunctionComponent<CardInfo> = ({ cardInfo }) => {
         console.log('Wishlist cleared!');
     }
 
-    // clearWishlist()
-
-    const handleLike = async (productId: string, newHandleLike: boolean) => {
-        if (session) {
-            if (newHandleLike) {
-                await addItemToWishList(session.user.email as string, productId)
-            } else {
-                await removeItemFromWishList(session.user.email as string, productId)
-            }
-            // console.log(getWishlist());
-        } else {
-            if (newHandleLike) {
-                addToWishlist(productId);
-            } else {
-                removeFromWishlist(productId)
-            }
-            console.log(getWishlist());
-        }
-    }
-
-    useEffect(() => {
-        if (session) {
-            (async () => {
-                clearWishlist();
-                const res = await getItemFromWishList(session.user.email as string)
-                if(res.success){
-                    const wishlistObject = JSON.parse(res.wishlist as string)
-                    for (let a of wishlistObject) {
-                        if (a === _id) {
-                            setIsHandleLike(true);
-                        }
-                    }
-                }
-            })()
-        } else {
-            const wishlist = getWishlist()
-            for (let a of wishlist) {
-                if (a === _id) {
-                    setIsHandleLike(true);
-                }
-            }
-        }
-        const cart = getCart()
-        for (let b of cart) {
-            if (b === _id) {
-                setIsAddCart(true);
-            }
-        }
-    }, [])
-
-    const handleClearWishList = () => {
-        clearWishlist();
-    }
-
     function saveCart(cart: string[]) {
         localStorage.setItem('cart', JSON.stringify(cart));
     }
@@ -142,13 +88,84 @@ const ProductCards: FunctionComponent<CardInfo> = ({ cardInfo }) => {
         console.log('cart cleared!');
     }
 
-    const handleAddToCart = (productId: string, newHandleCart: boolean) => {
-        if (newHandleCart) {
-            addToCart(productId);
+    // clearWishlist()
+
+    const handleLike = async (productId: string, newHandleLike: boolean) => {
+        if (session) {
+            if (newHandleLike) {
+                await addItemToWishList(session.user.email as string, productId)
+            } else {
+                await removeItemFromWishList(session.user.email as string, productId)
+            }
+            // console.log(getWishlist());
         } else {
-            removeFromCart(productId)
+            if (newHandleLike) {
+                addToWishlist(productId);
+            } else {
+                removeFromWishlist(productId)
+            }
+            console.log(getWishlist());
         }
-        console.log(getCart());
+    }
+
+    useEffect(() => {
+        if (session) {
+            (async () => {
+                clearWishlist();
+                const res = await getItemFromWishList(session.user.email as string)
+                if(res.success){
+                    const wishlistObject = JSON.parse(res.wishlist as string)
+                    for (let a of wishlistObject) {
+                        if (a === _id) {
+                            setIsHandleLike(true);
+                        }
+                    }
+                }
+            })();
+            (async () => {
+                clearCart();
+                const res = await getItemFromCart(session.user.email as string)
+                if(res.success){
+                    const cartObject = JSON.parse(res.cart as string)
+                    for (let b of cartObject) {
+                        if (b === _id) {
+                            setIsAddCart(true);
+                        }
+                    }
+                }
+            })()
+        } else {
+            const wishlist = getWishlist()
+            for (let a of wishlist) {
+                if (a === _id) {
+                    setIsHandleLike(true);
+                }
+            }
+            const cart = getCart()
+            for (let b of cart) {
+                if (b === _id) {
+                    setIsAddCart(true);
+                }
+            }
+        }
+    }, [])
+
+    const handleAddToCart = async (productId: string, newHandleCart: boolean, price: number) => {
+        if(session){
+            if (newHandleCart) {
+                await addItemToCart(session.user.email as string, productId, price)
+            } else {
+                await removeItemFromCart(session.user.email as string, productId)
+            }
+
+        }else{
+            if (newHandleCart) {
+                addToCart(productId);
+            } else {
+                removeFromCart(productId)
+            }
+            console.log(getCart());
+        }
     }
 
     if (status === 'loading') {
@@ -179,7 +196,7 @@ const ProductCards: FunctionComponent<CardInfo> = ({ cardInfo }) => {
             <button onClick={() => {
                 setIsAddCart(prevIsCart => {
                     const newIsCart = !prevIsCart;
-                    handleAddToCart(_id, newIsCart);
+                    handleAddToCart(_id, newIsCart, priceAfterDiscount);
                     return newIsCart;
                 });
             }} title='Add to cart' type="button" className='rounded-[8px] flex items-center px-full py-2 gap-2 hover:text-black hover:bg-[#f2f2f2] transition-colors duration-300 border-2 hover:border-black bg-black font-bold text-white'>{!isAddCart ? <div className='flex items-center gap-2 mx-auto'><ShoppingCart /><div>Add to cart</div></div> : <div className='mx-auto'>Remove item</div>}</button>
