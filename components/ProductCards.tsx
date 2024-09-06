@@ -6,6 +6,8 @@ import Link from 'next/link'
 import React, { FunctionComponent, useEffect, useState } from 'react'
 import { useSession } from 'next-auth/react';
 import { Types } from 'mongoose'
+import Loading from './Loading'
+import CardSkeletonLoading from './CardSkeletonLoading'
 
 interface CardInfo {
     cardInfo: any
@@ -147,6 +149,10 @@ const ProductCards: FunctionComponent<CardInfo> = ({ cardInfo }) => {
             removeFromCart(productId)
         }
         console.log(getCart());
+    }
+
+    if (status === 'loading') {
+        return <div className='mx-auto my-auto'><CardSkeletonLoading /></div>;
     }
 
 
