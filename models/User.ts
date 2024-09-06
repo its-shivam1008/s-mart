@@ -2,7 +2,7 @@ import mongoose, {Schema, Document, Types} from "mongoose";
 import bcrypt from 'bcrypt';
 import { NextResponse } from "next/server";
 
-interface CartObj {
+export interface CartObj {
     productId:Types.ObjectId;
     price:number;
     quantity:number;
