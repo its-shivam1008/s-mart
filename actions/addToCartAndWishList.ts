@@ -138,7 +138,7 @@ export const updateItemsOfCart = async (userEmail: string, payload: CartObj) => 
         if (!user) {
             return { message: 'user not found', success: false }
         }
-        const productExists = user.cart.some(p => p.productId === payload.productId)
+        const productExists = user.cart.some(p => p.productId == payload.productId)
         if (productExists) {
             const updatedUser = await UserModel.findOneAndUpdate({ email: userEmail, 'cart.productId': payload.productId },
                 {
