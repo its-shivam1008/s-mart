@@ -58,14 +58,14 @@ export const getItemFromWishList = async (userEmail: string) => {
     }
 }
 
-export const addItemToCart = async (userEmail: string, productId: any, price: number) => {
+export const addItemToCart = async (userEmail: string, productId: Types.ObjectId, price: number) => {
     await dbConnect()
     try {
         const user = await UserModel.findOne({ email: userEmail })
         if (!user) {
             return { message: 'user not found', success: false }
         }
-        const productExists = user.cart.some(p => p.productId === productId)
+        const productExists = user.cart.some(p => p.productId == productId)
         if (!productExists) {
             user.cart.push({ productId: productId as Types.ObjectId, price, quantity: 1 })
             await user.save()
@@ -77,16 +77,18 @@ export const addItemToCart = async (userEmail: string, productId: any, price: nu
     }
 }
 
-export const removeItemFromCart = async (userEmail: string, productId: any) => {
+export const removeItemFromCart = async (userEmail: string, productId: Types.ObjectId) => {
     await dbConnect()
     try {
         const user = await UserModel.findOne({ email: userEmail })
         if (!user) {
             return { message: 'user not found', success: false }
         }
-        const productExists = user.cart.some(p => p.productId === productId)
+        const productExists = user.cart.some(p => p.productId == productId)
+        // console.log(productExists)
         if (productExists) {
             const updatedUser = await UserModel.findOneAndUpdate({ email: userEmail }, { $pull: { cart: { productId: productId } } })
+            // console.log(updatedUser?.cart)
             // await user.save()
             return { message: 'item removed from the cart', success: true }
         }

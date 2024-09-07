@@ -125,10 +125,13 @@ const ProductCards: FunctionComponent<CardInfo> = ({ cardInfo }) => {
             (async () => {
                 clearCart();
                 const res = await getItemFromCart(session.user.email as string)
+                console.log(res)
                 if(res.success){
+                    console.log(res.cart)
                     const cartObject = JSON.parse(res.cart as string)
+                    console.log(cartObject)
                     for (let b of cartObject) {
-                        if (b === _id) {
+                        if (b.productId === _id) {
                             setIsAddCart(true);
                         }
                     }
@@ -150,12 +153,12 @@ const ProductCards: FunctionComponent<CardInfo> = ({ cardInfo }) => {
         }
     }, [])
 
-    const handleAddToCart = async (productId: string, newHandleCart: boolean, price: number) => {
+    const handleAddToCart = async (productId: any, newHandleCart: boolean, price: number) => {
         if(session){
             if (newHandleCart) {
-                await addItemToCart(session.user.email as string, productId, price)
+                await addItemToCart(session.user.email as string, productId as Types.ObjectId, price)
             } else {
-                await removeItemFromCart(session.user.email as string, productId)
+                await removeItemFromCart(session.user.email as string, productId as Types.ObjectId)
             }
 
         }else{
