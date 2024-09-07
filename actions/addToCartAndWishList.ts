@@ -1,6 +1,7 @@
 'use server';
 
 import dbConnect from "@/Db/Db";
+import ProductModel from "@/models/Product";
 import UserModel, { CartObj } from "@/models/User";
 import { Types } from "mongoose";
 
@@ -110,6 +111,21 @@ export const getItemFromCart = async (userEmail: string) => {
         }
         const cartJsonString = JSON.stringify(user.cart)
         return { message: 'cart found', cart: cartJsonString, success: true }
+    } catch (err) {
+        return { message: 'Some error occured', error: err, success: false }
+    }
+}
+
+export const getCartItemsFromProduct = async (productIds:any) =>{
+    await dbConnect()
+    try{
+        const productIdsObj = JSON.parse(productIds)
+        const results = await ProductModel.find({ _id: { $in: productIdsObj } })
+        if(results.length === 0){
+            return {message:'Products are not found', success:false}
+        }
+        const resultsString = JSON.stringify(results)
+        return {message:'Products found', products:resultsString, success:true}
     } catch (err) {
         return { message: 'Some error occured', error: err, success: false }
     }

@@ -125,11 +125,11 @@ const ProductCards: FunctionComponent<CardInfo> = ({ cardInfo }) => {
             (async () => {
                 clearCart();
                 const res = await getItemFromCart(session.user.email as string)
-                console.log(res)
+                // console.log(res)
                 if(res.success){
                     console.log(res.cart)
                     const cartObject = JSON.parse(res.cart as string)
-                    console.log(cartObject)
+                    // console.log(cartObject)
                     for (let b of cartObject) {
                         if (b.productId === _id) {
                             setIsAddCart(true);
@@ -189,11 +189,11 @@ const ProductCards: FunctionComponent<CardInfo> = ({ cardInfo }) => {
                 }} className='size-5' fill={`${isHandleLike ? '#ff0033' : 'transparent'}`} />
             </div>
             <Link href={`/products/${_id}`} className='w-fit h-fit'>
-                <div className="title text-lg font-semibold">{name.length > 15 ? `${name.substring(0, 13)}...` : name}</div>
+                <div className="title text-lg font-semibold mb-1.5">{name.length > 15 ? `${name.substring(0, 13)}...` : name}</div>
                 <div className='mx-auto w-36 h-36 rounded-[8px]'>
                     <Image src={images[0]} alt="noimg" className='rounded-[8px] transition-transform hover:scale-110 duration-500' width={0} height={0} sizes="100vw" style={{ width: '100%', height: '100%', objectFit: 'cover' }} />
                 </div>
-                <div className="price text-xl font-bold">{price}</div>
+                <div className="price text-xl font-bold mt-1.5">{price}</div>
                 <div className="description text-sm">{description.length > 20 ? `${description.substring(0, 30)}...` : description}</div>
             </Link>
             <button onClick={() => {
