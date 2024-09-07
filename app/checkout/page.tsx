@@ -76,9 +76,17 @@ const page = () => {
         if (cartItems.success) {
             const cartObject = JSON.parse(cartItems.cart as string)
             const productIds = cartObject.map((obj:any) => obj.productId)
-            const arrayOfProds = await getCartItemsFromProduct(JSON.stringify(productIds))
+            const arrayOfProds:any = await getCartItemsFromProduct(JSON.stringify(productIds))
             if(arrayOfProds.success){
-                setCartItemsArray(JSON.parse(arrayOfProds?.products as string))
+                const products  = JSON.parse(arrayOfProds?.products as string)
+                for(let a of products){
+                    for(let b of cartObject){
+                        if(a._id == b.productId){
+                            a.quantity = b.quantity
+                        }
+                    }
+                }
+                setCartItemsArray(products)
             }
         }
     }
@@ -126,23 +134,24 @@ const page = () => {
     }
     return (
         <div className='md:grid md:grid-cols-2 flex flex-col gap-4 min-h-screen h-fit bg-blue-400'>
-            <div className='cartItems  bg-purple-200 flex justify-center items-center'>
+            <div className='cartItems bg-purple-200 flex justify-center items-center h-fit'>
                 {
-                    cartItemsArray.length > 0 && <div className="bg-[#f2f2f2] p-4 rounded-[12px]">
+                    cartItemsArray.length > 0 && <div className="bg-[#f2f2f2] w-[90%] my-10 p-4 rounded-[12px] space-y-5">
+                        <div>
                         {
                             cartItemsArray.map((element, index) => {
                                 return (
                                     <div key={index} className='flex flex-col gap-1 p-2'>
-                                        <div className="font-bold text-md">{element.name}</div>
-                                        <div className="flex items-center justify-around">
+                                        <div className="font-bold text-md m-2">{element.name}</div>
+                                        <div className="flex items-center justify-between">
                                             <div className='image w-30 h-20 shadow-md rounded-[12px]'>
                                                 <Image className="rounded-[12px]" src={element.images[0]} alt='noImg found' width={0} height={0} sizes="100vw" style={{ width: '100%', height: '100%', objectFit: 'cover' }} />
                                             </div>
-                                            <div className="flex flex-col gap-2">
-                                                <div className="flex gap-2">
-                                                    <button type="button" className='p-2 font-bold rounded-full text-white bg-black text-lg'>+</button>
+                                            <div className="flex flex-col gap-2 justify-center items-center ml-3">
+                                                <div className="flex gap-2 items-center">
+                                                    <button type="button" className='px-5 py-3 text-xl font-bold rounded-full text-white bg-black'>+</button>
                                                     <div className="font-bold">{element.quantity}</div>
-                                                    <button type="button" className='p-2 font-bold rounded-full text-white bg-black text-lg'>-</button>
+                                                    <button type="button" className='px-[21.5px] py-3 text-xl font-bold rounded-full text-white bg-black'>-</button>
                                                 </div>
                                                 <div className="font-bold">₹ {element.priceAfterDiscount * element.quantity}</div>
                                             </div>
@@ -151,6 +160,32 @@ const page = () => {
                                 )
                             })
                         }
+                        </div>
+                        <hr />
+                        <div className="flex flex-col gap-3">
+                            <div className='flex flex-col gap-2'>
+                                {
+                                    cartItemsArray.map((element,indx) => {
+                                        return (
+                                            <div key={indx} className='flex justify-between '>
+                                                <div className='font-bold text-md'>{element.name.length > 15 ? `${element.name.substring(0, 13)}...` : element.name} :</div>
+                                                <div className='font-bold text-md'>₹ {element.quantity*element.priceAfterDiscount}</div>
+                                            </div>
+                                        )
+                                    })
+                                }
+                            </div>
+                            <div className="flex justify-between">
+                                <div className="text-xl font-bold">Total :</div>
+                                <div className="text-xl font-bold">
+                                    {
+                                        cartItemsArray.reduce((addedPrice, currentItem) => {
+                                            return addedPrice + currentItem.priceAfterDiscount
+                                        }, 0)
+                                    }
+                                </div>
+                            </div>
+                        </div>
                     </div>
                 }
             </div>
