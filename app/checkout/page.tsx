@@ -31,6 +31,7 @@ import { useRouter, useSearchParams } from 'next/navigation';
 
 const page = () => {
     const [flag, setFlag] = useState(false)
+    const [flag2, setFlag2] = useState(false)
     const [isAddressFillFlag, setIsAddressFillFlag] = useState(false)
     const { data: session, status } = useSession()
     const [isSubmitting, setIsSubmitting] = useState(false)
@@ -43,15 +44,24 @@ const page = () => {
 
     const searchParams = useSearchParams()
     const router = useRouter();
+    const removeAndReload = async (userEmail:string, prodId:any) =>{
+        await removeItemFromCart(userEmail, prodId as any)
+            await fetchProductsFromCart(userEmail)
+    }
     useEffect(() => {
+       if(session && !flag2){
         if(searchParams.get('paymentdone')== "true"){
             toast({
                 title: 'Payment successful 💸',
                 description: "Your order has been placed."
             })
-              router.push(`/checkout`)
+            const prodId = searchParams.get('productId')
+            removeAndReload(session?.user.email as string, prodId)
+            router.push(`/checkout`)
           }
-    }, [])
+          setFlag2(true)
+       }
+    }, [session, flag2])
     
 
     const isAddressFilled = async (userEmail: string) => {
