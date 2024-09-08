@@ -6,33 +6,37 @@ import OrderModel from "@/models/Order";
 import { NextResponse, NextRequest } from "next/server";
 import { NextApiRequest, NextApiResponse } from "next";
 import { getToken } from "next-auth/jwt";
+import ProductModel from "@/models/Product";
 
 export async function POST(req:Request){
     await dbConnect();
     try{
         const data = await req.json();
         // getting the query 
+        // console.log(data)
         const {searchParams} = new URL(req.url);
         // exptracting the username and userId from the queryParams
         const queryParam = {
-            username: searchParams.get('username'),
-            userId: searchParams.get('userId')
+            userEmail: searchParams.get('userEmail'),
         }
         const user = {
-            username:queryParam.username,
-            userId:queryParam.userId
+            userEmail:queryParam.userEmail,
+        }
+        const prod = await ProductModel.findById(data.payload.product._id)
+        if(!prod){
+            return NextResponse.json({message:"Product not found", success:false}, {status:404})
         }
         const product = {
-            productName:data.payload.product.name,
+            productName:prod.name,
             productId:data.payload.product._id
         }
-        const storeId = data.payload.product.storeId
+        const storeId = prod.storeId
         const status = data.payload.status
         const today = new Date();
         today.setDate(today.getDate() + 7); // shipping date is 7 days after the the order date 
         const shippingDate = today;
         const quantity = data.payload.quantity
-        const totalPrice = data.payload.product.price*quantity + data.payload.product.shippingCharge - ((data.payload.product.price*(data.payload.product.discount/100))*quantity)
+        const totalPrice = data.payload.totalPrice
         const order =  new OrderModel({
             user, product, storeId, status, shippingDate, quantity, totalPrice
         })

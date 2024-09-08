@@ -2,8 +2,7 @@ import mongoose, {Schema, Document, Types} from "mongoose";
 
 interface Order extends Document{
     user:{
-        username:string;
-        userId:Types.ObjectId;
+        userEmail:string;
     },
     product:{
         productName:string;
@@ -30,11 +29,7 @@ interface Order extends Document{
 
 const OrderSchema:Schema<Order> = new Schema({
     user:{
-        username:String,
-        userId:{
-            type:Schema.Types.ObjectId,
-            ref:'User'
-        }
+        userEmail:String,
     },
     product:{
         productName:String,

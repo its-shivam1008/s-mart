@@ -44,24 +44,57 @@ const page = () => {
 
     const searchParams = useSearchParams()
     const router = useRouter();
-    const removeAndReload = async (userEmail:string, prodId:any) =>{
+
+    const removeCartItemAndOrderCreation = async (userEmail:string, prodId:any) =>{
+        var quantity = 0;
+        var totalPrice = 0;
+        for(let a of cartItemsArray){
+            if(a._id == prodId){
+                quantity = a.quantity;
+                totalPrice = a.priceAfterDiscount * a.quantity;
+
+            }
+        }
+        const data = {
+            payload : {
+                product:{
+                    _id:prodId,
+                },
+                status:'Confirmed',
+                quantity:quantity,
+                totalPrice:totalPrice
+            }
+        }
+        const res = await axios.post(`/api/user/orders?userEmail=${userEmail}`, data);
+        if(res.data.success){
+            toast({
+                title: 'Order created',
+                description: "Your order has been placed."
+            })
+        }else{
+            toast({
+                variant: "destructive",
+                title: 'Some error occured',
+                description: res.data.message
+            })
+        }
         await removeItemFromCart(userEmail, prodId as any)
-            await fetchProductsFromCart(userEmail)
+        await fetchProductsFromCart(userEmail)
     }
     useEffect(() => {
-       if(session && !flag2){
+       if(session && !flag2 && cartItemsArray[0].images[0] !== ''){
         if(searchParams.get('paymentdone')== "true"){
             toast({
                 title: 'Payment successful 💸',
-                description: "Your order has been placed."
+                description: "Placing your order .... 🚚"
             })
             const prodId = searchParams.get('productId')
-            removeAndReload(session?.user.email as string, prodId)
+            removeCartItemAndOrderCreation(session?.user.email as string, prodId)
             router.push(`/checkout`)
           }
           setFlag2(true)
        }
-    }, [session, flag2])
+    }, [session, flag2, cartItemsArray])
     
 
     const isAddressFilled = async (userEmail: string) => {
