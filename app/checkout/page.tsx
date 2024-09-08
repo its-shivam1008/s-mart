@@ -1,6 +1,7 @@
 'use client'
-import React, { useEffect, useState } from 'react'
+import React, { ReactEventHandler, useEffect, useState } from 'react'
 import { useSession } from 'next-auth/react';
+import Script from 'next/script';
 import { checkUserAddressFormFilled } from '@/actions/checkUserType';
 import { Button } from "@/components/ui/button"
 import {
@@ -23,6 +24,9 @@ import { userAddress } from '@/schemas/signUpSchema';
 import Loading from '@/components/Loading';
 import Image from 'next/image';
 import { getCartItemsFromProduct, getItemFromCart, removeItemFromCart, updateItemsOfCart } from '@/actions/addToCartAndWishList';
+import { findStoreByProduct, initiate } from '@/actions/paymentInitiation';
+import Razorpay from 'razorpay';
+import useRazorpay from '@/components/RazorpayPayment';
 
 const page = () => {
     const [flag, setFlag] = useState(false)
@@ -31,7 +35,9 @@ const page = () => {
     const [isSubmitting, setIsSubmitting] = useState(false)
     const [cartItemsArray, setCartItemsArray] = useState([{ name: '', _id: '', images: [''], priceAfterDiscount: 0, quantity: 0 }])
     const { toast } = useToast()
+    // const [amount, setAmount] = useState(0)
 
+    const {Pay}:any = useRazorpay()
     const [previousFormData, setPreviousFormData] = useState({ address: '', pincode: 0, state: '', street: '', city: '' })
 
     const isAddressFilled = async (userEmail: string) => {
@@ -132,27 +138,78 @@ const page = () => {
         }
     }
 
-    const handleAddOneProduct = async (productId:any, price:number, quantity:number) => {
+    const handleAddOneProduct = async (productId: any, price: number, quantity: number) => {
 
         const payload = {
-            productId, price, quantity:quantity+1
+            productId, price, quantity: quantity + 1
         }
         await updateItemsOfCart(session?.user.email as string, payload)
         fetchProductsFromCart(session?.user.email as string)
     }
-    const handleRemoveOneProduct = async (productId:any, price:number, quantity:number) => {
-        if(quantity > 1){
+    const handleRemoveOneProduct = async (productId: any, price: number, quantity: number) => {
+        if (quantity > 1) {
             const payload = {
-                productId, price, quantity:quantity-1
+                productId, price, quantity: quantity - 1
             }
             await updateItemsOfCart(session?.user.email as string, payload)
             fetchProductsFromCart(session?.user.email as string)
-        }else{
+        } else {
             await removeItemFromCart(session?.user.email as string, productId)
             fetchProductsFromCart(session?.user.email as string)
         }
     }
+
+
+    // const Pay = async (amount: number, productId:string, productName:string, userEmail:string) => {
+    //     const paymentForm = {
+    //         productId, productName, userEmail
+    //     }
+    //     const store = await findStoreByProduct(productId)
+    //     if(!store.storeId){
+    //         console.log(store.storeId)
+    //         return {message: 'no store found'}
+    //     }
+    //     let a = await initiate(amount, store.storeId as any , paymentForm);
+    //     if(!('id' in a)){
+    //         return {message:'nothing found'}
+    //     }
+    //     let order_id = a.id
+    //     console.log(store.storeId, store.razorpayId)
+    //     var options:any = {
+    //         "key": store.razorpayId , // Enter the Key ID generated from the Dashboard
+    //         "amount": amount, // Amount is in currency subunits. Default currency is INR. Hence, 50000 refers to 50000 paise
+    //         "currency": "INR",
+    //         "name": "S-mart", //your business name
+    //         "description": "Test Transaction",
+    //         "image": "https://example.com/your_logo",
+    //         "order_id": order_id, //This is a sample Order ID. Pass the `id` obtained in the response of Step 1
+    //         "callback_url": `${process.env.NEXT_PUBLIC_URL}/api/razorpay`,
+    //         "prefill": { //We recommend using the prefill parameter to auto-fill customer's contact information especially their phone number
+    //             "name": paymentForm.userEmail, //your customer's name
+    //             "email": "abc@example.com",
+    //             "contact": "9000090000" //Provide the customer's phone number for better conversion rates 
+    //         },
+    //         "notes": {
+    //             "address": "Razorpay Corporate Office"
+    //         },
+    //         "theme": {
+    //             "color": "#3399cc"
+    //         }
+    //     };
+    //     var rzp1:any = new Razorpay(options);
+    //     rzp1.open();
+    // }
+
+    const handlePayment = (amount:number, productId:string, productName:string, userEmail:string) => {
+        // e.preventDefault();
+        // console.log(paymentForm);
+        let amt = amount * 100
+        Pay(amt, productId, productName, userEmail);
+    }
+
     return (
+        <>
+            <Script src="https://checkout.razorpay.com/v1/checkout.js" strategy="beforeInteractive"></Script>
         <div className='md:grid md:grid-cols-2 flex flex-col gap-4 min-h-screen h-fit bg-purple-200'>
             <div className='addForm bg-purple-200 flex justify-center items-center'>
                 {
@@ -257,7 +314,7 @@ const page = () => {
             </div>
             <div className='cartItems bg-purple-200 flex justify-center items-center'>
                 {
-                    cartItemsArray.length === 0 || cartItemsArray[0].images[0] === '' ? <div className='text-xl text-center font-bold'>No products found in your cart</div> :<div className="bg-[#f2f2f2] w-[90%] my-16 p-4 rounded-[12px] space-y-5">
+                    cartItemsArray.length === 0 || cartItemsArray[0].images[0] === '' ? <div className='text-xl text-center font-bold'>No products found in your cart</div> : <div className="bg-[#f2f2f2] w-[90%] my-16 p-4 rounded-[12px] space-y-5">
                         <div>
                             {
                                 cartItemsArray.map((element, index) => {
@@ -277,6 +334,11 @@ const page = () => {
                                                     <div className="font-bold">₹ {element.priceAfterDiscount * element.quantity}</div>
                                                 </div>
                                             </div>
+                                            <button type='button' onClick={() => handlePayment((element.priceAfterDiscount * element.quantity), element._id as string, element.name as string, session?.user.email as string)} className="flex items-center p-2 bg-blue-500 text-white rounded-lg shadow-lg hover:bg-blue-700 transition duration-300 w-fit mx-auto">
+                                                <span className="ml-2 text-sm font-medium mr-2">Pay with Razorpay</span>
+
+                                                <svg className='w-7' role="img" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><title>Razorpay</title><path d="M22.436 0l-11.91 7.773-1.174 4.276 6.625-4.297L11.65 24h4.391l6.395-24zM14.26 10.098L3.389 17.166 1.564 24h9.008l3.688-13.902Z" /></svg>
+                                            </button>
                                         </div>
                                     )
                                 })
@@ -301,21 +363,19 @@ const page = () => {
                                 <div className="text-xl font-bold">
                                     {
                                         cartItemsArray.reduce((addedPrice, currentItem) => {
+                                            // setAmount(addedPrice + (currentItem.priceAfterDiscount * currentItem.quantity))
                                             return addedPrice + (currentItem.priceAfterDiscount * currentItem.quantity)
                                         }, 0)
                                     }
                                 </div>
                             </div>
-                            <button type='button' className="flex items-center p-2 bg-blue-500 text-white rounded-lg shadow-lg hover:bg-blue-700 transition duration-300 w-fit mx-auto">
-                                <span className="ml-2 text-sm font-medium mr-2">Pay with Razorpay</span>
 
-                                <svg className='w-7' role="img" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><title>Razorpay</title><path d="M22.436 0l-11.91 7.773-1.174 4.276 6.625-4.297L11.65 24h4.391l6.395-24zM14.26 10.098L3.389 17.166 1.564 24h9.008l3.688-13.902Z" /></svg>
-                            </button>
                         </div>
                     </div>
                 }
             </div>
         </div>
+        </>
     )
 }
 

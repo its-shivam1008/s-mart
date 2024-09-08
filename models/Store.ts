@@ -5,7 +5,7 @@ export interface Products extends Document{
     productId:Types.ObjectId;
 }
 
-interface Store extends Document {
+export interface Store extends Document {
     owner_name:string;
     associatedUser:{
         userEmail:string;
