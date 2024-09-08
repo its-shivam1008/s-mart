@@ -57,6 +57,6 @@ const PaymentSchema:Schema<Payment> = new Schema({
     // }
 })
 
-const PaymentModel = (mongoose.models.Payment as mongoose.Model<Payment>) || mongoose.model<Payment>("Payments", PaymentSchema);
+const PaymentModel = (mongoose.models.Payment as mongoose.Model<Payment>) || mongoose.model<Payment>("Payment", PaymentSchema);
 
 export default PaymentModel;

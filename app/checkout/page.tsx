@@ -27,6 +27,7 @@ import { getCartItemsFromProduct, getItemFromCart, removeItemFromCart, updateIte
 import { findStoreByProduct, initiate } from '@/actions/paymentInitiation';
 import Razorpay from 'razorpay';
 import useRazorpay from '@/components/RazorpayPayment';
+import { useRouter, useSearchParams } from 'next/navigation';
 
 const page = () => {
     const [flag, setFlag] = useState(false)
@@ -39,6 +40,19 @@ const page = () => {
 
     const {Pay}:any = useRazorpay()
     const [previousFormData, setPreviousFormData] = useState({ address: '', pincode: 0, state: '', street: '', city: '' })
+
+    const searchParams = useSearchParams()
+    const router = useRouter();
+    useEffect(() => {
+        if(searchParams.get('paymentdone')== "true"){
+            toast({
+                title: 'Payment successful 💸',
+                description: "Your order has been placed."
+            })
+              router.push(`/checkout`)
+          }
+    }, [])
+    
 
     const isAddressFilled = async (userEmail: string) => {
         setIsSubmitting(true)

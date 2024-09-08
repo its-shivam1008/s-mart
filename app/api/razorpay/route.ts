@@ -13,9 +13,10 @@ import { validatePaymentVerification } from "razorpay/dist/utils/razorpay-utils"
 export const POST  = async (req:Request)=> {
     await dbConnect();
     try{
-        // let body = await req.formData();
-        // body = Object.fromEntries(body);
-        const body = await req.json();
+        let body:any = await req.formData();
+        body = Object.fromEntries(body);
+        // const body = await req.json();
+        // console.log(body);
     
         let p = await PaymentModel.findOne({orderId: body.razorpay_order_id});
         if(!p){
@@ -31,7 +32,7 @@ export const POST  = async (req:Request)=> {
     
         if(xx){
             const updatedPayment = await PaymentModel.findOneAndUpdate({orderId: body.razorpay_order_id}, {isPaymentVerified: true}, {new:true});
-            return NextResponse.redirect(`${process.env.NEXT_PUBLIC_URL}/profile/tip/${updatedPayment?.toStore.storeId}?paymentdone=true`);
+            return NextResponse.redirect(`${process.env.NEXT_PUBLIC_URL}/checkout?paymentdone=true`);
         }else{
             // return NextResponse.redirect(`${process.env.NEXT_PUBLIC_URL}/profile/tip/${updatedPayment.to_name}?paymentdone=false`);
             return NextResponse.json({success: false, message:"Payment verification failed"});
