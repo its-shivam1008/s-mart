@@ -25,7 +25,7 @@ const SlideShow:FunctionComponent<ArrayOfImages> = ({arrayOfImages, imageHeight}
             setIndex((prevIndex) =>
               prevIndex === arrayOfImages.length - 1 ? 0 : prevIndex + 1
             ),
-          2500
+          5000
         );
         return () => {resetTimeout();};
       }, [index]);
