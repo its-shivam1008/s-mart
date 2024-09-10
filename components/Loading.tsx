@@ -3,7 +3,7 @@ import React from 'react'
 
 const Loading = () => {
   return (
-    <div className='container mb-10'>
+    <div className='container'>
         <CircleDot className='text-[rebeccapurple] animate-ping size-10 mx-auto'/>
     </div>
   )

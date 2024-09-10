@@ -49,7 +49,7 @@ const page = () => {
     <div> 
       {/* <SlideShow arrayOfImages={images} imageHeight='h-[80vh]'/>         */}
       <ProductComponent productData={products}/>
-      { loading && <Loading />}
+      { loading && <div className='mb-10'><Loading /></div>}
     </div>
   )
 }
