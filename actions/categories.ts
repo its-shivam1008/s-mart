@@ -26,11 +26,11 @@ export const fetchCategoryProduct = async (categoryName:string) => {
     await dbConnect()
     try{
         const products = await ProductModel.find({'category.parentCategory.name':categoryName}).limit(4)
-        console.log(products)
+        // console.log("le pothe ki",products)
         if(products.length > 0){
             const stringArray = JSON.stringify(products)
-            console.log('producst string', stringArray)
-            return { message: 'Some error occured', categoryProducts: stringArray, success: false }  
+            // console.log('producst string', stringArray)
+            return { message: 'Some error occured', categoryProducts: stringArray, success:true }  
         }
     } catch (err) {
         return { message: 'Some error occured', error: err, success: false }
