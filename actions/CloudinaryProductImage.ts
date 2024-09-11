@@ -79,6 +79,6 @@ export const deleteProductImageFromUiAndDB = async(productId:any, imageURL:any) 
       return {message:'Product not found', success:false}
     }
   }catch(err){
-    return {message: 'some error occured', success:false, error:err}
+    return {message: 'some error occured', success:false, error:JSON.stringify(err)}
   }
 }

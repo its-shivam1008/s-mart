@@ -68,7 +68,7 @@ const page = () => {
                         :
                         categoryNameArrayObj.map((element: any, index: number) => {
                             return (<div key={index} className='flex flex-col gap-4 my-10 font-mono'>
-                                <Link href={`/categories/${element.id}`} className='text-2xl font-bold transition-colors duration-300 hover:text-purple-500'>{element.name}</Link>
+                                <Link href={`/categories/${element.name}`} className='text-2xl font-bold transition-colors duration-300 hover:text-purple-500'>{element.name}</Link>
                                 <div className='flex md:flex-row  flex-col justify-around items-center'>
                                     {
                                         categoryProducts[element.id]?.map((elem: any, index: number) => {
@@ -81,7 +81,7 @@ const page = () => {
                                             )
                                         }) || <p>No products found</p>
                                     }
-                                    <Link href={`/categories/${element.id}`} className='w-48 h-60 flex justify-center items-center bg-gray-300 rounded-[12px] shadow-xl shadow-purple-500'>
+                                    <Link href={`/categories/${element.name}`} className='w-48 h-60 flex justify-center items-center bg-gray-300 rounded-[12px] shadow-xl shadow-purple-500'>
                                         <div className='text-gray-800 font-mono text-xl font-bold transition-colors duration-500 hover:text-purple-800 cursor-pointer'>See all</div>
                                     </Link>
                                 </div>

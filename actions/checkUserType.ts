@@ -12,7 +12,7 @@ export const checkUserType  = async (userEmail:string) =>{
         }
         return {message:'user found', success:true, userRole:user.role}
     }catch(err){
-        return {message:'some error occured', error:err}
+        return {message:'some error occured', error: JSON.stringify(err)}
     }
 }
 
@@ -34,7 +34,7 @@ export const checkUserTypeWithStoreFormFilled = async (userEmail:string) =>{
             return {message:'store form fields not found',  userRole:user.role, success:false}
         }
     }catch(err){
-        return {message:'some error occured', error:err}
+        return {message:'some error occured', error: JSON.stringify(err)}
     }
 }
 export const checkUserAddressFormFilled = async (userEmail:string) =>{
@@ -52,6 +52,6 @@ export const checkUserAddressFormFilled = async (userEmail:string) =>{
             return {message:'Address is present', success:true, address:addressString}
         }
     }catch(err){
-        return {message:'some error occured', error:err}
+        return {message:'some error occured', error: JSON.stringify(err)}
     }
 }

@@ -64,6 +64,6 @@ export const findStoreByProduct = async (productId:string) => {
         // console.log(store)
         return {message:'Store found', success:true, storeId:JSON.stringify(store._id), razorpayId:store.razorpay.id}
     }catch(err){
-        return {message:'Some error happened', success:false, error:err}
+        return {message:'Some error happened', success:false, error:JSON.stringify(err)}
     }
 }

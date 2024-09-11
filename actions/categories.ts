@@ -18,7 +18,7 @@ export const fetchCategories = async () => {
             return { message: 'Some error occured', categoriesArray: stringArray, success: true }  
         }
     } catch (err) {
-        return { message: 'Some error occured', error: err, success: false }
+        return { message: 'Some error occured', error: JSON.stringify(err), success: false }
     }
 }
 
@@ -30,25 +30,27 @@ export const fetchCategoryProduct = async (categoryName:string) => {
         if(products.length > 0){
             const stringArray = JSON.stringify(products)
             // console.log('producst string', stringArray)
-            return { message: 'Some error occured', categoryProducts: stringArray, success:true }  
+            return { message: 'Products found', categoryProducts: stringArray, success:true }  
         }
     } catch (err) {
-        return { message: 'Some error occured', error: err, success: false }
+        return { message: 'Some error occured', error: JSON.stringify(err), success: false }
     }
 }
 
-export const fetchAllCategoryProduct = async (categoryId:string) => {
+export const fetchAllCategoryProduct = async (categoryName:string) => {
     await dbConnect()
     try{
-        const products = await ProductModel.find({'category.parentCategory.id':categoryId})
+        const products = await ProductModel.find({'category.parentCategory.name':categoryName})
         // console.log("le pothe ki",products)
         if(products.length > 0){
             const stringArray = JSON.stringify(products)
-            console.log('producst string', stringArray)
-            return { message: 'Some error occured', categoryProducts: stringArray, success:true }  
+            // console.log('producst string', stringArray)
+            return { message: 'Products found', categoryProducts: stringArray, success:true }  
+        }else{
+            return {message:'Nothing found', success:false}
         }
     } catch (err) {
-        return { message: 'Some error occured', error: err, success: false }
+        return { message: 'Some error occured', error: JSON.stringify(err), success: false }
     }
 }
 

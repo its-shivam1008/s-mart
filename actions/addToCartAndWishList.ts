@@ -19,7 +19,7 @@ export const addItemToWishList = async (userEmail: string, productId: any) => {
         }
         return { message: 'item is already present', success: false }
     } catch (err) {
-        return { message: 'Some error occured', error: err, success: false }
+        return { message: 'Some error occured', error: JSON.stringify(err), success: false }
     }
 }
 
@@ -38,7 +38,7 @@ export const removeItemFromWishList = async (userEmail: string, productId: any) 
         }
         return { message: 'Item is not present in the wishlist, that is to be removed', success: false }
     } catch (err) {
-        return { message: 'Some error occured', error: err, success: false }
+        return { message: 'Some error occured', error: JSON.stringify(err), success: false }
     }
 }
 
@@ -55,7 +55,7 @@ export const getItemFromWishList = async (userEmail: string) => {
         const wishlistJsonString = JSON.stringify(user.wishlist)
         return { message: 'wishlist found', wishlist: wishlistJsonString, success: true }
     } catch (err) {
-        return { message: 'Some error occured', error: err, success: false }
+        return { message: 'Some error occured', error: JSON.stringify(err), success: false }
     }
 }
 
@@ -74,7 +74,7 @@ export const addItemToCart = async (userEmail: string, productId: Types.ObjectId
         }
         return { message: 'item is already present', success: false }
     } catch (err) {
-        return { message: 'Some error occured', error: err, success: false }
+        return { message: 'Some error occured', error: JSON.stringify(err), success: false }
     }
 }
 
@@ -95,7 +95,7 @@ export const removeItemFromCart = async (userEmail: string, productId: Types.Obj
         }
         return { message: 'Item is not present in the cart, that is to be removed', success: false }
     } catch (err) {
-        return { message: 'Some error occured', error: err, success: false }
+        return { message: 'Some error occured', error: JSON.stringify(err), success: false }
     }
 }
 
@@ -112,7 +112,7 @@ export const getItemFromCart = async (userEmail: string) => {
         const cartJsonString = JSON.stringify(user.cart)
         return { message: 'cart found', cart: cartJsonString, success: true }
     } catch (err) {
-        return { message: 'Some error occured', error: err, success: false }
+        return { message: 'Some error occured', error: JSON.stringify(err), success: false }
     }
 }
 
@@ -127,7 +127,7 @@ export const getCartItemsFromProduct = async (productIds:any) =>{
         const resultsString = JSON.stringify(results)
         return {message:'Products found', products:resultsString, success:true}
     } catch (err) {
-        return { message: 'Some error occured', error: err, success: false }
+        return { message: 'Some error occured', error: JSON.stringify(err), success: false }
     }
 }
 
@@ -157,6 +157,6 @@ export const updateItemsOfCart = async (userEmail: string, payload: CartObj) => 
         }
         return { message: 'Product not found in the cart', success: false }
     } catch (err) {
-        return { message: 'Some error occured', error: err, success: false }
+        return { message: 'Some error occured', error: JSON.stringify(err), success: false }
     }
 }

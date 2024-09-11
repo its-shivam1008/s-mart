@@ -71,7 +71,7 @@ export const fetchOneProduct = async (productId: string) => {
             return { message: "unable to find any product of your store", success: false };
         }
     } catch (err) {
-        return { message: "Some error occured", error: err, success: false };
+        return { message: "Some error occured", error: JSON.stringify(err), success: false };
     }
 }
 
@@ -86,7 +86,7 @@ export const addReviewOfProduct = async (productId: string, payload: any) => {
         await response.save()
         return { message: 'Review added', success: true }
     } catch (err) {
-        return { message: 'Some error occured', error: err, success: false }
+        return { message: 'Some error occured', error: JSON.stringify(err), success: false }
     }
 }
 
@@ -106,7 +106,7 @@ export const showReviewOfProduct = async (productId: string, userEmail: string) 
         // console.log(reviewJsonString)
         return { message: 'fetched the review', success: true, review: reviewJsonString }
     } catch (err) {
-        return { message: 'Some error occured', error: err, success: false }
+        return { message: 'Some error occured', error: JSON.stringify(err), success: false }
     }
 }
 
@@ -122,6 +122,6 @@ export const deleteReviewOfProduct = async (productId:string, userEmailToDelete:
         }
         return { message: 'Review Deleted', success: true }
     } catch (err) {
-        return { message: 'Some error occured', error: err, success: false }
+        return { message: 'Some error occured', error: JSON.stringify(err), success: false }
     }
 }

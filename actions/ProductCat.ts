@@ -25,6 +25,6 @@ export const productSubCategory =  async(email:string) =>{
             return { message : 'Store not found', success:false}
         }
     }catch(err){
-        return {message:'some error occured', error:err}
+        return {message:'some error occured', error:JSON.stringify(err)}
     }
 }

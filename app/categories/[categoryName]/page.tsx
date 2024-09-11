@@ -14,7 +14,9 @@ const page = ({ params }: any) => {
   useEffect(() => {
     (async () => {
       setIsLoading(true);
-      const categoryProduct = await fetchAllCategoryProduct(params.categoryName)
+      const decodedUri = decodeURIComponent(params.categoryName)
+      console.log(decodedUri)
+      const categoryProduct = await fetchAllCategoryProduct(decodedUri)
       if(categoryProduct?.success){
         const arrayOfObjs = JSON.parse(categoryProduct?.categoryProducts as string)
         console.log('le pothe ki',arrayOfObjs)
@@ -30,8 +32,8 @@ const page = ({ params }: any) => {
       <SlideShow arrayOfImages={images} imageHeight='h-[80vh]'/>
       <div className='container mx-auto'>
         {
-          isLoading ? <div className='mx-auto'> <Loading /></div>: <><div className="text-2xl font-bold text-center">lol</div>
-          <div className='flex flex-wrap gap-4'>
+          isLoading ? <div className='mx-auto'> <Loading /></div>: <><div className="text-2xl font-bold text-center my-5">{products[0]?.category?.parentCategory?.name}</div>
+          <div className='flex flex-col md:flex-row md:flex-wrap gap-6 w-full mx-auto'>
             {
               products.map((element:any,index:number) => {
                 return (
