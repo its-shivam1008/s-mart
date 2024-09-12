@@ -22,6 +22,9 @@ const page = ({ params }: any) => {
   const [filterCategory, setFilterCategory] = useState<any>({})
   const [isLoading, setIsLoading] = useState(false)
 
+  const [selectedSubCategory, setSelectedSubCategory] = useState<any>({})
+  const [flagSubCategory, setFlagSubCategory] = useState(false)
+
   useEffect(() => {
     (async () => {
       setIsLoading(true);
@@ -40,6 +43,13 @@ const page = ({ params }: any) => {
     })()
   }, [])
 
+  const handleOnChange = (value:any) => {
+    const findObj = filterCategory?.subCategory?.find((item:any) => item.name === value);
+    setSelectedSubCategory(findObj)
+    console.log(findObj)
+    setFlagSubCategory(true)
+  }
+
 
   return (
     <div>
@@ -48,9 +58,9 @@ const page = ({ params }: any) => {
         {
           isLoading ? <div className='mx-auto'> <Loading /></div> : <><div className=' my-5 flex justify-between items-center'>
             <div className="text-2xl font-bold">{products[0]?.category?.parentCategory?.name}</div>
-            <div className='flex'>
-              <Select>
-                <SelectTrigger className="w-[180px]">
+            <div className='flex gap-4'>
+              <Select onValueChange={handleOnChange}>
+                <SelectTrigger className="w-fit">
                   <SelectValue placeholder="Select a Sub Category" />
                 </SelectTrigger>
                 <SelectContent>
@@ -66,6 +76,28 @@ const page = ({ params }: any) => {
                   </SelectGroup>
                 </SelectContent>
               </Select>
+              {
+                flagSubCategory && 
+                <Select>
+                <SelectTrigger className="w-fit">
+                  <SelectValue placeholder="Select a property" />
+                </SelectTrigger>
+                <SelectContent>
+                  <SelectGroup>
+                    <SelectLabel>{selectedSubCategory?.name}</SelectLabel>
+                    {
+                      selectedSubCategory?.properties?.flatMap((element:any, index:number) => {
+                        return(Object.keys(element).map((key: string) => (
+                          <SelectItem key={`${index}-${key}`} value={key}>
+                            {key}
+                          </SelectItem>
+                        )))
+                      })
+                    }
+                  </SelectGroup>
+                </SelectContent>
+              </Select>
+              }
             </div>
           </div>
             <div className='flex flex-col md:flex-row md:flex-wrap gap-6 w-full mx-auto'>
