@@ -54,3 +54,24 @@ export const fetchAllCategoryProduct = async (categoryName:string) => {
     }
 }
 
+export const fetchCategory = async (categoryName:string) => {
+    await dbConnect()
+    // console.log('ho gya connect')
+    try{
+        const categories = await ParentCategoryModel.findOne({name:categoryName})
+        // console.log('lol connect', categories)
+        // const ArrayCategoryNames = []
+        // for(let a of categories){
+        //     ArrayCategoryNames.push({name:a.name, id:a._id});
+        // }
+        if(categories){
+            const stringArray = JSON.stringify(categories)
+            return { message: 'Found category', categoriesObj: stringArray, success: true }  
+        }else{
+            return {message:'Nothing found', success:false}
+        }
+    } catch (err) {
+        return { message: 'Some error occured', error: JSON.stringify(err), success: false }
+    }
+}
+
