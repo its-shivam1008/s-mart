@@ -23,7 +23,9 @@ const page = ({ params }: any) => {
   const [isLoading, setIsLoading] = useState(false)
 
   const [selectedSubCategory, setSelectedSubCategory] = useState<any>({})
+  const [selectProperties, setSelectProperties] = useState<any>({})
   const [flagSubCategory, setFlagSubCategory] = useState(false)
+  const [flagProperty, setFlagProperty] = useState(false)
 
   useEffect(() => {
     (async () => {
@@ -43,11 +45,22 @@ const page = ({ params }: any) => {
     })()
   }, [])
 
-  const handleOnChange = (value:any) => {
-    const findObj = filterCategory?.subCategory?.find((item:any) => item.name === value);
+  const handleOnChangeOfSubCategory = (value: any) => {
+    const findObj = filterCategory?.subCategory?.find((item: any) => item.name === value);
     setSelectedSubCategory(findObj)
     console.log(findObj)
     setFlagSubCategory(true)
+  }
+
+  const handleOnChangeOfProperties = (value: any) => {
+    const findObj = filterCategory?.subCategory?.properties?.find((item: any) => {
+      const keys = Object.keys(item);
+      return keys.some((key: any) => key === value);
+    });
+    setFlagProperty(true);
+    console.log(findObj, 'property')
+    console.log(value, 'property')
+    setSelectProperties(findObj);
   }
 
 
@@ -59,7 +72,7 @@ const page = ({ params }: any) => {
           isLoading ? <div className='mx-auto'> <Loading /></div> : <><div className=' my-5 flex justify-between items-center'>
             <div className="text-2xl font-bold">{products[0]?.category?.parentCategory?.name}</div>
             <div className='flex gap-4'>
-              <Select onValueChange={handleOnChange}>
+              <Select onValueChange={handleOnChangeOfSubCategory}>
                 <SelectTrigger className="w-fit">
                   <SelectValue placeholder="Select a Sub Category" />
                 </SelectTrigger>
@@ -67,7 +80,7 @@ const page = ({ params }: any) => {
                   <SelectGroup>
                     <SelectLabel>{filterCategory?.name}</SelectLabel>
                     {
-                      filterCategory?.subCategory?.map((element:any, index:number) => {
+                      filterCategory?.subCategory?.map((element: any, index: number) => {
                         return (
                           <SelectItem key={index} value={element.name}>{element.name}</SelectItem>
                         )
@@ -77,26 +90,54 @@ const page = ({ params }: any) => {
                 </SelectContent>
               </Select>
               {
-                flagSubCategory && 
-                <Select>
-                <SelectTrigger className="w-fit">
-                  <SelectValue placeholder="Select a property" />
-                </SelectTrigger>
-                <SelectContent>
-                  <SelectGroup>
-                    <SelectLabel>{selectedSubCategory?.name}</SelectLabel>
-                    {
-                      selectedSubCategory?.properties?.flatMap((element:any, index:number) => {
-                        return(Object.keys(element).map((key: string) => (
-                          <SelectItem key={`${index}-${key}`} value={key}>
-                            {key}
-                          </SelectItem>
-                        )))
-                      })
-                    }
-                  </SelectGroup>
-                </SelectContent>
-              </Select>
+                flagSubCategory &&
+                <Select onValueChange={handleOnChangeOfProperties}>
+                  <SelectTrigger className="w-fit">
+                    <SelectValue placeholder="Select a property" />
+                  </SelectTrigger>
+                  <SelectContent>
+                    <SelectGroup>
+                      <SelectLabel>{selectedSubCategory?.name}</SelectLabel>
+                      {
+                        selectedSubCategory?.properties?.flatMap((element: any, index: number) => {
+                          return (Object.keys(element).map((key: string) => (
+                            <SelectItem key={`${index}-${key}`} value={key}>
+                              {key}
+                            </SelectItem>
+                          )))
+                        })
+                      }
+                    </SelectGroup>
+                  </SelectContent>
+                </Select>
+              }
+              {
+                flagProperty &&
+                <Select onValueChange={handleOnChangeOfProperties}>
+                  <SelectTrigger className="w-fit">
+                    <SelectValue placeholder="Select a property" />
+                  </SelectTrigger>
+                  <SelectContent>
+                    <SelectGroup>
+                      {
+                        Object.entries(selectProperties).map(([key, value]) => {
+                          return (
+                            <div key={key}>
+                              <SelectLabel>{key}</SelectLabel>
+                              {
+                                (value as any).map((element:any, index:number) => {
+                                  <SelectItem key={index} value={element}>
+                                    {element}
+                                  </SelectItem>
+                                })
+                              }
+                            </div>
+                          )
+                        })
+                      }
+                    </SelectGroup>
+                  </SelectContent>
+                </Select>
               }
             </div>
           </div>
