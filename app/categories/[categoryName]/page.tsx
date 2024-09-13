@@ -53,14 +53,14 @@ const page = ({ params }: any) => {
   }
 
   const handleOnChangeOfProperties = (value: any) => {
-    const findObj = filterCategory?.subCategory?.properties?.find((item: any) => {
+    const findObj = selectedSubCategory?.properties?.find((item: any) => {
       const keys = Object.keys(item);
       return keys.some((key: any) => key === value);
     });
     setFlagProperty(true);
     console.log(findObj, 'property')
-    console.log(value, 'property')
-    setSelectProperties(findObj);
+    console.log(findObj, 'property')
+    setSelectProperties(value);
   }
 
 
