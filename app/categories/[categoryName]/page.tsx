@@ -58,9 +58,9 @@ const page = ({ params }: any) => {
       return keys.some((key: any) => key === value);
     });
     setFlagProperty(true);
-    console.log(findObj, 'property')
-    console.log(findObj, 'property')
-    setSelectProperties(value);
+    console.log(findObj[value], 'property')
+    console.log(value, 'property value')
+    setSelectProperties(findObj);
   }
 
 
@@ -113,7 +113,7 @@ const page = ({ params }: any) => {
               }
               {
                 flagProperty &&
-                <Select onValueChange={handleOnChangeOfProperties}>
+                <Select>
                   <SelectTrigger className="w-fit">
                     <SelectValue placeholder="Select a property" />
                   </SelectTrigger>
@@ -126,14 +126,17 @@ const page = ({ params }: any) => {
                               <SelectLabel>{key}</SelectLabel>
                               {
                                 (value as any).map((element:any, index:number) => {
+                                  return (
                                   <SelectItem key={index} value={element}>
                                     {element}
                                   </SelectItem>
+
+                                  )
                                 })
                               }
                             </div>
-                          )
-                        })
+                            )
+                        }) as any
                       }
                     </SelectGroup>
                   </SelectContent>
