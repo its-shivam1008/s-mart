@@ -25,6 +25,7 @@ const page = ({ params }: any) => {
 
   const [selectedSubCategory, setSelectedSubCategory] = useState<any>({})
   const [selectProperties, setSelectProperties] = useState<any>({})
+  const [selectedProperty, setSelectedProperty] = useState<any>('')
   const [flagSubCategory, setFlagSubCategory] = useState(false)
   const [flagProperty, setFlagProperty] = useState(false)
   const [showFilter, setShowFilter] = useState(false)
@@ -50,10 +51,10 @@ const page = ({ params }: any) => {
   const handleOnChangeOfSubCategory = async (value: any) => {
     const findObj = filterCategory?.subCategory?.find((item: any) => item.name === value);
     setSelectedSubCategory(findObj)
-    console.log('findObj',findObj)
+    console.log('findObj', findObj)
     setFlagSubCategory(true)
-    const filteredProducts = await filterProducts('name','asc',findObj.name)
-    if(filteredProducts && filteredProducts.success){
+    const filteredProducts = await filterProducts('name', 'asc', findObj.name)
+    if (filteredProducts && filteredProducts.success) {
       const FilteredProdObj = JSON.parse(filteredProducts.categoryProducts as string)
       setProducts(FilteredProdObj)
     }
@@ -68,20 +69,39 @@ const page = ({ params }: any) => {
     console.log(findObj, 'property')
     console.log(value, 'property value')
     setSelectProperties(findObj);
-  //   const result = await filterProducts(
-  //     'priceAfterDiscount',   // Field to sort by
-  //     'asc',                  // Sort order
-  //     'Mobile Phones',        // SubCategory name
-  //     { brand: 'Apple' }      // Filtering properties
-  // );
+    setSelectedProperty(findObj.name)
   }
 
-  const handleValuesOfProperties = () => {
-
+  const handleValuesOfProperties = async (value: any) => {
+    const keys = Object.keys(selectProperties);
+    if (keys.length > 0) {
+      const filteredProducts = await filterProducts('name', 'asc', selectedProperty, { [keys[0]]: value })
+      if (filteredProducts && filteredProducts.success) {
+        const FilteredProdObj = JSON.parse(filteredProducts.categoryProducts as string)
+        setProducts(FilteredProdObj)
+      }
+    }
   }
 
-  const handleSorting = () => {
-
+  const handleSorting = async (value: string) => {
+    var sortBy:any = 'name'
+    var order:any = 'asc';
+    if (value == 'a-z') {
+      sortBy = 'name'
+      order = 'asc'
+    } else if (value == 'z-a') {
+      order = 'desc'
+    } else if (value == 'priceAsc') {
+      sortBy = 'priceAfterDiscount'
+    } else if (value == 'priceDesc') {
+      sortBy = 'priceAfterDiscount'
+      order = 'desc'
+    }
+    const filteredProducts = await filterProducts(sortBy, order)
+    if (filteredProducts && filteredProducts.success) {
+      const FilteredProdObj = JSON.parse(filteredProducts.categoryProducts as string)
+      setProducts(FilteredProdObj)
+    }
   }
 
 
@@ -171,7 +191,7 @@ const page = ({ params }: any) => {
                 <SelectContent>
                   <SelectGroup>
                     <SelectItem value='a-z'>
-                     name a-z order
+                      name a-z order
                     </SelectItem>
                     <SelectItem value='priceAsc'>
                       price - ascending order
@@ -180,7 +200,7 @@ const page = ({ params }: any) => {
                       price - descending order
                     </SelectItem>
                     <SelectItem value='z-a'>
-                     name z-a order
+                      name z-a order
                     </SelectItem>
                   </SelectGroup>
                 </SelectContent>
