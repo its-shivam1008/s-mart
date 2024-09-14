@@ -13,6 +13,7 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select"
+import { Filter } from 'lucide-react'
 
 
 const page = ({ params }: any) => {
@@ -26,6 +27,7 @@ const page = ({ params }: any) => {
   const [selectProperties, setSelectProperties] = useState<any>({})
   const [flagSubCategory, setFlagSubCategory] = useState(false)
   const [flagProperty, setFlagProperty] = useState(false)
+  const [showFilter, setShowFilter] = useState(false)
 
   useEffect(() => {
     (async () => {
@@ -63,15 +65,24 @@ const page = ({ params }: any) => {
     setSelectProperties(findObj);
   }
 
+  const handleValuesOfProperties = () => {
+
+  }
+
+  const handleSorting = () => {
+
+  }
+
 
   return (
     <div>
       <SlideShow arrayOfImages={images} imageHeight='h-[80vh]' />
       <div className='container mx-auto'>
         {
-          isLoading ? <div className='mx-auto'> <Loading /></div> : <><div className=' my-5 flex justify-between items-center'>
+          isLoading ? <div className='mx-auto'> <Loading /></div> : <><div className=' my-5 flex md:flex-row flex-col gap-3 justify-between items-center'>
             <div className="text-2xl font-bold">{products[0]?.category?.parentCategory?.name}</div>
-            <div className='flex gap-4'>
+            <div className={`bg-black rounded-full p-4 md:hidden`} onClick={() => setShowFilter(!showFilter)}><Filter className='text-white text-2xl' /></div>
+            <div className={`md:flex flex gap-4 flex-col justify-center items-center md:flex-row my-10 ${showFilter ? '' : 'hidden'}`}>
               <Select onValueChange={handleOnChangeOfSubCategory}>
                 <SelectTrigger className="w-fit">
                   <SelectValue placeholder="Select a Sub Category" />
@@ -113,7 +124,7 @@ const page = ({ params }: any) => {
               }
               {
                 flagProperty &&
-                <Select>
+                <Select onValueChange={handleValuesOfProperties}>
                   <SelectTrigger className="w-fit">
                     <SelectValue placeholder="Select a property" />
                   </SelectTrigger>
@@ -125,23 +136,44 @@ const page = ({ params }: any) => {
                             <div key={key}>
                               <SelectLabel>{key}</SelectLabel>
                               {
-                                (value as any).map((element:any, index:number) => {
+                                (value as any).map((element: any, index: number) => {
                                   return (
-                                  <SelectItem key={index} value={element}>
-                                    {element}
-                                  </SelectItem>
+                                    <SelectItem key={index} value={element}>
+                                      {element}
+                                    </SelectItem>
 
                                   )
                                 })
                               }
                             </div>
-                            )
+                          )
                         }) as any
                       }
                     </SelectGroup>
                   </SelectContent>
                 </Select>
               }
+              <Select onValueChange={handleSorting}>
+                <SelectTrigger className="w-fit">
+                  <SelectValue placeholder="Sort by ..." />
+                </SelectTrigger>
+                <SelectContent>
+                  <SelectGroup>
+                    <SelectItem value='a-z'>
+                     name a-z order
+                    </SelectItem>
+                    <SelectItem value='priceAsc'>
+                      price - ascending order
+                    </SelectItem>
+                    <SelectItem value='priceDesc'>
+                      price - descending order
+                    </SelectItem>
+                    <SelectItem value='z-a'>
+                     name z-a order
+                    </SelectItem>
+                  </SelectGroup>
+                </SelectContent>
+              </Select>
             </div>
           </div>
             <div className='flex flex-col md:flex-row md:flex-wrap gap-6 w-full mx-auto'>

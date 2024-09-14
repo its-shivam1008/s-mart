@@ -34,10 +34,11 @@ const ProductCards: FunctionComponent<CardInfo> = ({ cardInfo }) => {
         if (!wishlist.includes(item)) {
             wishlist.push(item);
             saveWishlist(wishlist);
-            console.log(item + ' added to wishlist!');
-        } else {
-            console.log(item + ' is already in the wishlist.');
-        }
+            // console.log(item + ' added to wishlist!');
+        } 
+        // else {
+        // console.log(item + ' is already in the wishlist.');
+        // }
     }
     function removeFromWishlist(item: string) {
         let wishlist = getWishlist();
@@ -45,14 +46,15 @@ const ProductCards: FunctionComponent<CardInfo> = ({ cardInfo }) => {
         if (index > -1) {
             wishlist.splice(index, 1);
             saveWishlist(wishlist);
-            console.log(item + ' removed from wishlist!');
-        } else {
-            console.log(item + ' was not found in the wishlist.');
-        }
+            // console.log(item + ' removed from wishlist!');
+        } 
+        // else {
+        //     console.log(item + ' was not found in the wishlist.');
+        // }
     }
     function clearWishlist() {
         localStorage.removeItem('wishlist');
-        console.log('Wishlist cleared!');
+        // console.log('Wishlist cleared!');
     }
 
     function saveCart(cart: string[]) {
@@ -67,10 +69,11 @@ const ProductCards: FunctionComponent<CardInfo> = ({ cardInfo }) => {
         if (!cart.includes(item)) {
             cart.push(item);
             saveCart(cart);
-            console.log(item + ' added to cart!');
-        } else {
-            console.log(item + ' is already in the cart.');
-        }
+            // console.log(item + ' added to cart!');
+        } 
+        // else {
+        //     console.log(item + ' is already in the cart.');
+        // }
     }
     function removeFromCart(item: string) {
         let cart = getCart();
@@ -78,14 +81,15 @@ const ProductCards: FunctionComponent<CardInfo> = ({ cardInfo }) => {
         if (index > -1) {
             cart.splice(index, 1);
             saveCart(cart);
-            console.log(item + ' removed from cart!');
-        } else {
-            console.log(item + ' was not found in the cart.');
-        }
+            // console.log(item + ' removed from cart!');
+        } 
+        // else {
+        //     console.log(item + ' was not found in the cart.');
+        // }
     }
     function clearCart() {
         localStorage.removeItem('cart');
-        console.log('cart cleared!');
+        // console.log('cart cleared!');
     }
 
     // clearWishlist()
@@ -104,7 +108,7 @@ const ProductCards: FunctionComponent<CardInfo> = ({ cardInfo }) => {
             } else {
                 removeFromWishlist(productId)
             }
-            console.log(getWishlist());
+            // console.log(getWishlist());
         }
     }
 
@@ -127,7 +131,7 @@ const ProductCards: FunctionComponent<CardInfo> = ({ cardInfo }) => {
                 const res = await getItemFromCart(session.user.email as string)
                 // console.log(res)
                 if(res.success){
-                    console.log(res.cart)
+                    // console.log(res.cart)
                     const cartObject = JSON.parse(res.cart as string)
                     // console.log(cartObject)
                     for (let b of cartObject) {
@@ -167,7 +171,7 @@ const ProductCards: FunctionComponent<CardInfo> = ({ cardInfo }) => {
             } else {
                 removeFromCart(productId)
             }
-            console.log(getCart());
+            // console.log(getCart());
         }
     }
 
