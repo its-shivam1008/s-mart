@@ -75,3 +75,27 @@ export const fetchCategory = async (categoryName:string) => {
     }
 }
 
+export const filterProducts = async (sortBy: 'priceAfterDiscount' | 'name', order: 'asc' | 'desc', subCategory?: string) => {
+    await dbConnect();
+    
+    try {
+        const sortOrder = order === 'desc' ? -1 : 1;
+
+        const query: any = {};
+        if (subCategory) {
+            query['category.subCategory.name'] = subCategory;
+        }
+
+        const products = await ProductModel.find(query).sort({ [sortBy]: sortOrder });
+
+        if (products.length > 0) {
+
+            const stringArray = JSON.stringify(products);
+            return { message: 'Products found', categoryProducts: stringArray, success: true };
+        } else {
+            return { message: 'Nothing found', success: false };
+        }
+    } catch (err) {
+        return { message: 'Some error occurred', error: JSON.stringify(err), success: false };
+    }
+};
