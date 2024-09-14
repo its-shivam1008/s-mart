@@ -20,6 +20,7 @@ interface Product extends Document{
         subCategory:{
             name:string;
             id:Schema.Types.ObjectId;
+            properties:[]
         };
     };
     storeId:Schema.Types.ObjectId;
@@ -63,7 +64,8 @@ const ProductSchema:Schema<Product> = new Schema({
             id:{
                 type:Schema.Types.ObjectId,
                 ref:'SubCategory'
-            }
+            },
+            properties:[]
         }
     },
     storeId:{

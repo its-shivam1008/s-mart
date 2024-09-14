@@ -1,5 +1,5 @@
 'use client'
-import { fetchAllCategoryProduct, fetchCategory } from '@/actions/categories'
+import { fetchAllCategoryProduct, fetchCategory, filterProducts } from '@/actions/categories'
 import Loading from '@/components/Loading'
 import ProductCards from '@/components/ProductCards'
 import SlideShow from '@/components/SlideShow'
@@ -47,11 +47,16 @@ const page = ({ params }: any) => {
     })()
   }, [])
 
-  const handleOnChangeOfSubCategory = (value: any) => {
+  const handleOnChangeOfSubCategory = async (value: any) => {
     const findObj = filterCategory?.subCategory?.find((item: any) => item.name === value);
     setSelectedSubCategory(findObj)
-    console.log(findObj)
+    console.log('findObj',findObj)
     setFlagSubCategory(true)
+    const filteredProducts = await filterProducts('name','asc',findObj.name)
+    if(filteredProducts && filteredProducts.success){
+      const FilteredProdObj = JSON.parse(filteredProducts.categoryProducts as string)
+      setProducts(FilteredProdObj)
+    }
   }
 
   const handleOnChangeOfProperties = (value: any) => {
@@ -60,9 +65,15 @@ const page = ({ params }: any) => {
       return keys.some((key: any) => key === value);
     });
     setFlagProperty(true);
-    console.log(findObj[value], 'property')
+    console.log(findObj, 'property')
     console.log(value, 'property value')
     setSelectProperties(findObj);
+  //   const result = await filterProducts(
+  //     'priceAfterDiscount',   // Field to sort by
+  //     'asc',                  // Sort order
+  //     'Mobile Phones',        // SubCategory name
+  //     { brand: 'Apple' }      // Filtering properties
+  // );
   }
 
   const handleValuesOfProperties = () => {
