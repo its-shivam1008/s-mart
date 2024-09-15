@@ -55,3 +55,22 @@ export const checkUserAddressFormFilled = async (userEmail:string) =>{
         return {message:'some error occured', error: JSON.stringify(err)}
     }
 }
+
+
+export const checkUserPassword = async (userEmail:string, password:string) => {
+    await dbConnect();
+    try{
+        const user = await UserModel.findOne({email :userEmail})
+        if(!user){
+            return {message:'Cannot find user', success:false};
+        }
+        const isPasswordCorrect = await user.comparePassword(password);
+        if(isPasswordCorrect){
+            return {message:'Correct password', success:true}
+          }else{
+            return {message:'Incorrect password', success:false}
+          }
+    }catch(err){
+        return {message:'some error occured', error: JSON.stringify(err)}
+    }
+}

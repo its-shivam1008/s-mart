@@ -96,7 +96,6 @@ const page = () => {
     if (response.data.success) {
       console.log('prv data', response.data.product)
       setPreviousFormData(response.data.product)
-
     }
     setIsEditButtonClicked(false);
   }
