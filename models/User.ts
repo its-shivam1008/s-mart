@@ -139,7 +139,7 @@ const UserSchema:Schema<User> = new Schema({
 
 UserSchema.pre('save', async function(){
     const user = this;
-    if(user.isModified('user')) return NextResponse.next();
+    if(!user.isModified('password')) return NextResponse.next();
     try{
         if(user.password){
             const salt = await bcrypt.genSalt(5);

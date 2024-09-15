@@ -53,6 +53,9 @@ const page = () => {
 
   const form = useForm<z.infer<typeof checkPasswordSchema>>({
     resolver:zodResolver(checkPasswordSchema),
+    defaultValues:{
+      password:''
+    }
   })
 
   const onUpdatePassword  = async (password: z.infer<typeof checkPasswordSchema>) => {

@@ -86,7 +86,7 @@ export const updateUserPassword = async (userEmail:string, password:string) => {
         user.password = password
         const res = await user.save();
         if(res){
-            console.log(res);
+            // console.log(res);
             return {message:'Password updated', success:true}
           }else{
             return {message:'Unable to update password', success:false}
