@@ -18,7 +18,7 @@ import { z } from 'zod';
 import { useForm } from 'react-hook-form';
 import { Input } from "@/components/ui/input"
 import { checkPasswordSchema } from '@/schemas/signInSchema';
-import { checkUserPassword } from '@/actions/checkUserType';
+import { checkUserPassword, updateUserPassword } from '@/actions/checkUserType';
 import { useSession } from 'next-auth/react';
 import { useToast } from '@/components/ui/use-toast';
 import Loading from '@/components/Loading';
@@ -26,21 +26,27 @@ import Loading from '@/components/Loading';
 const page = () => {
   const { data: session, status } = useSession()
   const [editPassword, setEditPassword] = useState(false)
+  const [updatePassword, setUpdatePassword] = useState(false)
   const [isSubmitting, setIsSubmitting] = useState(false)
   const { toast } = useToast()
 
-  const onCheckPassword = async (password:z.infer<typeof checkPasswordSchema>) => {
+
+    const onCheckPassword = async (password:z.infer<typeof checkPasswordSchema>) => {
+    setIsSubmitting(true)
     const response = await checkUserPassword(session?.user?.email as string , password.password as string)
     if(response.success){
       toast({
         title:'Correct Password'
       })
+      setIsSubmitting(false)
       setEditPassword(false)
+      setUpdatePassword(true)
     }else{
       toast({
         variant: "destructive",
         title: 'Incorrect password',
       })
+      setIsSubmitting(false)
       setEditPassword(false)
     }
   }
@@ -49,9 +55,68 @@ const page = () => {
     resolver:zodResolver(checkPasswordSchema),
   })
 
+  const onUpdatePassword  = async (password: z.infer<typeof checkPasswordSchema>) => {
+    setIsSubmitting(true)
+    const response = await updateUserPassword(session?.user?.email as string, password.password as string)
+    if(response.success){
+      toast({
+        title:response.message
+      })
+      setIsSubmitting(false)
+      setUpdatePassword(false)
+    }else{
+      toast({
+        variant: "destructive",
+        title: 'Some error occured',
+      })
+      setIsSubmitting(false)
+      setUpdatePassword(false)
+    }
+  }
+
 
   return (
     <div className='flex flex-col gap-16'>
+      {
+        updatePassword && <Modal>
+        <div className="w-auto flex justify-end"><button type="button" onClick={() => setUpdatePassword(false)} title='close'><X className='text-white size-8' /></button></div>
+        <div className="p-4 rounded-[16px] w-auto">
+          <div className=" p-4 w-full max-w-md h-full md:h-auto">
+            <div className=" p-4 text-center bg-white rounded-lg shadow dark:bg-gray-800 sm:p-5">
+              <p className="mb-4 text-gray-500 dark:text-gray-600">Enter new password</p>
+              <Form {...form}>
+                <form onSubmit={form.handleSubmit(onUpdatePassword)} className="space-y-4">
+                  <FormField
+                    control={form.control}
+                    name="password"
+                    render={({ field }) => (
+                      <FormItem>
+                        <FormLabel>Password</FormLabel>
+                        <FormControl>
+                          <Input type='password' placeholder="Your new password"
+                            {...field}
+                          />
+                        </FormControl>
+                        <FormMessage />
+                      </FormItem>
+                    )}
+                  />
+                  <Button type='submit' className='bg-purple-500 hover:bg-purple-400 disabled:bg-purple-300' disabled={isSubmitting}>
+                    {
+                      isSubmitting ? (
+                        <>
+                          <Loader2 className='mr-2 h-4 w-4 animate-spin' />Please wait
+                        </>
+                      ) : ('Confirm')
+                    }
+                  </Button>
+                </form>
+              </Form>
+            </div>
+          </div>
+        </div>
+      </Modal>
+      }
       {
         editPassword && <Modal>
           <div className="w-auto flex justify-end"><button type="button" onClick={() => setEditPassword(false)} title='close'><X className='text-white size-8' /></button></div>
@@ -76,7 +141,7 @@ const page = () => {
                         </FormItem>
                       )}
                     />
-                    <Button type='submit' className='bg-blue-500 hover:bg-blue-400 disabled:bg-blue-300' disabled={isSubmitting}>
+                    <Button type='submit' className='bg-purple-500 hover:bg-purple-400 disabled:bg-purple-300' disabled={isSubmitting}>
                       {
                         isSubmitting ? (
                           <>

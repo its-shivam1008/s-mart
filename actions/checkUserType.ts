@@ -74,3 +74,24 @@ export const checkUserPassword = async (userEmail:string, password:string) => {
         return {message:'some error occured', error: JSON.stringify(err)}
     }
 }
+
+
+export const updateUserPassword = async (userEmail:string, password:string) => {
+    await dbConnect();
+    try{
+        const user = await UserModel.findOne({email :userEmail})
+        if(!user){
+            return {message:'Cannot find user', success:false};
+        }
+        user.password = password
+        const res = await user.save();
+        if(res){
+            console.log(res);
+            return {message:'Password updated', success:true}
+          }else{
+            return {message:'Unable to update password', success:false}
+          }
+    }catch(err){
+        return {message:'some error occured', error: JSON.stringify(err)}
+    }
+}
