@@ -30,7 +30,7 @@ export async function POST(req:Request){
             const savedData = new ParentCategoryModel(data.payload)
             await savedData.save();
     
-            return NextResponse.json({message:"Saved all parent categories", success:true}, {status:200})
+            return NextResponse.json({message:"Saved parent categories", success:true}, {status:200})
         }else if(queryParam.subCategory){
             // for bulk data insertion
 
