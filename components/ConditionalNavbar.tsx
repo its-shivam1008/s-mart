@@ -7,7 +7,7 @@ const ConditionalNavbar = () => {
     const pathname = usePathname();
     const hideNavbarOnRoutes:string[] = ['/login', '/sign-up', '/sign-up/store','/verify', '/setup-password'];
 
-    const hideNavbarfromPath = hideNavbarOnRoutes.includes(pathname) || pathname.startsWith('/store')
+    const hideNavbarfromPath = hideNavbarOnRoutes.includes(pathname) || pathname.startsWith('/store') || pathname.startsWith('/admin')
   return (
     (!hideNavbarfromPath && <Navbar />)
   )

@@ -80,6 +80,8 @@ const page = () => {
                 }else{
                     router.push('/store-getting-started')
                 }
+            }else if(response?.userRole == 'Admin'){
+                router.push('/admin')
             }
         })()
         // const isNextRoutePathStore = localStorage.getItem('isNextRoutePathStore')
