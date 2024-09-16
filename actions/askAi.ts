@@ -11,26 +11,31 @@ export interface Message {
 
 export async function continueConversation(history: Message[]) {
   'use server';
+  try {
 
-  const stream = createStreamableValue();
+    const stream = createStreamableValue();
 
-  (async () => {
-    const { textStream } = await streamText({
+    (async () => {
+      const { textStream } = await streamText({
         model: google('gemini-1.5-flash-latest'),
-      // system:
-      //   "You are a dude that doesn't drop character until the DVD commentary.",
+        // system:
+        //   "You are a dude that doesn't drop character until the DVD commentary.",
+        messages: history,
+      });
+
+      for await (const text of textStream) {
+        stream.update(text);
+      }
+
+      stream.done();
+    })();
+
+    return {
       messages: history,
-    });
-
-    for await (const text of textStream) {
-      stream.update(text);
-    }
-
-    stream.done();
-  })();
-
-  return {
-    messages: history,
-    newMessage: stream.value,
-  };
+      newMessage: stream.value,
+      success:true
+    };
+  } catch (err) {
+    return { message: 'Some error occured', error: JSON.stringify(err), success: false }
+  }
 }
