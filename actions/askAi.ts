@@ -14,33 +14,57 @@ interface ConversationResult {
   messages?: Message[];
   newMessage?: any;
   success: boolean;
-  error?:string;
-  message?:string
+  error?: string;
+  message?: string
 }
 
-export async function continueConversation(history: Message[], flag:boolean, parentCat?:string, subCat?:string):Promise<ConversationResult> {
+export async function continueConversation(history: Message[], flag: boolean, parentCat?: string, subCat?: string): Promise<ConversationResult> {
   'use server';
   try {
-    var productsObj:any = []
-    if(parentCat && !subCat){
+    var productsObj: any = []
+    if (parentCat && !subCat) {
       const products = await fetchAllCategoryProduct(parentCat)
-      if(products?.success){
+      if (products?.success) {
         productsObj = JSON.parse(products.categoryProducts as string)
       }
     }
-    if(subCat){
-      const products = await filterProducts('name','asc',subCat)
-      if(products?.success){
+    if (subCat) {
+      const products = await filterProducts('name', 'asc', subCat)
+      if (products?.success) {
         productsObj = JSON.parse(products.categoryProducts as string)
       }
     }
+    console.log(productsObj)
 
     const stream = createStreamableValue();
 
     (async () => {
       const { textStream } = await streamText({
-        model: google('gemini-1.5-flash-latest'),
-        system:flag ? `You are an ecommerce store manager named Apollo you manage a ecommerce store S-mart, you have a special role and that is you will recommend products to the customers on the basis of the customer needs and its usage described by the customer you will analyse the array of objects which are the array of products you have to analyse each object carefully and match that the product fits according to the customer needs and its usage if yes then give there _id each seprated by the || also include '||' in the begnning of the _id and ending of the _id if none of the products from the given list is the right fit or the nearest fit for the customer then ask him for more details or use cases of the product or ask him to change the category and sub category  and try again, you are an expert and love to help your customers , here is the array ${productsObj} ` : '',
+        model: google('gemini-1.5-pro-latest'),
+        system: flag ? `You are Apollo, the ecommerce store manager for S-mart. Your task is to assist customers by recommending products based on their needs and usage described. Analyze the provided array of product objects carefully and match them against the customer's requirements.
+
+Instructions:
+Note : Don't ask for the product array from the customer as it is already passed to you 
+
+Product Recommendation:
+
+For each product in this array ${productsObj}, determine if it fits the customer's needs and usage.
+If a product is a good fit, return its _id and name in the following format: ||_id|| and ||name||, each separated by ||.
+If No Suitable Product is Found:
+
+If none of the products in the given array meet the customer's needs, ask the customer for more details or additional use cases.
+Alternatively, suggest that the customer change the category or sub-category and try again.
+Handling Products from Other Stores:
+
+Only recommend products from the provided array. If no suitable product is found in the array, apologize and offer assistance with any other queries.
+Example Response:
+
+If a suitable product is found:
+also provide the product id from the array that I given you
+||12345 || Cool Gadget||
+If no suitable product is found:
+"Sorry, we couldn't find a product that matches your needs. Could you please provide more details or consider changing the category or sub-category?"
+Remember, your goal is to be helpful and provide the best recommendations possible based on the information provided.` : '',
         messages: history,
       });
 
@@ -54,7 +78,7 @@ export async function continueConversation(history: Message[], flag:boolean, par
     return {
       messages: history,
       newMessage: stream.value,
-      success:true
+      success: true
     };
   } catch (err) {
     return { message: 'Some error occured', error: JSON.stringify(err), success: false }

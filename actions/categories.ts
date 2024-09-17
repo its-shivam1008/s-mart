@@ -103,7 +103,7 @@ export const filterProducts = async (sortBy: 'priceAfterDiscount' | 'name', orde
         }
 
         // Executing the query with sorting
-        const products = await ProductModel.find(query).sort({ [sortBy]: sortOrder });
+        const products = await ProductModel.find(query).select('-userReviews').sort({ [sortBy]: sortOrder });
 
         if (products.length > 0) {
             // Converting products to JSON string for response

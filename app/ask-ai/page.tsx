@@ -67,9 +67,9 @@ export default function Home() {
     ]
 
     if (parentCategoryValue && !subCategoryValue) {
-      ({ messages=[{role:'assistant', content:'Cannot respond right now!'}] as Message[], newMessage, success } = await continueConversation(params, false, parentCategoryValue));
+      ({ messages=[{role:'assistant', content:'Cannot respond right now!'}] as Message[], newMessage, success } = await continueConversation(params, true, parentCategoryValue));
     } else if (subCategoryValue) {
-      ({ messages=[{role:'assistant', content:'Cannot respond right now!'}] as Message[], newMessage, success } = await continueConversation(params, false, parentCategoryValue, subCategoryValue));
+      ({ messages=[{role:'assistant', content:'Cannot respond right now!'}] as Message[], newMessage, success } = await continueConversation(params, true, parentCategoryValue, subCategoryValue));
     } else {
       ({ messages=[{role:'assistant', content:'Cannot respond right now!'}] as Message[], newMessage, success } = await continueConversation(params, false));
     }
