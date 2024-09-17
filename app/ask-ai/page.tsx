@@ -6,7 +6,17 @@ import { readStreamableValue } from 'ai/rsc';
 import { marked } from 'marked';
 import { useToast } from '@/components/ui/use-toast';
 import { Novatrix } from 'uvcanvas';
-import { Send } from 'lucide-react';
+import { Send, X } from 'lucide-react';
+import {
+  Select,
+  SelectContent,
+  SelectGroup,
+  SelectItem,
+  SelectLabel,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select"
+import { fetchCategories, fetchCategory } from '@/actions/categories';
 
 export const maxDuration = 30;
 
@@ -14,6 +24,33 @@ export default function Home() {
   const [conversation, setConversation] = useState<Message[]>([]);
   const [input, setInput] = useState<string>('');
   const { toast } = useToast()
+
+  const [parentCategory, setParentCategory] = useState<any>([])
+  const [filterCategory, setFilterCategory] = useState<any>([])
+  const [showSelectOption, setShowSelectOption] = useState(false)
+  const [showSelectOption2, setShowSelectOption2] = useState(false)
+
+  const handleOnChangeCategory = async (value:string) =>{
+    const category = await fetchCategory(value)
+      if (category?.success) {
+        const categoryObjs = JSON.parse(category?.categoriesObj as string)
+        setFilterCategory(categoryObjs)
+        setShowSelectOption2(true)
+      }
+  }
+
+  const handleClickBtn = async () => {
+    setShowSelectOption(true)
+    const response = await fetchCategories();
+    if(response?.success){
+      const categoryObjs = JSON.parse(response?.categoriesArray as string)
+      setParentCategory(categoryObjs)
+    }
+  }
+
+  const handleOnChangeOfSubCategory = () => {
+
+  }
 
   const handleSendToAi = async () => {
     const { messages, newMessage, success } = await continueConversation([ 
@@ -59,23 +96,69 @@ export default function Home() {
                 ))}
               </div>
             </div>
+            <div className='flex flex-wrap justify-around items-center'>
+              <div className={`bg-[#f2f2f2] py-2 px-1 ${showSelectOption ? 'hidden':''}`}>
+                <button onClick={handleClickBtn} type='button' className='bg-gradient-to-r from-violet-400 to-pink-600 bg-clip-text text-transparent w-fit font-bold text-lg'>Find a product</button>
+              </div>
+              <div className={`bg-[#f2f2f2] py-2 px-1 ${showSelectOption ? '':'hidden'}`}>
+                <button onClick={() => setShowSelectOption(false)} title='close' type='button' className='bg-gradient-to-r from-violet-400 to-pink-600 bg-clip-text text-transparent w-fit font-bold text-lg'><X /></button>
+              </div>
+              { showSelectOption &&
+                <Select onValueChange={handleOnChangeCategory}>
+                <SelectTrigger className="w-fit">
+                  <SelectValue placeholder="Select a Category" />
+                </SelectTrigger>
+                <SelectContent>
+                  <SelectGroup>
+                    <SelectLabel>Category</SelectLabel>
+                    {
+                      parentCategory.map((element: any, index: number) => {
+                        return (
+                          <SelectItem key={index} value={element.name}>{element.name}</SelectItem>
+                        )
+                      })
+                    }
+                  </SelectGroup>
+                </SelectContent>
+              </Select>
+              }
+              { showSelectOption2 && 
+                <Select onValueChange={handleOnChangeOfSubCategory}>
+                <SelectTrigger className="w-fit">
+                  <SelectValue placeholder="Select a Sub Category" />
+                </SelectTrigger>
+                <SelectContent>
+                  <SelectGroup>
+                    <SelectLabel>{filterCategory?.name}</SelectLabel>
+                    {
+                      filterCategory?.subCategory?.map((element: any, index: number) => {
+                        return (
+                          <SelectItem key={index} value={element.name}>{element.name}</SelectItem>
+                        )
+                      })
+                    }
+                  </SelectGroup>
+                </SelectContent>
+              </Select>
+              }
+            </div>
             <div className='flex p-4  items-center'>
               <input
                 title='typing.....'
                 type="text"
                 value={input}
-                placeholder="What's in your mind"
+                placeholder={showSelectOption ? "Tell me what you are searching for" : "What's in your mind..."}
                 onChange={event => {
                   setInput(event.target.value);
                 }}
                 className='mr-2 p-2 w-full rounded-2xl border-2 border-solid border-[rebeccapurple]'
               />
-              <div
+              <button type='button' title='send to Ai'
                 onClick={handleSendToAi}
                 className='cursor-pointer bg-gradient-to-r from-violet-400 to-pink-400 size-10 rounded-full flex justify-center items-center'
               >
                 <Send className='text-transparent size-8' fill="#f2f2f2"/>
-              </div>
+              </button>
             </div>
           </div>
         </div>

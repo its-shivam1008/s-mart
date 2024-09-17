@@ -15,7 +15,7 @@ export const fetchCategories = async () => {
         }
         if(ArrayCategoryNames.length > 0){
             const stringArray = JSON.stringify(ArrayCategoryNames)
-            return { message: 'Some error occured', categoriesArray: stringArray, success: true }  
+            return { message: 'PARENT CATEGORIES FETCHED', categoriesArray: stringArray, success: true }  
         }
     } catch (err) {
         return { message: 'Some error occured', error: JSON.stringify(err), success: false }
