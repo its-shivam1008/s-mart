@@ -30,33 +30,49 @@ export default function Home() {
   const [showSelectOption, setShowSelectOption] = useState(false)
   const [showSelectOption2, setShowSelectOption2] = useState(false)
 
-  const handleOnChangeCategory = async (value:string) =>{
+  const [parentCategoryValue, setParentCategoryValue] = useState<any>(null)
+  const [subCategoryValue, setSubCategoryValue] = useState<any>(null)
+
+  const handleOnChangeCategory = async (value: string) => {
+    setParentCategoryValue(value);
     const category = await fetchCategory(value)
-      if (category?.success) {
-        const categoryObjs = JSON.parse(category?.categoriesObj as string)
-        setFilterCategory(categoryObjs)
-        setShowSelectOption2(true)
-      }
+    if (category?.success) {
+      const categoryObjs = JSON.parse(category?.categoriesObj as string)
+      setFilterCategory(categoryObjs)
+      setShowSelectOption2(true)
+    }
   }
 
   const handleClickBtn = async () => {
     setShowSelectOption(true)
     const response = await fetchCategories();
-    if(response?.success){
+    if (response?.success) {
       const categoryObjs = JSON.parse(response?.categoriesArray as string)
       setParentCategory(categoryObjs)
     }
   }
 
-  const handleOnChangeOfSubCategory = () => {
-
+  const handleOnChangeOfSubCategory = (value: string) => {
+    setSubCategoryValue(value);
   }
 
   const handleSendToAi = async () => {
-    const { messages, newMessage, success } = await continueConversation([ 
+    var messages:Message[] = []
+    var newMessage
+    var success
+
+    let params:Message[] = [
       ...conversation,
-      { role: 'user', content: input },
-    ]);
+      { role: 'user', content: input }
+    ]
+
+    if (parentCategoryValue && !subCategoryValue) {
+      ({ messages=[{role:'assistant', content:'Cannot respond right now!'}] as Message[], newMessage, success } = await continueConversation(params, false, parentCategoryValue));
+    } else if (subCategoryValue) {
+      ({ messages=[{role:'assistant', content:'Cannot respond right now!'}] as Message[], newMessage, success } = await continueConversation(params, false, parentCategoryValue, subCategoryValue));
+    } else {
+      ({ messages=[{role:'assistant', content:'Cannot respond right now!'}] as Message[], newMessage, success } = await continueConversation(params, false));
+    }
     setInput('');
     if (!success) {
       toast({
@@ -97,49 +113,49 @@ export default function Home() {
               </div>
             </div>
             <div className='flex flex-wrap justify-around items-center'>
-              <div className={`bg-[#f2f2f2] py-2 px-1 ${showSelectOption ? 'hidden':''}`}>
+              <div className={`bg-[#f2f2f2] py-2 px-1 ${showSelectOption ? 'hidden' : ''} rounded-[8px]`}>
                 <button onClick={handleClickBtn} type='button' className='bg-gradient-to-r from-violet-400 to-pink-600 bg-clip-text text-transparent w-fit font-bold text-lg'>Find a product</button>
               </div>
-              <div className={`bg-[#f2f2f2] py-2 px-1 ${showSelectOption ? '':'hidden'}`}>
-                <button onClick={() => setShowSelectOption(false)} title='close' type='button' className='bg-gradient-to-r from-violet-400 to-pink-600 bg-clip-text text-transparent w-fit font-bold text-lg'><X /></button>
+              <div className={`bg-[#f2f2f2] px-[22px] py-4 ${showSelectOption ? '' : 'hidden'} rounded-full`}>
+                <button onClick={() => { setShowSelectOption(false); setShowSelectOption2(false) }} title='close' type='button' className='bg-gradient-to-r from-violet-400 to-pink-600 bg-clip-text text-transparent font-bold text-2xl'>X</button>
               </div>
-              { showSelectOption &&
+              {showSelectOption &&
                 <Select onValueChange={handleOnChangeCategory}>
-                <SelectTrigger className="w-fit">
-                  <SelectValue placeholder="Select a Category" />
-                </SelectTrigger>
-                <SelectContent>
-                  <SelectGroup>
-                    <SelectLabel>Category</SelectLabel>
-                    {
-                      parentCategory.map((element: any, index: number) => {
-                        return (
-                          <SelectItem key={index} value={element.name}>{element.name}</SelectItem>
-                        )
-                      })
-                    }
-                  </SelectGroup>
-                </SelectContent>
-              </Select>
+                  <SelectTrigger className="w-fit">
+                    <SelectValue placeholder="Select a Category" />
+                  </SelectTrigger>
+                  <SelectContent>
+                    <SelectGroup>
+                      <SelectLabel>Category</SelectLabel>
+                      {
+                        parentCategory.map((element: any, index: number) => {
+                          return (
+                            <SelectItem key={index} value={element.name}>{element.name}</SelectItem>
+                          )
+                        })
+                      }
+                    </SelectGroup>
+                  </SelectContent>
+                </Select>
               }
-              { showSelectOption2 && 
+              {showSelectOption2 &&
                 <Select onValueChange={handleOnChangeOfSubCategory}>
-                <SelectTrigger className="w-fit">
-                  <SelectValue placeholder="Select a Sub Category" />
-                </SelectTrigger>
-                <SelectContent>
-                  <SelectGroup>
-                    <SelectLabel>{filterCategory?.name}</SelectLabel>
-                    {
-                      filterCategory?.subCategory?.map((element: any, index: number) => {
-                        return (
-                          <SelectItem key={index} value={element.name}>{element.name}</SelectItem>
-                        )
-                      })
-                    }
-                  </SelectGroup>
-                </SelectContent>
-              </Select>
+                  <SelectTrigger className="w-fit">
+                    <SelectValue placeholder="Select a Sub Category" />
+                  </SelectTrigger>
+                  <SelectContent>
+                    <SelectGroup>
+                      <SelectLabel>{filterCategory?.name}</SelectLabel>
+                      {
+                        filterCategory?.subCategory?.map((element: any, index: number) => {
+                          return (
+                            <SelectItem key={index} value={element.name}>{element.name}</SelectItem>
+                          )
+                        })
+                      }
+                    </SelectGroup>
+                  </SelectContent>
+                </Select>
               }
             </div>
             <div className='flex p-4  items-center'>
@@ -147,7 +163,7 @@ export default function Home() {
                 title='typing.....'
                 type="text"
                 value={input}
-                placeholder={showSelectOption ? "Tell me what you are searching for" : "What's in your mind..."}
+                placeholder={showSelectOption ? "Tell me what type of product you are searching for" : "What's in your mind..."}
                 onChange={event => {
                   setInput(event.target.value);
                 }}
@@ -157,7 +173,7 @@ export default function Home() {
                 onClick={handleSendToAi}
                 className='cursor-pointer bg-gradient-to-r from-violet-400 to-pink-400 size-10 rounded-full flex justify-center items-center'
               >
-                <Send className='text-transparent size-8' fill="#f2f2f2"/>
+                <Send className='text-transparent size-8' fill="#f2f2f2" />
               </button>
             </div>
           </div>
