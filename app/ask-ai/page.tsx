@@ -6,6 +6,7 @@ import { readStreamableValue } from 'ai/rsc';
 import { marked } from 'marked';
 import { useToast } from '@/components/ui/use-toast';
 import { Novatrix } from 'uvcanvas';
+import { Send } from 'lucide-react';
 
 export const maxDuration = 30;
 
@@ -41,14 +42,14 @@ export default function Home() {
 
   return (
     <div className='h-screen'>
-      <div className='bg-green-500 w-full h-full relative'>
-        {/* <Novatrix /> */}
+      <div className=' w-full h-full relative'>
+        <Novatrix />
 
         <div className='absolute bottom-0 left-0 right-0 top-0 h-full w-full bg-fixed z-10'>
           <div className='flex flex-col h-full w-[90%] mx-auto'>
-            <div className='flex-1 rounded-[12px] overflow-y-auto bg-[#f2f2f2] w-[90%] mx-auto my-20 p-4'>
+            <div className='flex-1 rounded-[12px] overflow-y-auto bg-[#f2f2f2] shadow-2xl border-2 border-solid border-[rebeccapurple] w-[90%] mx-auto my-20 p-4'>
               <div className='space-y-2'>
-                {conversation.length === 0 ? "Hii what can I help you ?" : conversation.map((message, index) => (
+                {conversation.length === 0 ? <div className='bg-gradient-to-r from-violet-400 to-pink-600 bg-clip-text text-transparent w-fit font-bold text-lg'>Hii, ask something</div> : conversation.map((message, index) => (
                   <div key={index}>
                     <strong>{message.role}:</strong>
                     <div
@@ -58,23 +59,23 @@ export default function Home() {
                 ))}
               </div>
             </div>
-            <div className='flex p-4 bg-yellow-400'>
+            <div className='flex p-4  items-center'>
               <input
-                title='textbox'
+                title='typing.....'
                 type="text"
                 value={input}
                 placeholder="What's in your mind"
                 onChange={event => {
                   setInput(event.target.value);
                 }}
-                className='mr-2 p-2 w-full rounded-2xl'
+                className='mr-2 p-2 w-full rounded-2xl border-2 border-solid border-[rebeccapurple]'
               />
-              <button
+              <div
                 onClick={handleSendToAi}
-                className='p-2 bg-blue-500 text-white'
+                className='cursor-pointer bg-gradient-to-r from-violet-400 to-pink-400 size-10 rounded-full flex justify-center items-center'
               >
-                Send Message
-              </button>
+                <Send className='text-transparent size-8' fill="#f2f2f2"/>
+              </div>
             </div>
           </div>
         </div>
