@@ -125,3 +125,53 @@ export const deleteReviewOfProduct = async (productId:string, userEmailToDelete:
         return { message: 'Some error occured', error: JSON.stringify(err), success: false }
     }
 }
+
+export const searchProducts = async (query:string) => {
+    await dbConnect();
+    try{
+        const product = await ProductModel.find({
+            $or: [
+                { name: { $regex: query, $options: 'i' } },
+                { description: { $regex: query, $options: 'i' } },
+                { specification: { $regex: query, $options: 'i' } },
+                { priceAfterDiscount: query },
+                { 'category.parentCategory.name': { $regex: query, $options: 'i' } },
+                { 'category.subCategory.name': { $regex: query, $options: 'i' } },
+                // Match any properties in a flexible manner
+                {
+                    'category.subCategory.properties': {
+                        $elemMatch: {
+                            $or: [
+                                { type: { $regex: query, $options: 'i' } },
+                                { megapixel: { $regex: query, $options: 'i' } },
+                                { LensType: { $regex: query, $options: 'i' } },
+                                { brand: { $regex: query, $options: 'i' } },
+                                { storage: { $elemMatch: { $regex: query, $options: 'i' } } },
+                                { color: { $elemMatch: { $regex: query, $options: 'i' } } },
+                            ]
+                        }
+                    }
+                }
+            ],
+        }).limit(5)
+        // const product = await ProductModel.find({
+        //     $or: [
+        //         { name: { $regex: query, $options: 'i' } },
+        //         { description: { $regex: query, $options: 'i' } },
+        //         { specification: { $regex: query, $options: 'i' } },
+        //         { priceAfterDiscount: query },
+        //         { 'category.parentCategory.name': { $regex: query, $options: 'i' } },
+        //         { 'category.subCategory.name': { $regex: query, $options: 'i' } },
+        //     ],
+        // }).limit(4);
+        if (product) {
+            const productsJsonString = JSON.stringify(product)
+            // console.log(productsJsonString)
+            return { message: "Product fetched", product: productsJsonString, success: true };
+        } else {
+            return { message: "unable to find any product of your store", success: false };
+        }
+    } catch (err) {
+        return { message: 'Some error occured', error: JSON.stringify(err), success: false }
+    }
+}

@@ -44,3 +44,8 @@ export const addReviewSchema = z.object({
     review:z.string().min(1, {message:"Write something to add a review!"}).max(200,{message:'Review not more than 200 characters'}).optional(),
     star:z.number().optional()
 })
+
+
+export const searchProduct = z.object({
+    search:z.string().min(1, {message:'Type something to search'})
+})
