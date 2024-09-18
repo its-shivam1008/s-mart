@@ -29,19 +29,16 @@ function FilledLineChart() {
             label: "Accepted",
             tension:0.3,
             borderColor: "rgb(60,186,159)",
-            backgroundColor: "rgb(60,186,159,0.1)",
         }, {
             data: [10, 21, 60, 44, 17, 21, 17],
             label: "Pending",
             tension:0.3,
             borderColor: "rgb(255,165,0)",
-            backgroundColor: "rgb(255,165,0,0.1)",
         }, {
             data: [6, 3, 2, 2, 7, 0, 16],
             label: "Rejected",
             tension:0.3,
             borderColor: "rgb(196,88,80)",
-            backgroundColor: "rgb(196,88,80,0.1)",
         }
         ]
     }

@@ -44,6 +44,8 @@ export async function POST(req:Request){
         if(!order){
             return NextResponse.json({message:"Unable to Create order", success:false}, {status:400})
         }
+        prod.quantity = prod.quantity - data.payload.quantity
+        await prod.save()
         return NextResponse.json({message:"Created the order", order, success:true}, {status:200})
     }catch(err){
         return NextResponse.json({message:'Internal Server Error', success:false}, {status:500})
