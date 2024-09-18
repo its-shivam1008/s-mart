@@ -7,16 +7,7 @@ import { marked } from 'marked';
 import { useToast } from '@/components/ui/use-toast';
 import { Novatrix } from 'uvcanvas';
 import { Send, X } from 'lucide-react';
-import {
-  Select,
-  SelectContent,
-  SelectGroup,
-  SelectItem,
-  SelectLabel,
-  SelectTrigger,
-  SelectValue,
-} from "@/components/ui/select"
-import { fetchCategories, fetchCategory } from '@/actions/categories';
+
 
 export const maxDuration = 30;
 

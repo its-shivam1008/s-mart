@@ -3,6 +3,7 @@ import React from 'react'
 import { ChartSpline, CirclePlus, Shirt, ShoppingBasket, User } from 'lucide-react';
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
+import FilledLineChart from '@/components/FilledLineChart';
 
 
 
@@ -29,6 +30,7 @@ const page = () => {
           </div>
         </div>
       </div>
+      <FilledLineChart />
       <div className="revenue py-5">
         <h1 className='p-5 text-purple-500 font-extrabold'>Revenue</h1>
         <div className='cards flex md:flex-row flex-col md:justify-evenly mx-auto w-fit md:w-auto space-y-8 md:space-y-0'>

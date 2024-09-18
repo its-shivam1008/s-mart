@@ -39,6 +39,7 @@
     "next-cloudinary": "^6.10.0",
     "razorpay": "^2.9.4",
     "react": "^18",
+    "react-chartjs-2": "^5.2.0",
     "react-dom": "^18",
     "react-email": "^1.10.1",
     "react-hook-form": "^7.52.1",
