@@ -134,36 +134,11 @@ export const searchProducts = async (query:string) => {
                 { name: { $regex: query, $options: 'i' } },
                 { description: { $regex: query, $options: 'i' } },
                 { specification: { $regex: query, $options: 'i' } },
-                { priceAfterDiscount: query },
                 { 'category.parentCategory.name': { $regex: query, $options: 'i' } },
                 { 'category.subCategory.name': { $regex: query, $options: 'i' } },
-                // Match any properties in a flexible manner
-                {
-                    'category.subCategory.properties': {
-                        $elemMatch: {
-                            $or: [
-                                { type: { $regex: query, $options: 'i' } },
-                                { megapixel: { $regex: query, $options: 'i' } },
-                                { LensType: { $regex: query, $options: 'i' } },
-                                { brand: { $regex: query, $options: 'i' } },
-                                { storage: { $elemMatch: { $regex: query, $options: 'i' } } },
-                                { color: { $elemMatch: { $regex: query, $options: 'i' } } },
-                            ]
-                        }
-                    }
-                }
             ],
-        }).limit(5)
-        // const product = await ProductModel.find({
-        //     $or: [
-        //         { name: { $regex: query, $options: 'i' } },
-        //         { description: { $regex: query, $options: 'i' } },
-        //         { specification: { $regex: query, $options: 'i' } },
-        //         { priceAfterDiscount: query },
-        //         { 'category.parentCategory.name': { $regex: query, $options: 'i' } },
-        //         { 'category.subCategory.name': { $regex: query, $options: 'i' } },
-        //     ],
-        // }).limit(4);
+        }).limit(5);
+        // console.log(product)
         if (product) {
             const productsJsonString = JSON.stringify(product)
             // console.log(productsJsonString)

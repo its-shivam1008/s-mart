@@ -12,13 +12,6 @@ import {
   FormLabel,
   FormMessage,
 } from "@/components/ui/form";
-import {
-  Select,
-  SelectContent,
-  SelectItem,
-  SelectTrigger,
-  SelectValue,
-} from "@/components/ui/select";
 import { Input } from "@/components/ui/input";
 import { useForm } from 'react-hook-form';
 import * as z from 'zod'
@@ -28,12 +21,16 @@ import SlideShow from '@/components/SlideShow'
 import React, { useEffect, useState } from 'react'
 import { searchProduct } from '@/schemas/productSchema'
 import { Loader2 } from 'lucide-react'
+import { useToast } from '@/components/ui/use-toast'
 
 const page = () => {
 
   const [products, setProducts] = useState<any[]>([])
+  const [searchProductsValue, setSearchProductsValue] = useState<any[]>([])
   const [loading, setLoading] = useState(false)
+  const [loadingResults, setLoadingResults] = useState(false)
   const [isFormSubmitting, setIsFormSubmitting] = useState(false)
+  const {toast} = useToast();
   const getProducts = async ()=>{
     const response = await fetchProductsFromDB(8);
     if(response.success){
@@ -69,12 +66,22 @@ const page = () => {
 
   const onSubmit  = async (value:z.infer<typeof searchProduct>) =>{
     setIsFormSubmitting(true)
+    setLoadingResults(true)
     const response = await searchProducts(value.search)
+    // console.log(value.search)
+    // console.log(response)
+
     if(response.success){
       const productsOBJS = JSON.parse(response.product as string)
-      setProducts(productsOBJS)
+      setSearchProductsValue(productsOBJS)
+      console.log(productsOBJS,'prodobjs')
+    }else{
+      toast({
+        title:'No products found'
+      })
     }
     setIsFormSubmitting(false)
+    setLoadingResults(false)
   }
 
   useEffect(() =>{
@@ -84,17 +91,17 @@ const page = () => {
   
   const images = ['/categoryImages/imageSlider1.jpg', '/categoryImages/imageSlider2.jpg', '/categoryImages/imageSlider3.jpg',  '/categoryImages/imageSlider4.jpg', '/categoryImages/imageSlider5.jpg', '/categoryImages/imageSlider6.jpg']
   return (
-    <div className='mt-20'> 
-      {/* <SlideShow arrayOfImages={images} imageHeight='h-[80vh]'/>         */}
+    <div> 
+      <SlideShow arrayOfImages={images} imageHeight='h-[80vh]'/>        
       <Form {...form}>
-        <form onSubmit={form.handleSubmit(onSubmit)} className='space-y-8'>
+        <form onSubmit={form.handleSubmit(onSubmit)} className='flex items-center gap-5 justify-center my-10'>
       <FormField
                 control={form.control}
                 name="search"
                 render={({ field }) => (
                   <FormItem className='md:flex md:gap-3 md:items-center'>
                     <FormControl>
-                      <Input
+                      <Input className='w-[280px] border-2 border-[rebeccapurple] border-solid'
                         {...field}
                       />
                     </FormControl>
@@ -111,7 +118,8 @@ const page = () => {
             </Button>
             </form>
           </Form>
-      <ProductComponent productData={products}/>
+      { loadingResults? <Loading/>  : <ProductComponent productData={searchProductsValue}/>}
+      <ProductComponent productData={products} />
       { loading && <div className='mb-10'><Loading /></div>}
     </div>
   )
