@@ -6,10 +6,11 @@ ChartJS.register(LineElement,BarElement, CategoryScale, PointElement, LinearScal
 
 interface DataInfo {
     DataInfo :any;
+    titleOfGraph:string
 }
-const FilledLineChart: FunctionComponent<DataInfo> = ({DataInfo}) => {
+const FilledLineChart: FunctionComponent<DataInfo> = ({DataInfo, titleOfGraph}) => {
 
-    const {today, thisWeek, thisMonth} = DataInfo
+    const {today, week, month} = DataInfo
 
     // const canvasRef = useRef<HTMLCanvasElement>(null);
 
@@ -21,7 +22,7 @@ const FilledLineChart: FunctionComponent<DataInfo> = ({DataInfo}) => {
             },
             title:{
                 display:true,
-                text:'Visualising the orders '
+                text:titleOfGraph
             }
         }
     }
@@ -29,7 +30,7 @@ const FilledLineChart: FunctionComponent<DataInfo> = ({DataInfo}) => {
     const data = {
         labels: ["Today", "This week", "This month"],
         datasets: [{
-            data: [86, 114, 106], // variable
+            data: [today, week, month], // variable
             borderColor: [
                 'purple','blue','green'
             ],
