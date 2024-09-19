@@ -14,13 +14,18 @@ export async function GET(req:Request) {
         // extracting the queries
         const queryParam={
             role:searchParams.get('role'),
-            storeId:searchParams.get('storeId')
+            userEmail:searchParams.get('userEmail')
         }
         // checking the role of the user 
         if(queryParam.role !== 'StoreOwner'){
             return NextResponse.json({message:"please SignUp as a Store Owner to continue.", success:false}, {status:404});
         }
-        const orders = await OrderModel.find({storeId:queryParam.storeId});
+        // getting the storeid 
+        const store = await StoreModel.findOne({'associatedUser.userEmail':queryParam.userEmail})
+        if(!store){
+            return NextResponse.json({message:"Cannot find store", success:false}, {status:404});
+        }
+        const orders = await OrderModel.find({storeId:store._id});
         if(orders){
             return NextResponse.json({message:"All orders are fetched", orders, success:true}, {status:200})
         }else{

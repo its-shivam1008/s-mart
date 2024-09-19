@@ -1,9 +1,94 @@
-import React from 'react'
+'use client'
+import { checkUserType } from '@/actions/checkUserType';
+import Loading from '@/components/Loading';
+import axios from 'axios';
+import { useSession } from 'next-auth/react';
+import { useRouter } from 'next/navigation';
+import React, { useEffect, useState } from 'react'
+import {
+    Select,
+    SelectContent,
+    SelectItem,
+    SelectTrigger,
+    SelectValue,
+} from "@/components/ui/select"
 
 const page = () => {
-  return (
-    <div>orders</div>
-  )
+
+    const { data: session, status } = useSession()
+    const [flag, setFlag] = useState(false)
+
+    const router = useRouter();
+
+    const [ordersArray, setOrdersArray] = useState<any>([])
+
+    const [isLoading, setIsLoading] = useState(false)
+
+    const fetchOrdersFromDB = async (userEmail: string) => {
+        // console.log(session);
+        setIsLoading(true)
+        const userType = await checkUserType(userEmail)
+        if (userType?.userRole !== 'StoreOwner') {
+            router.push('/')
+        }
+        const orders = await axios.get(`/api/store/orders?role=${userType?.userRole}&userEmail=${userEmail}`)
+        if (orders.data.success) {
+            console.log(orders.data.orders, "orders")
+            setOrdersArray(orders.data.orders)
+        }
+        setIsLoading(false)
+    }
+
+    useEffect(() => {
+        if (session && !flag) {
+            console.log(session)
+            fetchOrdersFromDB(session.user.email as string)
+            setFlag(true)
+        }
+    }, [session, flag])
+
+
+    return (
+        <div className='bg-[#f2f2f2] min-h-screen'>
+            <h1 className="text-3xl ml-5 mb-5 pt-5">Orders</h1>
+            <div className="overflow-auto w-full">
+                {isLoading ? <div className='p-8 mx-auto'><Loading /></div> : <table className="my-10 border-3 border-solid border-[#521e52] w-full h-full table-auto border-collapse border-spacing-1 text-center overflow-x-auto w-inherit">
+                    <caption className="caption-top text-center my-3">Track your orders</caption>
+                    <thead>
+                        <tr>
+                            <th className="border-3 border-[#521e52] bg-[#c9afd9] text-black p-2">User</th>
+                            <th className="border-3 border-[#521e52] bg-[#c9afd9] text-black p-2">Address</th>
+                            <th className="border-3 border-[#521e52] bg-[#c9afd9] text-black p-2">Status</th>
+                            <th className="border-3 border-[#521e52] bg-[#c9afd9] text-black p-2">Order-Id</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {ordersArray.map((element: any, index: number) => (
+                            <tr key={index}>
+                                <td className="border-3 border-[#521e52] bg-[#f5d6f2] text-black p-2">{element.user.userEmail}</td>
+                                <td className="border-3 border-[#521e52] bg-[#f5d6f2] text-black p-2">{element.shippingAddress.address}, {element.shippingAddress.street}, {element.shippingAddress.state}, {element.shippingAddress.city}, {element.shippingAddress.pincode}</td>
+                                <td className="border-3 border-[#521e52] bg-[#f5d6f2] text-black p-2">
+                                    <Select value={element.status}>
+                                        <SelectTrigger className="w-fit">
+                                            <SelectValue placeholder="Status" />
+                                        </SelectTrigger>
+                                        <SelectContent>
+                                            <SelectItem value="Confirmed">Confirmed</SelectItem>
+                                            <SelectItem value="Pending">Pending</SelectItem>
+                                            <SelectItem value="Cancelled">Cancelled</SelectItem>
+                                            <SelectItem value="Shipped">Shipped</SelectItem>
+                                            <SelectItem value="Delivered">Delivered</SelectItem>
+                                        </SelectContent>
+                                    </Select>
+                                </td>
+                                <td className="border-3 border-[#521e52] bg-[#f5d6f2] text-black p-2">{element._id}</td>
+                            </tr>
+                        ))}
+                    </tbody>
+                </table>}
+            </div>
+        </div>
+    )
 }
 
 export default page

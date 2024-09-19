@@ -257,11 +257,14 @@ const page = () => {
     //     rzp1.open();
     // }
 
-    const handlePayment = (amount:number, productId:string, productName:string, userEmail:string) => {
+    const handlePayment = async (amount:number, productId:string, productName:string, userEmail:string) => {
         // e.preventDefault();
         // console.log(paymentForm);
-        let amt = amount * 100
-        Pay(amt, productId, productName, userEmail);
+        const response = await checkUserAddressFormFilled(session?.user?.email as string);
+        if(response?.success){
+            let amt = amount * 100
+            Pay(amt, productId, productName, userEmail);
+        }
     }
 
     return (
