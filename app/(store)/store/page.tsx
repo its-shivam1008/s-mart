@@ -1,15 +1,24 @@
 'use client'
-import React from 'react'
+import React, { useEffect, useState } from 'react'
 import { ChartSpline, CirclePlus, Shirt, ShoppingBasket, User } from 'lucide-react';
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
 import FilledLineChart from '@/components/FilledLineChart';
+import { useSession } from 'next-auth/react';
+
 
 
 
 const page = () => {
+  const { data: session, status } = useSession()
+  const [flag, setFlag] = useState(false)
 
   const router = useRouter();
+
+  useEffect(() => {
+    
+  }, [])
+  
 
   return (
     <div className='min-h-screen bg-[#f2f2f2]'>
@@ -30,7 +39,7 @@ const page = () => {
           </div>
         </div>
       </div>
-      <FilledLineChart />
+      <FilledLineChart  DataInfo={}/>
       <div className="revenue py-5">
         <h1 className='p-5 text-purple-500 font-extrabold'>Revenue</h1>
         <div className='cards flex md:flex-row flex-col md:justify-evenly mx-auto w-fit md:w-auto space-y-8 md:space-y-0'>
@@ -48,7 +57,7 @@ const page = () => {
           </div>
         </div>
       </div>
-      <FilledLineChart />
+      <FilledLineChart DataInfo={} />
     </div>
   )
 }

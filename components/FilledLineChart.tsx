@@ -1,15 +1,24 @@
 'use client'
-import { useEffect, useRef } from "react"
-import {Line} from 'react-chartjs-2'
-import { Chart as ChartJS, LineElement, PointElement, CategoryScale, LinearScale, Title, Tooltip, Legend } from "chart.js";
-ChartJS.register(LineElement, CategoryScale, PointElement, LinearScale, Title, Tooltip, Legend);
-function FilledLineChart() {
+import { FunctionComponent, useEffect, useRef } from "react"
+import {Line, Bar} from 'react-chartjs-2'
+import { Chart as ChartJS, LineElement, BarElement, PointElement, CategoryScale, LinearScale, Title, Tooltip, Legend } from "chart.js";
+ChartJS.register(LineElement,BarElement, CategoryScale, PointElement, LinearScale, Title, Tooltip, Legend);
+
+interface DataInfo {
+    DataInfo :any;
+}
+const FilledLineChart: FunctionComponent<DataInfo> = ({DataInfo}) => {
+
+    const {today, thisWeek, thisMonth} = DataInfo
 
     // const canvasRef = useRef<HTMLCanvasElement>(null);
 
     const options:any={
-        // responsive:true,
+        responsive:true,
         plugins:{
+            legend:{
+                display:false
+            },
             title:{
                 display:true,
                 text:'Visualising the orders '
@@ -18,27 +27,16 @@ function FilledLineChart() {
     }
 
     const data = {
-        labels: ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"],
+        labels: ["Today", "This week", "This month"],
         datasets: [{
-            data: [86, 114, 106, 106, 107, 111, 133],
-            label: "Applied",
-            borderColor: "rgb(62,149,205)",
+            data: [86, 114, 106], // variable
+            borderColor: [
+                'purple','blue','green'
+            ],
+            backgroundColor:[
+                ' #DAB1DA','lightblue','lightgreen'
+            ],
             tension:0.3,
-        }, {
-            data: [70, 90, 44, 60, 83, 90, 100],
-            label: "Accepted",
-            tension:0.3,
-            borderColor: "rgb(60,186,159)",
-        }, {
-            data: [10, 21, 60, 44, 17, 21, 17],
-            label: "Pending",
-            tension:0.3,
-            borderColor: "rgb(255,165,0)",
-        }, {
-            data: [6, 3, 2, 2, 7, 0, 16],
-            label: "Rejected",
-            tension:0.3,
-            borderColor: "rgb(196,88,80)",
         }
         ]
     }
@@ -46,8 +44,8 @@ function FilledLineChart() {
 
     return (
         <>
-        <div className='md:block hidden'>
-            <Line options={options} data={data}/>
+        <div>
+            <Bar options={options} data={data}/>
         </div>
         </>
     )
