@@ -12,11 +12,15 @@ import {
     SelectTrigger,
     SelectValue,
 } from "@/components/ui/select"
+import { toast, useToast } from '@/components/ui/use-toast';
+import { Trash2 } from 'lucide-react';
 
 const page = () => {
 
     const { data: session, status } = useSession()
     const [flag, setFlag] = useState(false)
+
+    const {toast} = useToast()
 
     const router = useRouter();
 
@@ -47,6 +51,38 @@ const page = () => {
         }
     }, [session, flag])
 
+    const handleStatusChange = async (orderId:any, value:string) => {
+        const payload = {
+            session
+        }
+        const response = await axios.put(`/api/store/order?orderId=${orderId}&status=${value}`,payload)
+        if(response.data.success){
+            toast({
+                title:'Status updated',
+            })
+        }else{
+            toast({
+                variant: "destructive",
+                title:'Something went wrong...',
+            })
+        }
+    }
+
+    const handleDeleteOrder = async (orderId:any) => {
+        setIsLoading(true)
+        const response = await axios.delete(`/api/store/orders?orderId=${orderId}`)
+        if(response.data.success){
+            toast({
+                title:'Status updated',
+            })
+        }else{
+            toast({
+                variant: "destructive",
+                title:'Something went wrong...',
+            })
+        }
+        setIsLoading(false)
+    }
 
     return (
         <div className='bg-[#f2f2f2] min-h-screen'>
@@ -65,10 +101,10 @@ const page = () => {
                     <tbody>
                         {ordersArray.map((element: any, index: number) => (
                             <tr key={index}>
-                                <td className="border-3 border-[#521e52] bg-[#f5d6f2] text-black p-2">{element.user.userEmail}</td>
+                                <td className="border-3 border-[#521e52] bg-[#f5d6f2] text-black p-2 flex items-center gap-2">{element.status === 'Cancelled' ? <div onClick={() => handleDeleteOrder(element._id)}><Trash2 className='text-red-500 size-5'/></div>:''}{element.user.userEmail}</td>
                                 <td className="border-3 border-[#521e52] bg-[#f5d6f2] text-black p-2">{element.shippingAddress.address}, {element.shippingAddress.street}, {element.shippingAddress.state}, {element.shippingAddress.city}, {element.shippingAddress.pincode}</td>
                                 <td className="border-3 border-[#521e52] bg-[#f5d6f2] text-black p-2">
-                                    <Select value={element.status}>
+                                    <Select value={element.status} onValueChange={(value:string) => handleStatusChange(element._id, value)}>
                                         <SelectTrigger className="w-fit">
                                             <SelectValue placeholder="Status" />
                                         </SelectTrigger>

@@ -96,9 +96,9 @@ export async function GET(req:Request){
     try{
         const {searchParams} = new URL(req.url)
         const queryParam = {
-            username:searchParams.get('username'),
+            userEmail:searchParams.get('userEmail'),
         }
-        const orders = await OrderModel.find({"user.username":queryParam.username})
+        const orders = await OrderModel.find({"user.userEmail":queryParam.userEmail})
         console.log(orders)
         if(!orders){
             return NextResponse.json({message:'Cannot get orders', success:false}, {status:400})
