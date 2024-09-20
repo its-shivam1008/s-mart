@@ -99,6 +99,22 @@ export const removeItemFromCart = async (userEmail: string, productId: Types.Obj
     }
 }
 
+export const getWishlistFromProduct = async (productIds:any) =>{
+    await dbConnect()
+    try{
+        const productIdsObj = JSON.parse(productIds)
+        const results = await ProductModel.find({ _id: { $in: productIdsObj } })
+        if(results.length === 0){
+            return {message:'Products are not found', success:false}
+        }
+        const resultsString = JSON.stringify(results)
+        return {message:'Products found', products:resultsString, success:true}
+    } catch (err) {
+        return { message: 'Some error occured', error: JSON.stringify(err), success: false }
+    }
+}
+
+
 export const getItemFromCart = async (userEmail: string) => {
     await dbConnect()
     try {
