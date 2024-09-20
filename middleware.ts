@@ -1,39 +1,73 @@
-import axios from 'axios'
-import { getToken } from 'next-auth/jwt'
-import { NextResponse } from 'next/server'
-export {default} from 'next-auth/middleware'
-import type { NextRequest } from 'next/server'
-// import UserModel from './models/User'
- 
-// This function can be marked `async` if using `await` inside
+import { getToken } from 'next-auth/jwt';
+import { NextRequest, NextResponse } from 'next/server';
+import axios from 'axios';
+
+export { default } from 'next-auth/middleware';
+
 export async function middleware(request: NextRequest) {
-    const token = await getToken({req:request})
-    const url = request.nextUrl
-    // if(token){
-    //   console.log(token.email)
-    //   const user = await UserModel.findOne({email:token?.email})
-    //   if(user){
-    //     if(!user?.password){
-    //       return NextResponse.redirect(new URL('/setup-password', request.url))
-    //     }
-    //   }
-    // }
-    // if(token &&  (
-    //     url.pathname.startsWith('/login')
-    // )){
-    //     return NextResponse.redirect(new URL('/', request.url))
-    // }
-    if(!token && url.pathname.startsWith('/user/profile')){
-        return NextResponse.redirect(new URL('/sign-up', request.url))
+    const token = await getToken({ req: request });
+    const url = request.nextUrl;
+
+    // Checking if the user is authenticated
+    if (token) {
+        const apiUrl = new URL('/api/user/fetchRole', request.url);
+        apiUrl.searchParams.append('userEmail', token.email as string);
+        
+        try {
+            const user = await axios.get(apiUrl.toString());
+            if (user.data.success) {
+                const userRole = user.data.userRole;
+
+                // Allow Admins and StoreOwners to access user routes
+                if (url.pathname.startsWith('/user') && (userRole === 'Admin' || userRole === 'StoreOwner')) {
+                  return NextResponse.next();
+              }
+
+              // Prevent redirect loops by allowing access to their own routes
+              if ((url.pathname === '/admin' && userRole === 'Admin') || 
+                  (url.pathname === '/store' && userRole === 'StoreOwner')) {
+                  return NextResponse.next();
+              }
+
+                // Redirecting based on user role
+                switch (userRole) {
+                    case 'Admin':
+                        return NextResponse.redirect(new URL('/admin', request.url));
+                    case 'User':
+                        return NextResponse.redirect(new URL('/', request.url));
+                    case 'StoreOwner':
+                        return NextResponse.redirect(new URL('/store', request.url));
+                    default:
+                        return NextResponse.next();
+                }
+            }
+        } catch (error) {
+            console.error('Error fetching user role:', error);
+            return NextResponse.next();
+        }
     }
+
+    // Handle unauthenticated users
+    if (!token && (url.pathname.startsWith('/user') || url.pathname.startsWith('/store') || url.pathname.startsWith('/admin') || url.pathname.startsWith('/checkout'))) {
+        return NextResponse.redirect(new URL('/login', request.url));
+    }
+
+    if (token && url.pathname.startsWith('/login')) {
+        return NextResponse.redirect(new URL('/', request.url));
+    }
+
+
+
     return NextResponse.next();
 }
- 
-// See "Matching Paths" below to learn more
+
 export const config = {
-  matcher: [
-    '/login',
-    '/sign-up',
-    '/verify/:path*',
-  ],
-}
+    matcher: [
+        '/login',
+        '/sign-up',
+        '/verify/:path*',
+        '/user/:path*',
+        '/store/:path*',
+        '/admin/:path*',
+    ],
+};

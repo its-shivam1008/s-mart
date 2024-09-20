@@ -67,8 +67,8 @@ const page = () => {
     const handleAddToCart = async (elementId:any, price:number) => {
         const res = await addItemToCart(session?.user.email as string, elementId as any, price)
         if(res?.success){
-            fetchProductsFromWishList(session?.user.email as string)
             handleRemoveFromWishlist(elementId)
+            fetchProductsFromWishList(session?.user.email as string)
             toast({
                 title:'Added to cart'
             })

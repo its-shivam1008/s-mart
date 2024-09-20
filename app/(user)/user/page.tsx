@@ -37,7 +37,7 @@ const page = () => {
       // console.log('hey there');
       (async () => {
         const userType = await checkUserType(session.user.email as string)
-        if (userType?.userRole !== 'StoreOwner') { //User
+        if (userType?.userRole !== 'User') { //User
             router.push('/')
         }
       })()
