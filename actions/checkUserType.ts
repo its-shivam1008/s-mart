@@ -26,6 +26,9 @@ export const checkUserTypeWithStoreFormFilled = async (userEmail:string) =>{
         if(user.role == 'User'){
             return {message:'The person is normal user',  userRole:user.role, success:true}
         }
+        if(user.role == 'Admin'){
+            return {message:'It is an admin',  userRole:user.role, success:true}
+        }
         if(user.role == 'StoreOwner'){
             const store = await StoreModel.findOne({'associatedUser.userEmail':userEmail})
             if(store?.owner_name && store?.businessAddress?.address && store?.razorpay?.id){

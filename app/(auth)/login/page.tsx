@@ -1,5 +1,5 @@
 "use client"
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import { useSession, signIn, signOut } from "next-auth/react";
 import { useRouter } from 'next/navigation';
 import { Button } from "@/components/ui/button"
@@ -20,7 +20,7 @@ import { zodResolver } from '@hookform/resolvers/zod';
 import { z } from 'zod';
 import Link from 'next/link';
 import { useToast } from "@/components/ui/use-toast"
-import { checkUserTypeWithStoreFormFilled } from '@/actions/checkUserType';
+import { checkUserType, checkUserTypeWithStoreFormFilled } from '@/actions/checkUserType';
 
 
 
@@ -29,6 +29,7 @@ const page = () => {
     const { data: session, status } = useSession();
     const router = useRouter();
     const [isSubmitting, setIsSubmitting] = useState(false);
+    const [flag, setFlag] = useState(false);
 
     const loginAndRedirecting = (method:string) : void=> {
         signIn(method);
@@ -65,33 +66,47 @@ const page = () => {
         }
     }
 
-
-
-    if(session){
-        console.log(session);
-
-        (async () =>{
-            const response = await checkUserTypeWithStoreFormFilled(session.user.email as string)
-            if(response?.userRole == 'User'){
-                router.push('/')
-            }else if(response?.userRole == 'StoreOwner'){
-                if(response?.success){
-                    router.push('/store')
-                }else{
-                    router.push('/store-getting-started')
-                }
-            }else if(response?.userRole == 'Admin'){
-                router.push('/admin')
+    const fetchUserType = async (userEmail:string) =>{
+        const response = await checkUserTypeWithStoreFormFilled(userEmail)
+        console.log(response)
+        if(response?.userRole == 'User'){
+            router.push('/')
+        }else if(response?.userRole == 'StoreOwner'){
+            if(response?.success){
+                router.push('/store')
+            }else{
+                router.push('/store-getting-started')
             }
-        })()
-        // const isNextRoutePathStore = localStorage.getItem('isNextRoutePathStore')
-        // console.log('this is ',Boolean(isNextRoutePathStore))
-        // if(Boolean(isNextRoutePathStore)){
-        //     router.push('/store-getting-started')
-        // }else{
-        //     router.push('/');
-        // }
+        }else if(response?.userRole == 'Admin'){
+            console.log('ye chala hi nhi')
+            router.push('/admin')
+        }
     }
+
+    useEffect(() => {
+        if(session && !flag){
+            console.log(session);
+            fetchUserType(session.user.email as string);
+            setFlag(true);
+        }
+      
+    }, [session, flag])
+    
+
+
+
+    // if(session){
+    //     console.log(session);
+
+        
+    //     // const isNextRoutePathStore = localStorage.getItem('isNextRoutePathStore')
+    //     // console.log('this is ',Boolean(isNextRoutePathStore))
+    //     // if(Boolean(isNextRoutePathStore)){
+    //     //     router.push('/store-getting-started')
+    //     // }else{
+    //     //     router.push('/');
+    //     // }
+    // }
   return (
     <div className='flex flex-col justify-center items-center min-h-screen bg-gray-100'>
         <div className='w-full max-w-md px-8 py-3 space-y-4 bg-white rounded-lg shadow-md'>

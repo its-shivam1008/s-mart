@@ -1,7 +1,7 @@
 'use client'
 import Modal from '@/components/Modal'
-import { Loader2, Pencil, X } from 'lucide-react'
-import React, { useState } from 'react'
+import { CircleUserRound, Loader2, Pencil, X } from 'lucide-react'
+import React, { useEffect, useState } from 'react'
 import { useRouter } from 'next/navigation';
 import { Button } from "@/components/ui/button"
 import {
@@ -18,7 +18,7 @@ import { z } from 'zod';
 import { useForm } from 'react-hook-form';
 import { Input } from "@/components/ui/input"
 import { checkPasswordSchema } from '@/schemas/signInSchema';
-import { checkUserPassword, updateUserPassword } from '@/actions/checkUserType';
+import { checkUserPassword, checkUserType, updateUserPassword } from '@/actions/checkUserType';
 import { useSession } from 'next-auth/react';
 import { useToast } from '@/components/ui/use-toast';
 import Loading from '@/components/Loading';
@@ -29,6 +29,24 @@ const page = () => {
   const [updatePassword, setUpdatePassword] = useState(false)
   const [isSubmitting, setIsSubmitting] = useState(false)
   const { toast } = useToast()
+  const [flag, setFlag] = useState(false)
+  const router = useRouter();
+
+  useEffect(() => {
+    if(session && !flag){
+      // console.log('hey there');
+      (async () => {
+        const userType = await checkUserType(session.user.email as string)
+        if (userType?.userRole !== 'Admin') {
+            router.push('/')
+        }
+      })()
+      setFlag(true)
+      console.log(session)
+      // console.log((session?.user.image as string).split('//')[0])
+    }
+  }, [session, flag])
+  
 
 
     const onCheckPassword = async (password:z.infer<typeof checkPasswordSchema>) => {
@@ -160,7 +178,13 @@ const page = () => {
           </div>
         </Modal>
       }
-      <h1 className='text-3xl font-bold p-5'>Profile -</h1>
+      {!session ? '' :
+        <div className='flex justify-between w-full items-center p-4'>
+          <h1 className='text-3xl font-bold p-5'>Profile</h1>
+        <div className="rounded-full w-auto border-purple-500 border-2 size-16  overflow-hidden">
+          { session?.user.image ? <img alt='noimagefound' className='rounded-full object-cover size-16' width={10} height={10} src={session?.user.image as string} /> :<CircleUserRound className='text-[rebeccapurple] size-16' />}
+        </div>
+      </div>}
       {
         !session ? <div className='mt-10 mx-auto'><Loading /></div> :
         <div className='md:mx-10 mx-auto my-10 md:p-10 p-3 bg-purple-500 bg-opacity-50 rounded-[16px] w-auto outline-2 outline-offset-4 hover:outline-[rebeccapurple] outline-transparent outline space-y-10'>
@@ -168,7 +192,7 @@ const page = () => {
           <div className='text-xl font-semibold'>Username: {(session as any)?.user?.username}</div>
           <div className='text-xl font-semibold'>Email : {(session as any)?.user?.email}</div>
           <div className='text-xl font-semibold flex gap-2 items-center'>Password: ********* <div className='cursor-pointer' onClick={() => setEditPassword(true)}><Pencil className='text-white size-5  hover:text-purple-900' /></div></div>
-          <div className='text-xl font-semibold '>Role: Admin</div>
+          <div className='text-xl font-semibold '>Role: Store owner</div>
         </div>
       }
     </div>
