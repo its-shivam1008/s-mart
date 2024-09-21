@@ -2,6 +2,7 @@
 import dbConnect from "@/Db/Db"
 import ParentCategoryModel from "@/models/ParentCategory"
 import ProductModel from "@/models/Product"
+import SubCategoryModel from "@/models/SubCategory"
 
 export const fetchCategories = async () => {
     await dbConnect()
@@ -17,6 +18,21 @@ export const fetchCategories = async () => {
             const stringArray = JSON.stringify(ArrayCategoryNames)
             return { message: 'PARENT CATEGORIES FETCHED', categoriesArray: stringArray, success: true }  
         }
+    } catch (err) {
+        return { message: 'Some error occured', error: JSON.stringify(err), success: false }
+    }
+}
+export const fetchSubCategories = async (subCatName:string) => {
+    await dbConnect()
+    // console.log('ho gya connect')
+    try{
+        const subCategories = await SubCategoryModel.findOne({name:subCatName})
+        // console.log('lol connect', categories)
+        if(subCategories){
+            const stringArray = JSON.stringify(subCategories)
+            return { message: 'sub CATEGORIES FETCHED', categoriesArray: stringArray, success: true }  
+        }
+        return { message: 'Cannot fetch',  success: false }  
     } catch (err) {
         return { message: 'Some error occured', error: JSON.stringify(err), success: false }
     }
