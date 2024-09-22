@@ -150,3 +150,19 @@ export const searchProducts = async (query:string) => {
         return { message: 'Some error occured', error: JSON.stringify(err), success: false }
     }
 }
+
+export const fetchProductsForHome = async (categoryName:string) => {
+    await dbConnect();
+    try{
+        const products = await ProductModel.find({'category.parentCategory.name':categoryName}, {userReviews:0}).limit(4);
+        if(products.length > 0){
+            const productsJsonString = JSON.stringify(products)
+            // console.log(productsJsonString)
+            return { message: "Product fetched", product: productsJsonString, success: true };
+        } else {
+            return { message: "unable to find any product of your store", success: false };
+        }
+    } catch (err) {
+        return { message: 'Some error occured', error: JSON.stringify(err), success: false }
+    }
+}

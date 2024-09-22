@@ -182,7 +182,7 @@ const ProductCards: FunctionComponent<CardInfo> = ({ cardInfo }) => {
 
 
     return (
-        <div className="relative eleProd my-5 w-48 h-fit p-4 rounded-[12px] flex flex-col gap-2 justify-center shadow-lg outline outline-offset-4 outline-transparent hover:outline-[rebeccapurple] transition-all duration-500 mx-auto hover:scale-105 hover:shadow-2xl hover:shadow-[rebeccapurple] cursor-pointer">
+        <div className="relative eleProd my-5 w-48 h-fit p-4 rounded-[12px] flex flex-col gap-2 justify-center shadow-lg outline outline-offset-4 outline-transparent hover:outline-[rebeccapurple] transition-all duration-500 mx-auto hover:scale-105 hover:shadow-2xl hover:shadow-[rebeccapurple] cursor-pointer bg-white">
             <div title='Add to wishlist' className='absolute top-3 -right-1 ml-2 mb-2 p-2'>
                 <Heart onClick={() => {
                     setIsHandleLike(prevIsHandleLike => {

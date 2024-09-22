@@ -10,6 +10,9 @@ import {useGSAP} from '@gsap/react';
 // import './css/locomotive-scroll.css';
 // import LocomotiveScroll from "locomotive-scroll";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
+import { fetchProductsForHome } from "@/actions/fetchProducts";
+import CardSkeletonLoading from "@/components/CardSkeletonLoading";
+import ProductCards from "@/components/ProductCards";
 
 gsap.registerPlugin(ScrollTrigger);
 
@@ -273,8 +276,52 @@ export default function Home() {
     }
     checkPass();
   }, [session, flag]) //You get undefined because the session hasn't been fetched yet. You can solve it by using useEffect and adding "session" to its dependencies
+
+
+  const [productsArray, setProductsArray] = useState<any>({
+    electProducts:[],
+    fashProducts:[],
+    homeProducts:[],
+    booksProducts:[],
+    careProducts:[],
+    sportProducts:[],
+  })
+  const fetchProducts = async () => {
+    const electProducts = await fetchProductsForHome('Electronics');
+    const fashProducts = await fetchProductsForHome('Fashion');
+    const homeProducts = await fetchProductsForHome('Home & Furniture');
+    const booksProducts = await fetchProductsForHome('Books');
+    const careProducts = await fetchProductsForHome('Beauty & Personal Care');
+    const sportProducts = await fetchProductsForHome('Sports & Outdoors');
+    if(electProducts?.success && fashProducts?.success && homeProducts?.success && booksProducts?.success && careProducts?.success && sportProducts?.success){
+      setProductsArray({
+        electProducts:JSON.parse(electProducts.product as string),
+        fashProducts:JSON.parse(fashProducts.product as string),
+        homeProducts:JSON.parse(homeProducts.product as string),
+        booksProducts:JSON.parse(booksProducts.product as string),
+        careProducts:JSON.parse(careProducts.product as string),
+        sportProducts:JSON.parse(sportProducts.product as string),
+      })
+      console.log({
+        electProducts:electProducts.product,
+        fashProducts:fashProducts.product,
+        homeProducts:homeProducts.product,
+        booksProducts:booksProducts.product,
+        careProducts:careProducts.product,
+        sportProducts:sportProducts.product,
+      },'fetched')
+      console.log('fetched')
+    }else{
+      console.log("not fetched")
+    }
+  }
   
+  useEffect(() => {
+    fetchProducts()
+  }, [])
   
+
+
   return (
     <div>
       <main data-scroll onMouseMove={mouseMove} ref={mainRef} className="parent-with-no-height-width-for-locomotivejs">
@@ -337,41 +384,15 @@ export default function Home() {
             <div className="hidden"></div>
             <div className='productTitle electProducts px-2 py-3 ml-10 mb-10 text-3xl font-bold bg-slate-100 rounded-md text-purple-800 w-fit'>Electronics</div>
             <div className="productCards flex items-center justify-around md:flex-row flex-col gap-10 md:gap-0">
-              <div  className="eleProd product w-48 h-48 p-4 m-2 bg-white bg-opacity-80 backdrop-blur-sm rounded-lg flex flex-col gap-3 justify-center">
-          
-                <div className="title text-xl font-semibold">Title</div>
-                <Image src='' alt="noimg"/>
-                <div className="price text-xl font-bold">price</div>
-                <div className="description text-sm">Lorem ipsum dolor sit.</div>
-              </div>
-              <div  className="eleProd product w-48 h-48 p-4 m-2 bg-white bg-opacity-80 backdrop-blur-sm rounded-lg flex flex-col gap-3 justify-center">
-                
-                <div className="title text-xl font-semibold">Title</div>
-                <Image src='' alt="noimg"/>
-                <div className="price text-xl font-bold">price</div>
-                <div className="description text-sm">Lorem ipsum dolor sit.</div>
-              </div>
-              <div  className="eleProd product w-48 h-48 p-4 m-2 bg-white bg-opacity-80 backdrop-blur-sm rounded-lg flex flex-col gap-3 justify-center">
-                
-                <div className="title text-xl font-semibold">Title</div>
-                <Image src='' alt="noimg"/>
-                <div className="price text-xl font-bold">price</div>
-                <div className="description text-sm">Lorem ipsum dolor sit.</div>
-              </div>
-              <div  className="eleProd product w-48 h-48 p-4 m-2 bg-white bg-opacity-80 backdrop-blur-sm rounded-lg flex flex-col gap-3 justify-center">
-                
-                <div className="title text-xl font-semibold">Title</div>
-                <Image src='' alt="noimg"/>
-                <div className="price text-xl font-bold">price</div>
-                <div className="description text-sm">Lorem ipsum dolor sit.</div>
-              </div>
-              <div  className="eleProd product w-48 h-48 p-4 m-2 bg-white bg-opacity-80 backdrop-blur-sm rounded-lg flex flex-col gap-3 justify-center">
-                
-                <div className="title text-xl font-semibold">Title</div>
-                <Image src='' alt="noimg"/>
-                <div className="price text-xl font-bold">price</div>
-                <div className="description text-sm">Lorem ipsum dolor sit.</div>
-              </div>
+              {
+                productsArray.electProducts.length === 0 ? <CardSkeletonLoading /> : productsArray.electProducts.map((element:any, index:number) =>{
+                  return (
+                    <div key={index} className="eleProd product w-fit h-fit">
+                      <ProductCards cardInfo={element}/>
+                    </div>
+                  )
+                })
+              }
             </div>
           </div>
           <div className='parentProduct flex flex-col'>
