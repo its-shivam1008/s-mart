@@ -7,6 +7,7 @@ import { Toaster } from "@/components/ui/toaster"
 import Navbar from "@/components/Navbar";
 import SmoothScrolling from "@/components/SmoothScrolling";
 import ConditionalNavbar from "@/components/ConditionalNavbar";
+import Footer from "@/components/Footer";
 
 export const metadata: Metadata = {
   title: "Create Next App",
@@ -25,8 +26,10 @@ export default function RootLayout({
         <ConditionalNavbar />
           <SmoothScrolling> {children} </SmoothScrolling>
         <Toaster />
+        <Footer/>
         </body> 
       </SessionWrapper>
+
     </html>
   );
 }

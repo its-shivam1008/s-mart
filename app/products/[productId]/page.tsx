@@ -49,6 +49,7 @@ const page = ({ params }: any) => {
     (async () => {
       setIsLoading(true)
       const res: any = await fetchOneProduct(params.productId)
+      console.log(res, 'res')
       const productsJSONObjects = JSON.parse(res.product as string)
       if (res.success) {
         // setProductData(res.product)

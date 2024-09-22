@@ -26,12 +26,34 @@ export const fetchOneProduct = async (productId: string) => {
     try {
         // const product = await ProductModel.findById(productId);
         const product = await ProductModel.aggregate([
-            { $match: { _id: new mongoose.Types.ObjectId(productId) } },
-            { $unwind: '$userReviews' },
+            { 
+                $match: { _id: new mongoose.Types.ObjectId(productId) } 
+            },
+            { 
+                // Use $project to ensure userReviews is an array, even if empty
+                $project: {
+                    name: 1,
+                    description: 1,
+                    specification: 1,
+                    shippingCharge: 1,
+                    quantity: 1,
+                    images: 1,
+                    price: 1,
+                    priceAfterDiscount: 1,
+                    discount: 1,
+                    userReviews: { $ifNull: ['$userReviews', []] } // Ensure userReviews is always an array
+                }
+            },
+            { 
+                $unwind: {
+                    path: '$userReviews',
+                    preserveNullAndEmptyArrays: true // Keep the document even if userReviews is empty
+                }
+            },
             {
                 $group: {
                     _id: new mongoose.Types.ObjectId(productId),
-                    averageStar: { $avg: '$userReviews.star' },
+                    averageStar: { $avg: { $ifNull: ['$userReviews.star', 0] } }, // Handle missing stars
                     name: { $first: '$name' },
                     description: { $first: '$description' },
                     specification: { $first: '$specification' },
@@ -41,8 +63,7 @@ export const fetchOneProduct = async (productId: string) => {
                     price: { $first: '$price' },
                     priceAfterDiscount: { $first: '$priceAfterDiscount' },
                     discount: { $first: '$discount' },
-                    userReviews: { $push: '$userReviews' },
-                    // averageStar: { $avg: '$userReviews.star' } // Calculate the average star rating
+                    userReviews: { $push: '$userReviews' }
                 }
             },
             {
@@ -57,12 +78,13 @@ export const fetchOneProduct = async (productId: string) => {
                     priceAfterDiscount: 1,
                     discount: 1,
                     userReviews: {
-                        $slice: ['$userReviews', 10]
+                        $slice: ['$userReviews', 10] // Limit to the first 10 reviews
                     },
                     averageStar: 1
                 }
             }
         ]);
+        
         if (product) {
             const productsJsonString = JSON.stringify(product[0])
             // console.log(productsJsonString)

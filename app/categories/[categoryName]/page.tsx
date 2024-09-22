@@ -17,7 +17,7 @@ import { Filter } from 'lucide-react'
 
 
 const page = ({ params }: any) => {
-  const images = ['/categoryImages/cat1.jpg', '/categoryImages/cat2.jpg', '/categoryImages/cat3.jpg', '/categoryImages/cat4.jpg', '/categoryImages/cat5.jpg']
+  const images = ['https://res.cloudinary.com/di8z1aufv/image/upload/v1727020975/cat1_swy3s2.jpg', 'https://res.cloudinary.com/di8z1aufv/image/upload/v1727020976/cat2_k6zjzo.jpg', 'https://res.cloudinary.com/di8z1aufv/image/upload/v1727020985/cat3_ujovrz.jpg',  'https://res.cloudinary.com/di8z1aufv/image/upload/v1727020975/cat4_urofnx.jpg', 'https://res.cloudinary.com/di8z1aufv/image/upload/v1727020975/cat5_ydavq0.jpg']
 
   const [products, setProducts] = useState<any>([])
   const [filterCategory, setFilterCategory] = useState<any>({})
@@ -107,7 +107,7 @@ const page = ({ params }: any) => {
 
   return (
     <div>
-      <SlideShow arrayOfImages={images} imageHeight='h-[80vh]' />
+      <SlideShow arrayOfImages={images} imageHeight='h-[90vh]' />
       <div className='container mx-auto'>
         {
           isLoading ? <div className='mx-auto'> <Loading /></div> : <><div className=' my-5 flex md:flex-row flex-col gap-3 justify-between items-center'>

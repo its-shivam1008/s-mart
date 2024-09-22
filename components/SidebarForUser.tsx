@@ -4,6 +4,7 @@ import { Boxes, ChartSpline, CirclePlus, House, ImagePlus, LogOut, Logs, Shirt, 
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
 import { usePathname } from 'next/navigation'
+import { useSession, signIn, signOut } from "next-auth/react";
 
 
 
@@ -23,7 +24,7 @@ const SidebarForUser = ({children}:{children:React.ReactNode}) => {
         <Link href={'/user/wishlist'} className={`${currentPath== '/user/wishlist' ? 'bg-gradient-to-r shadow-2xl from-rose-100 to-teal-100 text-purple-500 rounded-full p-3':'text-[rebeccapurple]'} flex gap-4 items-center font-bold text-xl`}><Logs  className={`${currentPath== '/user/wishlist' ? 'text-purple-500':'text-purple-500'} size-8`} /><div className='hidden md:flex'>Wishlist</div></Link>
         <Link href={'/user/cart'} className={`${currentPath=='/user/cart' ? 'bg-gradient-to-r shadow-2xl from-rose-100 to-teal-100 text-purple-500 rounded-full p-3':'text-[rebeccapurple]'} flex gap-4 items-center font-bold text-xl`}><ShoppingBasket className={`${currentPath== '/user/cart' ? 'text-purple-500':'text-purple-500'} size-8`} /><div className='hidden md:flex'>Cart</div></Link>
        </div>
-       <div className='text-purple-500 flex gap-2 items-center'><LogOut className='text-purple-500 size-5' /><div className='hidden md:flex'>Logout</div></div>
+       <div className='text-purple-500 flex gap-2 items-center' onClick={()=>{signOut()}}><LogOut className='text-purple-500 size-5' /><div className='hidden md:flex'>Logout</div></div>
       </div>
       <div className=''>{children}</div>
     </div>
