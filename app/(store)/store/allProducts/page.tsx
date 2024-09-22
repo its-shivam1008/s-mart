@@ -102,6 +102,7 @@ const page = () => {
     form.setValue('price', previousFormData.price);
     form.setValue('shippingCharge', previousFormData.shippingCharge);
     form.setValue('discount', previousFormData.discount);
+    // form.setValue('images', previousFormData.images);
   }, [previousFormData])
 
   const fileRef = form.register("images")

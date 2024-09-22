@@ -103,7 +103,7 @@ export async function PUT(req:Request){
             }}, {new:true})
             // console.log(updatedStore);
             if(updatedStore){
-                return NextResponse.json({message:"Product Updated", success:true}, {status:201})
+                return NextResponse.json({message:"Product Updated", product:updateProduct  ,success:true}, {status:201})
             }else{
                 return NextResponse.json({message:"Product is NOT updated", success:false}, {status:400});
             }
