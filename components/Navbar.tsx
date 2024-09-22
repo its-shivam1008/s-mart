@@ -17,7 +17,11 @@ const Navbar = () => {
     const { contextSafe } = useGSAP();
 
     useGSAP(() => {
-        const tl = gsap.timeline()
+        const tl = gsap.timeline({
+            onComplete: () => {
+                tl.kill(); // Kills the timeline after it completes
+            }
+        });
         tl.from(navBar.current, {
             scale: 0,
             backgroundColor: 'white',
@@ -36,11 +40,12 @@ const Navbar = () => {
             duration: 0.5,
             stagger: 0.2
         })
-        tl.kill()
+        // tl.kill()
     })
 
     useEffect(() => {
         //   setMenuClicked(menuClicked)
+        console.log(session)
     }, [menuClicked])
 
 
@@ -89,8 +94,8 @@ const Navbar = () => {
     return (
         <div ref={navBar} className='top-3 rounded-lg absolute w-full z-50'>
             <div className='w-[90%] bg-white bg-opacity-40  backdrop-filter backdrop-blur-md  mx-auto rounded-full flex font-bold text-xl tracking-wide items-center justify-around h-12'>
-                <div className="rounded-full w-auto border-purple-500 border-2 size-8  overflow-hidden">
-                    <img alt='noimagefound' className='rounded-full object-cover size-8' width={10} height={10} src='https://res.cloudinary.com/di8z1aufv/image/upload/v1727023012/S_-_Mart_lfvdl6.jpg' />
+                <div className="rounded-full w-auto size-10  overflow-hidden">
+                    <img src='https://res.cloudinary.com/di8z1aufv/image/upload/v1727023012/S_-_Mart_lfvdl6.jpg' alt='noimagefound' className='rounded-full object-cover size-10' width={10} height={10}  />
                 </div>
                 <div className='pages md:flex hidden gap-10'>
                     <Link href='/products' className='elements font-normal  hover:text-blue-500 transition-colors duration-500'>Products</Link>
@@ -99,11 +104,11 @@ const Navbar = () => {
                     <Link href='/ask-ai' className='elements font-normal  hover:text-blue-500 transition-colors duration-500'>Ask Ai</Link>
                 </div>
                 <div className="icons flex items-center gap-3">
-                    {session ? <div className="rounded-full w-auto border-purple-500 border-2 size-8  overflow-hidden">
-                        {session?.user.image ? <img alt='noimagefound' className='rounded-full object-cover size-8' width={10} height={10} src={session?.user.image as string} /> : <CircleUserRound className='text-[#935fc8] size-8' />}
+                    {session ? <div className="rounded-full w-auto size-10  overflow-hidden">
+                        {session?.user.image ? <img src={session?.user.image} alt='noimagefound' className='rounded-full object-cover size-10' width={10} height={10}  /> : <CircleUserRound className='text-[#935fc8] size-10' />}
                     </div> :
                         <div>
-                            <Link href='/sign-up' className='text-lg text-white hover:text-purple-500 transition-colors duration-500'>Sign-up</Link>
+                            <Link href='/sign-up' className='text-lg text-[rebeccapurple] hover:text-purple-400 transition-colors duration-500'>Sign-up</Link>
                         </div>
                     }
                     <div onClick={handleClick} className="burgerMenu cursor-pointer md:hidden flex flex-col gap-1 justify-center">

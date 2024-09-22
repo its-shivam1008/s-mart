@@ -237,7 +237,11 @@ export default function Home() {
   
   // text reveal animantion in the hero section 
   useGSAP(() => {
-    const tl = gsap.timeline()
+    const tl = gsap.timeline({
+      onComplete: () => {
+          tl.kill(); // Kills the timeline after it completes
+      }
+    });
     tl.from('.buy-text', {
       duration:0.5,
       x:-30,
