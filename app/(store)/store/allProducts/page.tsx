@@ -18,6 +18,7 @@ import {
 import { Input } from "@/components/ui/input";
 import { useForm } from 'react-hook-form';
 import * as z from 'zod'
+import { useRouter } from 'next/navigation';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { updateProduct } from '@/schemas/productSchema';
 import { deleteImageFromCloudinary, deleteProductImageFromUiAndDB, uploadImageToCloudinary } from '@/actions/CloudinaryProductImage';
@@ -42,6 +43,7 @@ const page = () => {
   const [productIdForDeletion, setProductIdForDeletion] = useState('')
 
   const { toast } = useToast()
+  const router = useRouter();
 
   const [previousFormData, setPreviousFormData] = useState({ name: '', description: '', specification: '', images: [''], quantity: 0, price: 0, shippingCharge: 0, discount: 0 })
 
@@ -62,6 +64,22 @@ const page = () => {
       setFlag(true)
     }
   }, [session, flag])
+
+  const [flagForSession, setFlagForSession] = useState(false)
+
+  useEffect(() => {
+    (async () => {
+    if(session && !flagForSession){
+      const res = await axios.get(`/api/store?email=${session.user.email}`)
+      setFlagForSession(true);
+      if(res.data.success){
+        res.data.getStoreData?.owner_name ? '':router.push('/store-getting-started')
+        res.data.getStoreData?.businessAddress?.address ? '':router.push('/store-getting-started')
+        res.data.getStoreData?.razorpay?.id ? '':router.push('/store-getting-started')
+      }
+    }
+    })()
+  }, [session, flagForSession])
 
 
   const form = useForm<z.infer<typeof updateProduct>>({

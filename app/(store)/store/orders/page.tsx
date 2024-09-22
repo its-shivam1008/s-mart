@@ -53,6 +53,22 @@ const page = () => {
         }
     }, [session, flag, ordersArray])
 
+    const [flagForSession, setFlagForSession] = useState(false)
+
+    useEffect(() => {
+      (async () => {
+      if(session && !flagForSession){
+        const res = await axios.get(`/api/store?email=${session.user.email}`)
+        setFlagForSession(true);
+        if(res.data.success){
+          res.data.getStoreData?.owner_name ? '':router.push('/store-getting-started')
+          res.data.getStoreData?.businessAddress?.address ? '':router.push('/store-getting-started')
+          res.data.getStoreData?.razorpay?.id ? '':router.push('/store-getting-started')
+        }
+      }
+      })()
+    }, [session, flagForSession])
+
     const handleStatusChange = async (orderId:any, value:string) => {
         const payload = {
             session

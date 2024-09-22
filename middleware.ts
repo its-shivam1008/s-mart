@@ -35,7 +35,7 @@ export async function middleware(request: NextRequest) {
                     case 'User':
                         return NextResponse.redirect(new URL('/', request.url));
                     case 'StoreOwner':
-                        return NextResponse.redirect(new URL('/store', request.url));
+                        return NextResponse.redirect(new URL('/store-getting-started', request.url));
                     default:
                         return NextResponse.next();
                 }

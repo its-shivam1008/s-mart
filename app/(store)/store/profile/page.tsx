@@ -22,6 +22,7 @@ import { checkUserPassword, checkUserType, updateUserPassword } from '@/actions/
 import { useSession } from 'next-auth/react';
 import { useToast } from '@/components/ui/use-toast';
 import Loading from '@/components/Loading';
+import axios from 'axios';
 
 const page = () => {
   const { data: session, status } = useSession()
@@ -46,6 +47,22 @@ const page = () => {
       // console.log((session?.user.image as string).split('//')[0])
     }
   }, [session, flag])
+
+  const [flagForSession, setFlagForSession] = useState(false)
+
+  useEffect(() => {
+    (async () => {
+    if(session && !flagForSession){
+      const res = await axios.get(`/api/store?email=${session.user.email}`)
+      setFlagForSession(true);
+      if(res.data.success){
+        res.data.getStoreData?.owner_name ? '':router.push('/store-getting-started')
+        res.data.getStoreData?.businessAddress?.address ? '':router.push('/store-getting-started')
+        res.data.getStoreData?.razorpay?.id ? '':router.push('/store-getting-started')
+      }
+    }
+    })()
+  }, [session, flagForSession])
   
 
 

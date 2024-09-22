@@ -8,6 +8,7 @@ import { useSession } from 'next-auth/react';
 import { checkUserType } from '@/actions/checkUserType';
 import { getOrderStatsForStore } from '@/actions/ordersAndAnalytics';
 import Loading from '@/components/Loading';
+import axios from 'axios';
 
 
 
@@ -35,9 +36,8 @@ const page = () => {
       console.log(stats)
       setStatsValueOrder({today:stats?.today?.count, month:stats?.month?.count, week:stats?.week?.count})
       setStatsValueRevenue({today:stats?.today?.revenue, month:stats?.month?.revenue, week:stats?.week?.revenue})
-    }else{
-      console.log(stats.message, JSON.parse(stats?.error as string))
     }
+    
     setIsLoading(false)
   }
 
@@ -48,6 +48,22 @@ const page = () => {
       setFlag(true)
     }
   }, [session, flag])
+
+  const [flagForSession, setFlagForSession] = useState(false)
+
+  useEffect(() => {
+    (async () => {
+    if(session && !flagForSession){
+      const res = await axios.get(`/api/store?email=${session.user.email}`)
+      setFlagForSession(true);
+      if(res.data.success){
+        res.data.getStoreData?.owner_name ? '':router.push('/store-getting-started')
+        res.data.getStoreData?.businessAddress?.address ? '':router.push('/store-getting-started')
+        res.data.getStoreData?.razorpay?.id ? '':router.push('/store-getting-started')
+      }
+    }
+    })()
+  }, [session, flagForSession])
   
 
   return (
