@@ -276,7 +276,7 @@ export default function Home() {
       <main data-scroll onMouseMove={mouseMove} ref={mainRef} className="parent-with-no-height-width-for-locomotivejs">
         <div className="h-5 w-5 rounded-full bg-[rebeccapurple] fixed z-10 min-[0px]:max-md:hidden" ref={cursorRef}>{cursorText}</div>
         <div data-scroll data-scroll-speed={5} data-scroll-direction='horizontal' className="home h-screen w-full z-[1] flex justify-center items-center">
-       { /*<Novatrix /> */}
+       <Novatrix />
             <div className="text-Black absolute flex flex-col gap-3">
               <div className="buy-text tracking-wider font-bold text-xl">Buy Anything</div>
               <div onMouseEnter={mouseEnter} onMouseLeave={mouseLeave} className="hero text-3xl md:text-5xl flex gap-5 font-extrabold tracking-widest">
@@ -295,34 +295,34 @@ export default function Home() {
             <div className="category1 flex flex-col items-center space-y-20">
               <div  onMouseEnter={mouseEnter} onMouseLeave={mouseLeave} className='headings relative overflow-hidden w-96 h-48 shadow-xl bg-purple-300  rounded-lg'>
                 <div className="category-title text-black w-fit text-2xl p-2 m-2 absolute top-0">Electronics</div>
-                <Image className="object-fill" src='/categoryImages/categoryElectronics.jpg' alt='noImg found' width={0} height={0} sizes="100vw" style={{ width: '100%', height: '100%', objectFit:'cover'}}/>
+                <Image className="object-fill" src='https://res.cloudinary.com/di8z1aufv/image/upload/v1727020981/categoryElectronics_vo6qv3.jpg' alt='noImg found' width={0} height={0} sizes="100vw" style={{ width: '100%', height: '100%', objectFit:'cover'}}/>
                 {/* images of the products */}
               </div>
               <div  onMouseEnter={mouseEnter} onMouseLeave={mouseLeave} className='headings relative overflow-hidden w-96 h-48 shadow-xl bg-purple-300  rounded-lg'>
                 <div className="category-title text-white w-fit text-2xl p-2 m-2 absolute top-0">Fashion</div>
-                <Image  src='/categoryImages/categoryFashion.jpeg' alt='noImg found' width={0} height={0} sizes="100vw" style={{width: '100%', height: '100%', objectFit:'cover'}}/>
+                <Image  src='https://res.cloudinary.com/di8z1aufv/image/upload/v1727020979/categoryFashion_q9zaht.jpg' alt='noImg found' width={0} height={0} sizes="100vw" style={{width: '100%', height: '100%', objectFit:'cover'}}/>
                 {/* images of the products */}
               </div>
               <div  onMouseEnter={mouseEnter} onMouseLeave={mouseLeave} className='headings relative overflow-hidden w-96 h-48 shadow-xl bg-purple-300  rounded-lg'>
                 <div className="category-title text-black w-fit text-2xl p-2 m-2 absolute top-0">Home and Furniture</div>
-                <Image src='/categoryImages/categoryHome.jpg' alt='noImg found' width={0} height={0} sizes="100vw" style={{ width: '100%', height: '100%', objectFit:'cover'}}/>
+                <Image src='https://res.cloudinary.com/di8z1aufv/image/upload/v1727020990/categoryHome_jvhdve.jpg' alt='noImg found' width={0} height={0} sizes="100vw" style={{ width: '100%', height: '100%', objectFit:'cover'}}/>
                 {/* images of the products */}
               </div>
             </div>
             <div className="category2 flex flex-col items-center space-y-20">
               <div  onMouseEnter={mouseEnter} onMouseLeave={mouseLeave} className='headings relative overflow-hidden w-96 h-48 shadow-xl bg-purple-300  rounded-lg'>
                 <div className="category-title text-white w-fit text-2xl p-2 m-2 absolute top-0">Books</div>
-                <Image src='/categoryImages/categoryBooks.jpg' alt='noImg found' width={0} height={0} sizes="100vw" style={{ width: '100%', height: '100%', objectFit:'cover'}}/>
+                <Image src='https://res.cloudinary.com/di8z1aufv/image/upload/v1727020990/categoryBooks_enm6sa.jpg' alt='noImg found' width={0} height={0} sizes="100vw" style={{ width: '100%', height: '100%', objectFit:'cover'}}/>
                 {/* images of the products */}
               </div>
               <div  onMouseEnter={mouseEnter} onMouseLeave={mouseLeave} className='headings relative overflow-hidden w-96 h-48 shadow-xl bg-purple-300  rounded-lg'>
                 <div className="category-title text-black w-fit text-2xl p-2 m-2 absolute top-0">Personal Care</div>
-                <Image src='/categoryImages/categoryBeauty.jpg' alt='noImg found' width={0} height={0} sizes="100vw" style={{ width: '100%', height: '100%', objectFit:'cover'}}/>
+                <Image src='https://res.cloudinary.com/di8z1aufv/image/upload/v1727021008/categoryBeauty_zgloxm.jpg' alt='noImg found' width={0} height={0} sizes="100vw" style={{ width: '100%', height: '100%', objectFit:'cover'}}/>
                 {/* images of the products */}
               </div>
               <div  onMouseEnter={mouseEnter} onMouseLeave={mouseLeave} className='headings relative overflow-hidden w-96 h-48 shadow-xl bg-purple-300  rounded-lg'>
                 <div className="category-title text-black w-fit text-2xl p-2 m-2 absolute top-0">Sports and outdoors</div>
-                <Image src='/categoryImages/categorySports.jpg' alt='noImg found' width={0} height={0} sizes="100vw" style={{ width: '100%', height: '100%', objectFit:'cover'}}/>
+                <Image src='https://res.cloudinary.com/di8z1aufv/image/upload/v1727020984/categorySports_eom7b7.jpg' alt='noImg found' width={0} height={0} sizes="100vw" style={{ width: '100%', height: '100%', objectFit:'cover'}}/>
                 {/* images of the products */}
               </div>
             </div>
@@ -603,14 +603,14 @@ export default function Home() {
           <div className="relative text-scroll mx-3">
             <h1 className="text-black text-[40vw]">Global</h1>
             <div className="imageCard w-56 h-40 hover:outline-2 hover:outline hover:outline-red-500 outline-offset-2 rounded-[20px] absolute top-48 left-80 rotate-12">
-            <Image className="object-fill" src='/categoryImages/page4a.jpg' alt='noImg found' width={0} height={0} sizes="100vw" style={{ width: '100%', height: '100%', objectFit:'cover', borderRadius:'20px'}}/>
+            <Image className="object-fill" src='https://res.cloudinary.com/di8z1aufv/image/upload/v1727021005/page4a_wlqqwj.jpg' alt='noImg found' width={0} height={0} sizes="100vw" style={{ width: '100%', height: '100%', objectFit:'cover', borderRadius:'20px'}}/>
             </div>
             
           </div>
           <div className="relative text-scroll mx-3">
             <h1 className="text-black text-[40vw] relative">Brands</h1>
             <div className="imageCard w-40 h-56 hover:outline-2 hover:outline hover:outline-[rebeccapurple] outline-offset-2 rounded-[20px] absolute bottom-48 -right-10 -rotate-6">
-            <Image className="object-fill" src='/categoryImages/page4b.jpeg' alt='noImg found' width={0} height={0} sizes="100vw" style={{ width: '100%', height: '100%', objectFit:'cover', borderRadius:'20px'}}/>
+            <Image className="object-fill" src='https://res.cloudinary.com/di8z1aufv/image/upload/v1727020999/page4b_wuwnie.jpg' alt='noImg found' width={0} height={0} sizes="100vw" style={{ width: '100%', height: '100%', objectFit:'cover', borderRadius:'20px'}}/>
             </div>
             
           </div>
@@ -620,14 +620,14 @@ export default function Home() {
           <div className="relative text-scroll mx-3">
             <h1 className="text-black text-[40vw] relative">Your</h1>
             <div className="imageCard w-56 h-40 hover:outline-2 hover:outline hover:outline-gray-500 outline-offset-2 rounded-[20px] absolute top-48 left-[50%] -rotate-45">
-            <Image className="object-fill" src='/categoryImages/page4c.jpg' alt='noImg found' width={0} height={0} sizes="100vw" style={{ width: '100%', height: '100%', objectFit:'cover', borderRadius:'20px'}}/>
+            <Image className="object-fill" src='https://res.cloudinary.com/di8z1aufv/image/upload/v1727021014/page4c_ylzf41.jpg' alt='noImg found' width={0} height={0} sizes="100vw" style={{ width: '100%', height: '100%', objectFit:'cover', borderRadius:'20px'}}/>
             </div>
             
           </div>
           <div className="relative text-scroll mx-3">
             <h1 className="text-black text-[40vw] relative">Fingertips!!!</h1>
             <div className="imageCard w-40 h-56 hover:outline-2 hover:outline hover:outline-yellow-200 outline-offset-2 rounded-[20px] absolute top-48 right-[50%] rotate-12">
-            <Image className="object-fill" src='/categoryImages/page4d.jpg' alt='noImg found' width={0} height={0} sizes="100vw" style={{ width: '100%', height: '100%', objectFit:'cover', borderRadius:'20px'}}/>
+            <Image className="object-fill" src='https://res.cloudinary.com/di8z1aufv/image/upload/v1727021011/page4d_ndxtck.jpg' alt='noImg found' width={0} height={0} sizes="100vw" style={{ width: '100%', height: '100%', objectFit:'cover', borderRadius:'20px'}}/>
             </div>
           </div>
         </div>

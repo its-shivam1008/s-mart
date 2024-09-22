@@ -89,7 +89,7 @@ const page = () => {
     return () => { window.removeEventListener('scroll', handleInfiniteScroll) }
   }, [])
   
-  const images = ['/categoryImages/imageSlider1.jpg', '/categoryImages/imageSlider2.jpg', '/categoryImages/imageSlider3.jpg',  '/categoryImages/imageSlider4.jpg', '/categoryImages/imageSlider5.jpg', '/categoryImages/imageSlider6.jpg']
+  const images = ['https://res.cloudinary.com/di8z1aufv/image/upload/v1727020975/cat1_swy3s2.jpg', 'https://res.cloudinary.com/di8z1aufv/image/upload/v1727020976/cat2_k6zjzo.jpg', 'https://res.cloudinary.com/di8z1aufv/image/upload/v1727020985/cat3_ujovrz.jpg',  'https://res.cloudinary.com/di8z1aufv/image/upload/v1727020975/cat4_urofnx.jpg', 'https://res.cloudinary.com/di8z1aufv/image/upload/v1727020975/cat5_ydavq0.jpg']
   return (
     <div> 
       <SlideShow arrayOfImages={images} imageHeight='h-[80vh]'/>        
