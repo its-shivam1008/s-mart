@@ -27,6 +27,10 @@ export async function middleware(request: NextRequest) {
                 if (url.pathname.startsWith('/admin') && userRole === 'Admin') {
                     return NextResponse.next();
                 }
+                // Allow Admins to access admin routes
+                if (url.pathname.startsWith('/user') && userRole === 'User') {
+                    return NextResponse.next();
+                }
 
                 // Redirect based on user role
                 switch (userRole) {
