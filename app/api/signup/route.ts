@@ -3,6 +3,8 @@ import UserModel from "@/models/User";
 import { NextResponse } from "next/server";
 import { signUpSchema } from "@/schemas/signUpSchema";
 import { sendVerificationEmail } from "@/helpers/sendVerificationEmail";
+import axios from "axios";
+import { sendVerificationEmailNodeMailer } from "@/helpers/sendVerifyEmailNodeMailer";
 
 export async function POST(req:Request){
     try{
@@ -48,8 +50,15 @@ export async function POST(req:Request){
             const newUser = new UserModel(newData);
             await newUser.save();
         }
-        //send verification email
-        const emailResponse = await sendVerificationEmail(data.email,data.username,verifyCode)
+        //send verification email using resend 
+        // const emailResponse = await sendVerificationEmail(data.email,data.username,verifyCode)
+        // if(!emailResponse.success){
+        //     return NextResponse.json({message:emailResponse.message, success:false},{status:500})
+        // }
+        // return NextResponse.json({message:emailResponse.message, success:true},{status:201})
+
+        // send email using nodemailer
+        const emailResponse = await sendVerificationEmailNodeMailer(data.email,data.username,verifyCode)
         if(!emailResponse.success){
             return NextResponse.json({message:emailResponse.message, success:false},{status:500})
         }
