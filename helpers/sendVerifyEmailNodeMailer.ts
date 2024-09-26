@@ -1,5 +1,5 @@
 import { ApiResponse } from '@/types/ApiResponse';
-import VerifyEmail from '@/emails/verifyEmail';
+import  { renderVerifyEmail } from '@/emails/verifyEmail';
 import nodemailer from 'nodemailer';
 import { Options } from 'nodemailer/lib/mailer';
 
@@ -21,13 +21,11 @@ export async function sendVerificationEmailNodeMailer(
           const mailOptions = {
             from: process.env.GMAIL_USER,      // Sender address
             to: email,                         // Receiver's email address
-            subject: 'Your OTP Code',          // Email subject
-            html: `
-        <div>
-            <h1>Hello, ${username}</h1>
-            <p>Your OTP code is: <strong>${verifyCode}</strong></p>
-        </div>
-    `, // HTML body of the email
+            subject: 'S-Mart otp',          // Email subject
+            html: renderVerifyEmail({
+                verifyCode,
+                username
+            }), // HTML body of the email
           };
         //   console.log('ho gya done ye chal gya')
           // Send the email
