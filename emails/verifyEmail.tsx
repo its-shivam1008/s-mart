@@ -1,4 +1,3 @@
-'use server'
 import {
     Body,
     Container,
@@ -13,7 +12,6 @@ import {
     Text,
   } from "@react-email/components";
   import * as React from "react";
-  import ReactDOMServer from 'react-dom/server';
   
   interface VerifyEmailProps {
     verifyCode: string;
@@ -24,7 +22,7 @@ import {
     ? `https://${process.env.VERCEL_URL}`
     : "";
   
-  export async  function VerifyEmail({
+  export default function VerifyEmail({
     verifyCode, username
   }: VerifyEmailProps) {
     return (
@@ -86,10 +84,6 @@ import {
     );
   }
   
-// Function to render the VerifyEmail component to HTML string
-export const renderVerifyEmail = (props: VerifyEmailProps) => {
-  return ReactDOMServer.renderToStaticMarkup(<VerifyEmail {...props} />);
-};
 
   const main = {
     backgroundColor: "#fff",
