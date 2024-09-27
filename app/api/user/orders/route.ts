@@ -100,10 +100,23 @@ export async function GET(req:Request){
         }
         const orders = await OrderModel.find({"user.userEmail":queryParam.userEmail})
         console.log(orders)
-        if(!orders){
+        if(orders.length <=  0){
             return NextResponse.json({message:'Cannot get orders', success:false}, {status:400})
         }
-        return NextResponse.json({message:'Orders are fetched', orders:orders, success:true}, {status:200})
+        var orderWithImage:any = {}
+        var orderArray:any = []
+        for(let a of orders){
+            const product =  await ProductModel.findById(a.product.productId)
+            if(!product){
+                return NextResponse.json({message:'Cannot get products of related orders', success:false}, {status:404})
+            }
+            // orderWithImage.img = product.images[0];
+            orderWithImage ={...a, img:product.images[0]}
+            orderArray.push(orderWithImage)
+            orderWithImage={}
+        }
+        console.log("orderarray",orderArray)
+        return NextResponse.json({message:'Orders are fetched', orders:orderArray, success:true}, {status:200})
     }catch(err){
         return NextResponse.json({message:'Internal Server Error', success:false}, {status:500})
     }
