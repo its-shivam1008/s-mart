@@ -15,24 +15,24 @@ const Footer = () => {
         <hr />
         <div className='mt-5 md:flex md:justify-evenly min-[0px]:max-md:flex-col min-[0px]:max-md:text-center'>
           <div>
-            <div className='text-purple-400 font-bold text-xl'>Product</div>
-            <Link className='font-[200] hover:text-purple-400' href='/#categories'>Category</Link><br />
-            <Link  className='font-[200] hover:text-purple-400' href='/#product'>Product</Link>
+            <div className='text-purple-500 font-bold text-xl'>Product</div>
+            <Link className='font-[200] hover:text-purple-500' href='/categories'>Category</Link><br />
+            <Link  className='font-[200] hover:text-purple-500' href='/product'>Product</Link>
           </div>
           <div>
-            <div className='text-purple-400 font-bold text-xl'>Company</div>
-            <Link className='font-[200] hover:text-purple-400' href='/'>Terms</Link><br />
-            <Link className='font-[200] hover:text-purple-400' href='/'>Conditions</Link><br />
-            <Link className='font-[200] hover:text-purple-400' href='/'>Privacy Policy</Link>
+            <div className='text-purple-500 font-bold text-xl'>Company</div>
+            <Link className='font-[200] hover:text-purple-500' href='/'>Terms</Link><br />
+            <Link className='font-[200] hover:text-purple-500' href='/'>Conditions</Link><br />
+            <Link className='font-[200] hover:text-purple-500' href='/'>Privacy Policy</Link>
           </div>
           <div>
-            <div className='text-purple-400 font-bold text-xl'>Contact us</div>
-            <Link className='font-[200] hover:text-purple-400' href="mailto:shivamshukla.email@gmail.com">shivamshukla.email@gmail.com</Link>
+            <div className='text-purple-500 font-bold text-xl'>Contact us</div>
+            <Link className='font-[200] hover:text-purple-500' href="mailto:shivamshukla.email@gmail.com">shivamshukla.email@gmail.com</Link>
           </div>
         </div>
       </div>
-        <div className='bg-slate-800 p-3 flex justify-center items-center mt-4'>
-        <div className="text-white font-medium text-xs"> Copyright&copy; 2024. All rights reserved by <a href="#home" className="text-yellow-600">S-mart</a> </div>
+        <div className='bg-purple-600 p-3 flex justify-center items-center mt-4'>
+        <div className="text-white font-medium text-xs"> Copyright&copy; 2024. All rights reserved by <Link href="#home" className="text-yellow-600">S-mart</Link> </div>
         </div>
     </div>
   )

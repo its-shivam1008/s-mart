@@ -1,17 +1,31 @@
 'use client'
 import { findStoreByProduct, initiate } from '@/actions/paymentInitiation';
-import { useEffect } from 'react';
+import { useEffect, useState } from 'react';
 
 const useRazorpay = () => {
     // useEffect(() => {
         // Check if Razorpay script is loaded
-        if (typeof window !== 'undefined' && !window.Razorpay) {
-            console.error('Razorpay script not loaded');
-            return;
-        }
+        const [isRazorpayLoaded, setIsRazorpayLoaded] = useState(false);
 
-        // Function to handle payment
+        useEffect(() => {
+            // Check if Razorpay script is already loaded
+            if (typeof window !== 'undefined' && window.Razorpay) {
+                setIsRazorpayLoaded(true);
+            } else {
+                // Dynamically load the Razorpay script if not loaded
+                const script = document.createElement('script');
+                script.src = "https://checkout.razorpay.com/v1/checkout.js";
+                script.onload = () => setIsRazorpayLoaded(true);
+                script.onerror = () => console.error("Failed to load Razorpay script");
+                document.body.appendChild(script);
+            }
+        }, []);
+    
         const Pay = async (amount: number, productId: string, productName: string, userEmail: string) => {
+            if (!isRazorpayLoaded) {
+                console.error('Razorpay is not loaded yet.');
+                return;
+            }
             const paymentForm = {
                 productId, productName, userEmail
             };

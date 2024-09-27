@@ -17,6 +17,12 @@ import Link from "next/link";
 
 gsap.registerPlugin(ScrollTrigger);
 
+const metadata = {
+  title: 's-mart',
+  description:
+    "Explore top-quality products at s-mart's ecommerce store. Shop a wide range of items with secure payments, fast shipping, and great deals. Visit our product page now!",
+};
+
 export default function Home() {
 
   const { contextSafe } = useGSAP();
@@ -343,7 +349,7 @@ export default function Home() {
         <div className="page2 w-full h-fit px-5">
           <div className="categories flex flex-wrap md:flex-nowrap my-10">
             <div className="bg-purple-200 text-purple-900 font-bold tracking-wider w-fit text-3xl h-fit p-2 rounded-md  m-3">Catgories</div>
-            <div className="w-fit m-3">Lorem ipsum dolor sit amet, consectetur adipisicing elit. Aliquid, consequuntur voluptatem sequi rerum dicta labore itaque repellat blanditiis magnam vero neque minus excepturi nesciunt modi? Voluptatum, quibusdam? Alias, unde voluptatum?</div>
+            <div className="w-fit m-3">Our S-MART platform offers a wide variety of high-quality products tailored to meet the diverse needs of our customers. From fashion and electronics to home essentials, we have everything you need in one place.</div>
           </div>
           <div className="categories-scroll md:grid md:grid-cols-2 gap-5 m-8 py-8 flex flex-col space-y-20 md:space-y-0">
             <div className="category1 flex flex-col items-center space-y-20">

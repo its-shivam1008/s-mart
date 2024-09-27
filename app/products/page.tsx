@@ -89,7 +89,7 @@ const page = () => {
     return () => { window.removeEventListener('scroll', handleInfiniteScroll) }
   }, [])
   
-  const images = ['https://res.cloudinary.com/di8z1aufv/image/upload/v1727020975/cat1_swy3s2.jpg', 'https://res.cloudinary.com/di8z1aufv/image/upload/v1727020976/cat2_k6zjzo.jpg', 'https://res.cloudinary.com/di8z1aufv/image/upload/v1727020985/cat3_ujovrz.jpg',  'https://res.cloudinary.com/di8z1aufv/image/upload/v1727020975/cat4_urofnx.jpg', 'https://res.cloudinary.com/di8z1aufv/image/upload/v1727020975/cat5_ydavq0.jpg']
+  const images = ['https://res.cloudinary.com/di8z1aufv/image/upload/v1727021012/random_azntil.jpg', 'https://res.cloudinary.com/di8z1aufv/image/upload/v1727021010/random3_ask5tt.jpg', 'https://res.cloudinary.com/di8z1aufv/image/upload/v1727020994/imageSlider3_kk12sz.jpg',  'https://res.cloudinary.com/di8z1aufv/image/upload/v1727020997/imageSlider5_hyk7zm.jpg', 'https://res.cloudinary.com/di8z1aufv/image/upload/v1727020997/imageSlider2_nyxdlf.jpg']
   return (
     <div> 
       <SlideShow arrayOfImages={images} imageHeight='h-[80vh]'/>        
