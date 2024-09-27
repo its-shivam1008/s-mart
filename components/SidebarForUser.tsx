@@ -25,7 +25,7 @@ const SidebarForUser = ({children}:{children:React.ReactNode}) => {
         <Link href={'/user/cart'} className={`${currentPath=='/user/cart' ? 'bg-gradient-to-r shadow-2xl from-rose-100 to-teal-100 text-purple-500 rounded-full p-3':'text-[rebeccapurple]'} flex gap-4 items-center font-bold text-xl`}><ShoppingBasket className={`${currentPath== '/user/cart' ? 'text-purple-500':'text-purple-500'} size-8`} /><div className='hidden md:flex'>Cart</div></Link>
         <Link href={'/user/orders'} className={`${currentPath=='/user/orders' ? 'bg-gradient-to-r shadow-2xl from-rose-100 to-teal-100 text-purple-500 rounded-full p-3':'text-[rebeccapurple]'} flex gap-4 items-center font-bold text-xl`}><Package className={`${currentPath== '/user/orders' ? 'text-purple-500':'text-purple-500'} size-8`} /><div className='hidden md:flex'>Orders</div></Link>
        </div>
-       <div className='text-purple-500 flex gap-2 items-center' onClick={()=>{signOut()}}><LogOut className='text-purple-500 size-5' /><div className='hidden md:flex'>Logout</div></div>
+       <div className='text-purple-500 flex gap-2 items-center cursor-pointer' onClick={()=>{signOut()}}><LogOut className='text-purple-500 size-5' /><div className='hidden md:flex'>Logout</div></div>
       </div>
       <div className=''>{children}</div>
     </div>

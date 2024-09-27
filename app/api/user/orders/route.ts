@@ -74,7 +74,8 @@ export async function PUT(req:Request){
         // extracting the query from the searchParam
         const queryParam = {
             cancel:searchParams.get('cancel'), // true or false
-            orderId:searchParams.get('orderId')
+            orderId:searchParams.get('orderId'),
+            userEmail:searchParams.get('userEmail')
         }
         if(queryParam.cancel){
             const updatedOrderStatus = await OrderModel.findByIdAndUpdate(queryParam.orderId, {status:'Cancelled'}, {new:true});
