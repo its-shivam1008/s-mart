@@ -19,6 +19,7 @@ export async function GET(req:Request){
         }
         return NextResponse.json({message:"user is not verified",  isVerified:false}, {status:200})
     }catch(err){
+        // console.log(err)
         return NextResponse.json({message:"Internal server error", success:false}, {status:500})
     }
 }
