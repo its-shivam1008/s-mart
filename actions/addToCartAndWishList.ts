@@ -70,9 +70,9 @@ export const addItemToCart = async (userEmail: string, productId: Types.ObjectId
         if (!productExists) {
             user.cart.push({ productId: productId as Types.ObjectId, price, quantity: 1 })
             await user.save()
-            return { message: 'item added to cart', success: true }
+            return { message: 'item added to cart', success: true , isItemPresent:false}
         }
-        return { message: 'item is already present', success: false }
+        return { message: 'item is already present', success: false , isItemPresent:true}
     } catch (err) {
         return { message: 'Some error occured', error: JSON.stringify(err), success: false }
     }

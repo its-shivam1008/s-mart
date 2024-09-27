@@ -99,7 +99,7 @@ export async function GET(req:Request){
             userEmail:searchParams.get('userEmail'),
         }
         const orders = await OrderModel.find({"user.userEmail":queryParam.userEmail})
-        console.log(orders)
+        // console.log(orders)
         if(orders.length <=  0){
             return NextResponse.json({message:'Cannot get orders', success:false}, {status:400})
         }
@@ -115,7 +115,7 @@ export async function GET(req:Request){
             orderArray.push(orderWithImage)
             orderWithImage={}
         }
-        console.log("orderarray",orderArray)
+        // console.log("orderarray",orderArray)
         return NextResponse.json({message:'Orders are fetched', orders:orderArray, success:true}, {status:200})
     }catch(err){
         return NextResponse.json({message:'Internal Server Error', success:false}, {status:500})

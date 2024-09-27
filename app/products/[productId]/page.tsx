@@ -26,6 +26,7 @@ import { Reviews } from '@/models/Product'
 import Image from 'next/image'
 import Link from 'next/link'
 import Loading from '@/components/Loading'
+import { addItemToCart } from '@/actions/addToCartAndWishList'
 
 
 const page = ({ params }: any) => {
@@ -134,9 +135,15 @@ const page = ({ params }: any) => {
     }
   }
 
-  const handleBuy = () => {
+  const handleBuy = async () => {
     if(session){
-      router.push('/checkout')
+      const res = await addItemToCart(session.user.email as string, params.productId, productData.priceAfterDiscount)
+      if(res.success || res.isItemPresent){
+        toast({
+          title: 'Proceeding to checkout 📦',
+        })
+        router.push('/checkout')
+      }
     }else{
       toast({
         title: 'Login / Signup',

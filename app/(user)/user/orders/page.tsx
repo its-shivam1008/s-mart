@@ -45,7 +45,7 @@ const page = () => {
       {
         arrayOfOrder.length > 0 ? 
           arrayOfOrder.map((element:any, index:number) => {
-            return (<div key={index} className='p-5 my-4 bg-white rounded-[12px] shadow-xl border-2 border-solid border-gray-400 flex justify-between gap-5 w-auto mx-auto md:w-[550px]'>
+            return (<div key={index} className='p-5 my-4 bg-white rounded-[12px] shadow-xl border-2 border-solid border-gray-400 flex justify-between gap-5 w-auto mx-auto md:w-[550px] flex-col md:flex-row'>
               <div className="image w-40 h-40 shadow-xl rounded-[12px]">
               <Image className="rounded-[12px]" src={element.img} alt='noImg found' width={0} height={0} sizes="100vw" style={{ width: '100%', height: '100%', objectFit: 'cover' }} />
               </div>
