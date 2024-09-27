@@ -27,7 +27,7 @@ const Footer = () => {
           </div>
           <div>
             <div className='text-purple-500 font-bold text-xl'>Contact us</div>
-            <Link className='font-[200] hover:text-purple-500' href="mailto:shivamshukla.email@gmail.com">shivamshukla.email@gmail.com</Link>
+            <Link className='font-[200] hover:text-purple-500' href="mailto:s.mart.pvt.app@gmail.com">s.mart.pvt.app@gmail.com</Link>
           </div>
         </div>
       </div>
