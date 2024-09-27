@@ -24,6 +24,7 @@ import {
 } from "@/components/ui/form"
 import { Input } from "@/components/ui/input"
 import { Loader2, LoaderCircle } from 'lucide-react';
+import Loading from '@/components/Loading';
 
 
 
@@ -125,7 +126,7 @@ const page = () => {
         })()
     }
     if(status === 'loading'){
-       return <div>loading...</div>
+       return <div className='min-h-screen flex justify-center items-center'><Loading/></div>
     }
     
     
