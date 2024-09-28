@@ -10,7 +10,7 @@ import Modal from '@/components/Modal';
 import { X } from 'lucide-react';
 
 
-const page = () => {
+const UserOrdersPage = () => {
 
   const { data: session, status } = useSession()
 
@@ -119,4 +119,4 @@ const page = () => {
   )
 }
 
-export default page
+export default UserOrdersPage

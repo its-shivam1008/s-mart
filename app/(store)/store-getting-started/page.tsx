@@ -36,7 +36,7 @@ import { useRouter } from 'next/navigation'
 import { useSession } from 'next-auth/react'
 
 
-const page = () => {
+const StoreStartedPage = () => {
 
   const { toast } = useToast()
   const { data: session, status } = useSession()
@@ -534,4 +534,4 @@ const page = () => {
   )
 }
 
-export default page
+export default StoreStartedPage

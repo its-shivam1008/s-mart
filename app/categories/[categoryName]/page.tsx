@@ -16,7 +16,7 @@ import {
 import { Filter } from 'lucide-react'
 
 
-const page = ({ params }: any) => {
+const CategoryPage = ({ params }: any) => {
   const images = ['https://res.cloudinary.com/di8z1aufv/image/upload/v1727020975/cat1_swy3s2.jpg', 'https://res.cloudinary.com/di8z1aufv/image/upload/v1727020976/cat2_k6zjzo.jpg', 'https://res.cloudinary.com/di8z1aufv/image/upload/v1727020985/cat3_ujovrz.jpg',  'https://res.cloudinary.com/di8z1aufv/image/upload/v1727020975/cat4_urofnx.jpg', 'https://res.cloudinary.com/di8z1aufv/image/upload/v1727020975/cat5_ydavq0.jpg']
 
   const [products, setProducts] = useState<any>([])
@@ -223,4 +223,4 @@ const page = ({ params }: any) => {
   )
 }
 
-export default page
+export default CategoryPage

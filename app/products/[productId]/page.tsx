@@ -29,7 +29,7 @@ import Loading from '@/components/Loading'
 import { addItemToCart } from '@/actions/addToCartAndWishList'
 
 
-const page = ({ params }: any) => {
+const ProductPage = ({ params }: any) => {
   const router = useRouter()
   const { toast } = useToast()
   const [isLoading, setIsLoading] = useState(false)
@@ -302,4 +302,4 @@ const page = ({ params }: any) => {
   )
 }
 
-export default page
+export default ProductPage

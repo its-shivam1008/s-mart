@@ -25,7 +25,7 @@ import { checkUserType, checkUserTypeWithStoreFormFilled } from '@/actions/check
 
 
 
-const page = () => {
+const LoginPage = () => {
     const { data: session, status } = useSession();
     const router = useRouter();
     const [isSubmitting, setIsSubmitting] = useState(false);
@@ -184,4 +184,4 @@ const page = () => {
   )
 }
 
-export default page
+export default LoginPage

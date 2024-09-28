@@ -17,11 +17,6 @@ import Link from "next/link";
 
 gsap.registerPlugin(ScrollTrigger);
 
-const metadata = {
-  title: 's-mart',
-  description:
-    "Explore top-quality products at s-mart's ecommerce store. Shop a wide range of items with secure payments, fast shipping, and great deals. Visit our product page now!",
-};
 
 export default function Home() {
 
@@ -284,7 +279,7 @@ export default function Home() {
       }
     }
     checkPass();
-  }, [session, flag]) //You get undefined because the session hasn't been fetched yet. You can solve it by using useEffect and adding "session" to its dependencies
+  }, [session, flag, router]) //You get undefined because the session hasn't been fetched yet. You can solve it by using useEffect and adding "session" to its dependencies
 
 
   const [productsArray, setProductsArray] = useState<any>({

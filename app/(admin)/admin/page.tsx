@@ -12,7 +12,7 @@ import Loading from '@/components/Loading';
 
 
 
-const page = () => {
+const AdminPage = () => {
   const { data: session, status } = useSession()
   const [flag, setFlag] = useState(false)
 
@@ -95,4 +95,4 @@ const page = () => {
   )
 }
 
-export default page
+export default AdminPage

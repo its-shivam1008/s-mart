@@ -23,7 +23,7 @@ import { useSession } from 'next-auth/react';
 import { useToast } from '@/components/ui/use-toast';
 import Loading from '@/components/Loading';
 
-const page = () => {
+const UserPage = () => {
   const { data: session, status } = useSession()
   const [editPassword, setEditPassword] = useState(false)
   const [updatePassword, setUpdatePassword] = useState(false)
@@ -198,4 +198,4 @@ const page = () => {
   )
 }
 
-export default page
+export default UserPage

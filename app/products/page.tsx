@@ -23,7 +23,7 @@ import { searchProduct } from '@/schemas/productSchema'
 import { Loader2 } from 'lucide-react'
 import { useToast } from '@/components/ui/use-toast'
 
-const page = () => {
+const ProductsPage = () => {
 
   const [products, setProducts] = useState<any[]>([])
   const [searchProductsValue, setSearchProductsValue] = useState<any[]>([])
@@ -125,4 +125,4 @@ const page = () => {
   )
 }
 
-export default page
+export default ProductsPage

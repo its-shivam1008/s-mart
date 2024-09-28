@@ -29,7 +29,7 @@ import { verifySchema } from '@/schemas/verifySchema';
 import { Loader2 } from 'lucide-react';
 import { Session } from 'next-auth';
 
-const page = () => {
+const VerifyPage = () => {
   const [textValue, setTextValue] = useState('');
   const { data: session, status } = useSession()
   const [toggleDisable, setToggleDisable] = useState(true);
@@ -114,7 +114,7 @@ const page = () => {
 
   // a solution to this is that I should seperate the useEffect when I am using it with creds and without creds
   // the problem is that the session is not updating the usestate hook sessoin object which is a problem it is being updated with creds if statement - solved partially now I have to check the below logic with creds part again
-  // also I have to load the page only when I got the sessionObject with actual values - all these problems solved
+  // also I have to load the VerifyPage only when I got the sessionObject with actual values - all these problems solved
 
   // this useEffect is used for sign-up with creds
   useEffect(() => {
@@ -173,7 +173,7 @@ const page = () => {
     })
     // console.log(sess)
     const dataResponse = await res.json();
-    // redirecting the user to home page if it is a user or pushing it to store for more store information if it is a store owner
+    // redirecting the user to home VerifyPage if it is a user or pushing it to store for more store information if it is a store owner
     if(dataResponse.success && !dataResponse.isStoreOwner){
     toast({
       title:"Account creation successful 🎊",
@@ -257,4 +257,4 @@ const page = () => {
   </div>
   )
 }
-export default page
+export default VerifyPage

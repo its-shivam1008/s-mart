@@ -23,7 +23,7 @@ import { passwordSchema } from '@/schemas/passwordSchema';
 import { z } from 'zod';
 import { useToast } from "@/components/ui/use-toast"
 
-const page = () => {
+const SetupPasswordPage = () => {
     // const [textValue, setTextValue] = useState("");
     // const [userRole, setUserRole] = useState('User');
     const [isSubmitting, setIsSubmitting] = useState(false);
@@ -37,7 +37,7 @@ const page = () => {
     //     setTextValue(e.target.value)
     // }
 
-    // if user is present already push it to the homepage
+    // if user is present already push it to the homeSetupPasswordPage
     // useEffect(() => {
       
     // }, [])
@@ -122,4 +122,4 @@ const page = () => {
   )
 }
 
-export default page
+export default SetupPasswordPage

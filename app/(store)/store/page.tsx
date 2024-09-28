@@ -13,7 +13,7 @@ import axios from 'axios';
 
 
 
-const page = () => {
+const StoreOwnerPage = () => {
   const { data: session, status } = useSession()
   const [flag, setFlag] = useState(false)
 
@@ -111,4 +111,4 @@ const page = () => {
   )
 }
 
-export default page
+export default StoreOwnerPage

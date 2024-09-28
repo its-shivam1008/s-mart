@@ -11,7 +11,7 @@ import { Send, X } from 'lucide-react';
 
 export const maxDuration = 30;
 
-export default function Home() {
+export default function AskAi() {
   const [conversation, setConversation] = useState<Message[]>([]);
   const [input, setInput] = useState<string>('');
   const { toast } = useToast()

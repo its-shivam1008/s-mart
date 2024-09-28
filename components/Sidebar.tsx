@@ -8,7 +8,7 @@ import { useSession, signIn, signOut } from "next-auth/react";
 
 
 
-const page = ({children}:{children:React.ReactNode}) => {
+const Sidebar = ({children}:{children:React.ReactNode}) => {
 
   const router = useRouter();
   const currentPath = usePathname();
@@ -33,4 +33,4 @@ const page = ({children}:{children:React.ReactNode}) => {
   )
 }
 
-export default page
+export default Sidebar

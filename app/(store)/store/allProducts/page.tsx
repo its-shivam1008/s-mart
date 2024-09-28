@@ -24,7 +24,7 @@ import { updateProduct } from '@/schemas/productSchema';
 import { deleteImageFromCloudinary, deleteProductImageFromUiAndDB, uploadImageToCloudinary } from '@/actions/CloudinaryProductImage';
 import { useToast } from '@/components/ui/use-toast';
 
-const page = () => {
+const AllProductPage = () => {
 
   const { data: session, status } = useSession()
   const [flag, setFlag] = useState(false)
@@ -472,4 +472,4 @@ const page = () => {
   )
 }
 
-export default page
+export default AllProductPage

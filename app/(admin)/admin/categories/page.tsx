@@ -28,7 +28,7 @@ import axios from 'axios';
 import { useToast } from '@/components/ui/use-toast';
 import Loading from '@/components/Loading';
 
-const page = () => {
+const AdminCategory = () => {
 
   const [isParentFormSubmitting, setIsParentFormSubmitting] = useState(false)
   const [isSubFormSubmitting, setIsSubFormSubmitting] = useState(false)
@@ -243,4 +243,4 @@ const page = () => {
   )
 }
 
-export default page
+export default AdminCategory

@@ -15,7 +15,7 @@ import {
 import { toast, useToast } from '@/components/ui/use-toast';
 import { Trash2 } from 'lucide-react';
 
-const page = () => {
+const OrdersPage = () => {
 
     const { data: session, status } = useSession()
     const [flag, setFlag] = useState(false)
@@ -148,4 +148,4 @@ const page = () => {
     )
 }
 
-export default page
+export default OrdersPage

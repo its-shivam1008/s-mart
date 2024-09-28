@@ -24,7 +24,7 @@ import { useToast } from '@/components/ui/use-toast';
 import Loading from '@/components/Loading';
 import axios from 'axios';
 
-const page = () => {
+const StoreProfilePage = () => {
   const { data: session, status } = useSession()
   const [editPassword, setEditPassword] = useState(false)
   const [updatePassword, setUpdatePassword] = useState(false)
@@ -216,4 +216,4 @@ const page = () => {
   )
 }
 
-export default page
+export default StoreProfilePage

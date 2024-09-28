@@ -6,7 +6,7 @@ import { useSession } from 'next-auth/react';
 import { addItemToCart, getCartItemsFromProduct, getItemFromWishList, getWishlistFromProduct, removeItemFromCart, removeItemFromWishList, updateItemsOfCart } from '@/actions/addToCartAndWishList';
 import { useToast } from '@/components/ui/use-toast';
 
-const page = () => {
+const WishlistPage = () => {
 
     const { data: session, status } = useSession()
     
@@ -113,4 +113,4 @@ const page = () => {
     )
 }
 
-export default page
+export default WishlistPage

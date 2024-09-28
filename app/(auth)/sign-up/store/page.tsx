@@ -27,7 +27,7 @@ import { Loader2, LoaderCircle } from 'lucide-react';
 
 
 
-const page = () => {
+const SignUpStore = () => {
     const { data: session, status } = useSession()
     const router = useRouter();
     const loginAndRedirecting = (method:string) : void => {
@@ -223,4 +223,4 @@ const page = () => {
   )
 }
 
-export default page
+export default SignUpStore

@@ -28,7 +28,7 @@ import Loading from '@/components/Loading';
 
 
 
-const page = () => {
+const SignUpPage = () => {
     const { data: session, status } = useSession()
     const router = useRouter();
 
@@ -236,4 +236,4 @@ if(!session){
   )
 }
 }
-export default page
+export default SignUpPage

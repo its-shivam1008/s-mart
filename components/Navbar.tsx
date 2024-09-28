@@ -45,7 +45,7 @@ const Navbar = () => {
 
     useEffect(() => {
         //   setMenuClicked(menuClicked)
-        console.log(session)
+        console.log('It has been clicked')
     }, [menuClicked])
 
 

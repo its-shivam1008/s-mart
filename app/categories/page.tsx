@@ -7,7 +7,7 @@ import SlideShow from '@/components/SlideShow'
 import Link from 'next/link'
 import React, { useEffect, useState } from 'react'
 
-const page = () => {
+const CategoriesPage = () => {
     const images = ['https://res.cloudinary.com/di8z1aufv/image/upload/v1727020995/imageslider1_xpp5h7.jpg', 'https://res.cloudinary.com/di8z1aufv/image/upload/v1727020997/imageSlider2_nyxdlf.jpg', 'https://res.cloudinary.com/di8z1aufv/image/upload/v1727020994/imageSlider3_kk12sz.jpg', 'https://res.cloudinary.com/di8z1aufv/image/upload/v1727021002/imageSlider4_riajyf.jpg', 'https://res.cloudinary.com/di8z1aufv/image/upload/v1727020997/imageSlider5_hyk7zm.jpg', 'https://res.cloudinary.com/di8z1aufv/image/upload/v1727021013/imageSlider6_oyr1lj.jpg']
 
     const [categoryNameArrayObj, setCategoryNameArrayObj] = useState<any>([])
@@ -93,5 +93,5 @@ const page = () => {
     )
 }
 
-export default page
+export default CategoriesPage
   

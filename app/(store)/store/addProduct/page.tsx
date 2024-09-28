@@ -31,7 +31,7 @@ import { checkUserType } from '@/actions/checkUserType';
 import { useRouter } from 'next/navigation';
 import { uploadImageToCloudinary } from '@/actions/CloudinaryProductImage';
 
-function page() {
+function AddProductPage() {
 
   const [subCatArray, setSubCatArray] = useState<string[] | undefined>([]);
   const [parentCateg, setParentCateg] = useState<string | undefined>('')
@@ -330,4 +330,4 @@ function page() {
   );
 }
 
-export default page;
+export default AddProductPage;
