@@ -30,7 +30,15 @@ import useRazorpay from '@/components/RazorpayPayment';
 import { useRouter, useSearchParams } from 'next/navigation';
 import { Suspense } from 'react';
 
+
+
 const CheckoutPage = () => {
+
+
+    // `useSearchParams` is still called here unconditionally.
+    // const searchParams = useSearchParams();
+
+
     const [flag, setFlag] = useState(false)
     const [flag2, setFlag2] = useState(false)
     const [isAddressFillFlag, setIsAddressFillFlag] = useState(false)
@@ -43,7 +51,6 @@ const CheckoutPage = () => {
     const { Pay }: any = useRazorpay()
     const [previousFormData, setPreviousFormData] = useState({ address: '', pincode: 0, state: '', street: '', city: '' })
 
-    const searchParams = useSearchParams()
     const router = useRouter();
 
     const removeCartItemAndOrderCreation = async (userEmail: string, prodId: any) => {
@@ -83,19 +90,23 @@ const CheckoutPage = () => {
         await fetchProductsFromCart(userEmail)
     }
     useEffect(() => {
-        if (session && !flag2 && cartItemsArray[0].images[0] !== '') {
-            if (searchParams.get('paymentdone') == "true") {
-                toast({
-                    title: 'Payment successful 💸',
-                    description: "Placing your order .... 🚚"
-                })
-                const prodId = searchParams.get('productId')
-                removeCartItemAndOrderCreation(session?.user.email as string, prodId)
-                router.push(`/checkout`)
+        if (typeof window !== 'undefined') {
+            const url = new URL(window.location.href);
+            const searchParams = new URLSearchParams(url.search);
+            if (session && !flag2 && cartItemsArray[0].images[0] !== '') {
+                if (searchParams.get('paymentdone') == "true") {
+                    toast({
+                        title: 'Payment successful 💸',
+                        description: "Placing your order .... 🚚"
+                    })
+                    const prodId = searchParams.get('productId')
+                    removeCartItemAndOrderCreation(session?.user.email as string, prodId)
+                    router.push(`/checkout`)
+                }
+                setFlag2(true)
             }
-            setFlag2(true)
         }
-    }, [session, flag2, cartItemsArray])
+    }, [session, flag2, cartItemsArray]);
 
 
     const isAddressFilled = async (userEmail: string) => {
@@ -269,9 +280,8 @@ const CheckoutPage = () => {
     }
 
     return (
-        <Suspense fallback={<div className='min-h-screen flex justify-center items-center'><Loading/></div>}>
             <>
-                <Script src="https://checkout.razorpay.com/v1/checkout.js" strategy="beforeInteractive"></Script>
+                {/* <Script src="https://checkout.razorpay.com/v1/checkout.js" strategy="beforeInteractive"></Script> */}
                 <div className='md:grid md:grid-cols-2 flex flex-col gap-4 min-h-screen h-fit bg-purple-200'>
                     <div className='addForm bg-purple-200 flex justify-center items-center'>
                         {
@@ -438,7 +448,8 @@ const CheckoutPage = () => {
                     </div>
                 </div>
             </>
-        </Suspense>
+        // <Suspense fallback={<div className='min-h-screen flex justify-center items-center'><Loading /></div>}>
+        // </Suspense>
     )
 }
 

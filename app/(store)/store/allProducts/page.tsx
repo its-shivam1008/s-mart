@@ -281,7 +281,7 @@ const AllProductPage = () => {
                         No, cancel
                       </button>
                       <button onClick={() => handleDeleteButton()} type='button' className="py-2 px-3 text-sm font-medium text-center bg-white text-red-600 rounded-lg hover:bg-white focus:ring-4 focus:outline-none focus:ring-red-300 dark:bg-red-500 dark:hover:bg-red-600 dark:focus:ring-red-900 transition-colors duration-300">
-                        Yes, I'm sure
+                        Yes, I&apos;m sure
                       </button>
                     </div>
                   </div>
@@ -345,8 +345,8 @@ const AllProductPage = () => {
                         )}
                       />
                       <div className='flex justify-around space-x-2 overflow-x-auto py-2'>
-                        {previousFormData.images.length > 0 && previousFormData.images.map((ele) => {
-                          return <div className='relative'><Trash onClick={() => deleteImage(ele)} className='text-red-500 size-5 cursor-pointer absolute -top-2 -right-2' /><div className='image w-30 h-20 shadow-xl rounded-[12px]'>
+                        {previousFormData.images.length > 0 && previousFormData.images.map((ele, index) => {
+                          return <div key={index} className='relative'><Trash onClick={() => deleteImage(ele)} className='text-red-500 size-5 cursor-pointer absolute -top-2 -right-2' /><div className='image w-30 h-20 shadow-xl rounded-[12px]'>
                             <Image className="rounded-[12px]" src={ele} alt='noImg found' width={0} height={0} sizes="100vw" style={{ width: '100%', height: '100%', objectFit: 'cover' }} />
                           </div></div>
                         })}

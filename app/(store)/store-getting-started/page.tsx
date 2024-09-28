@@ -255,7 +255,7 @@ const StoreStartedPage = () => {
                         name="owner_name"
                         render={({ field }) => (
                           <FormItem>
-                            <FormLabel>Store Owner's name</FormLabel>
+                            <FormLabel>Store Owner&apos;s name</FormLabel>
                             <FormControl>
                               <Input placeholder="John doe"
                                 {...field}

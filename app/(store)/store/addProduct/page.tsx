@@ -308,7 +308,7 @@ function AddProductPage() {
                         </SelectTrigger>
                       </FormControl>
                       <SelectContent>
-                        {flag && subCatArray?.map((ele) => <SelectItem value={ele}>{ele}</SelectItem>)}
+                        {flag && subCatArray?.map((ele, index) => <SelectItem key={index} value={ele}>{ele}</SelectItem>)}
                       </SelectContent>
                     </Select>
                     <FormMessage />
