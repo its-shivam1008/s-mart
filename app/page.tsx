@@ -311,14 +311,14 @@ export default function Home() {
         careProducts: JSON.parse(careProducts.product as string),
         sportProducts: JSON.parse(sportProducts.product as string),
       })
-      // console.log({
-      //   electProducts: electProducts.product,
-      //   fashProducts: fashProducts.product,
-      //   homeProducts: homeProducts.product,
-      //   booksProducts: booksProducts.product,
-      //   careProducts: careProducts.product,
-      //   sportProducts: sportProducts.product,
-      // }, 'fetched')
+      console.log({
+        electProducts: electProducts.product,
+        fashProducts: fashProducts.product,
+        homeProducts: homeProducts.product,
+        booksProducts: booksProducts.product,
+        careProducts: careProducts.product,
+        sportProducts: sportProducts.product,
+      }, 'fetched')
       console.log('fetched')
     } else {
       console.log("not fetched")
@@ -515,7 +515,7 @@ export default function Home() {
             {/* <button type='button' className="demo absolute bottom-[0%] py-[1.5vw] px-[3vw] bg-[#d1d1d1] text-[0.8vw] border-none rounded-xl">Demo</button> */}
           </div>
         </div>
-        <div className="page4 h-fit w-full overflow-x-hidden flex gap-10 min-[0px]:max-md:hidden">
+        <div className="page4 h-fit w-full overflow-x-hidden flex gap-10 ">
           <div className="relative text-scroll mx-3">
             <h1 className="text-black text-[40vw]">Global</h1>
             <div className="imageCard w-56 h-40 hover:outline-2 hover:outline hover:outline-red-500 outline-offset-2 rounded-[20px] absolute top-48 left-80 rotate-12">
