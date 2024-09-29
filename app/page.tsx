@@ -517,32 +517,32 @@ export default function Home() {
         </div>
         <div className="page4 h-fit w-full overflow-x-hidden flex gap-10 ">
           <div className="relative text-scroll mx-3">
-            <h1 className="text-black text-[40vw]">Global</h1>
-            <div className="imageCard w-56 h-40 hover:outline-2 hover:outline hover:outline-red-500 outline-offset-2 rounded-[20px] absolute top-48 left-80 rotate-12">
+            <h1 className="text-black text-[40vw] min-[0px]:max-md:text-[40vh]">Global</h1>
+            <div className="imageCard w-56 h-40 min-[0px]:max-md:w-32 min-[0px]:max-md:h-16 hover:outline-2 hover:outline hover:outline-red-500 outline-offset-2 rounded-[20px] absolute top-48 left-80 rotate-12">
               <Image className="object-fill" src='https://res.cloudinary.com/di8z1aufv/image/upload/v1727021005/page4a_wlqqwj.jpg' alt='noImg found' width={0} height={0} sizes="100vw" style={{ width: '100%', height: '100%', objectFit: 'cover', borderRadius: '20px' }} />
             </div>
 
           </div>
           <div className="relative text-scroll mx-3">
-            <h1 className="text-black text-[40vw] relative">Brands</h1>
-            <div className="imageCard w-40 h-56 hover:outline-2 hover:outline hover:outline-[rebeccapurple] outline-offset-2 rounded-[20px] absolute bottom-48 -right-10 -rotate-6">
+            <h1 className="text-black text-[40vw] min-[0px]:max-md:text-[40vh] relative">Brands</h1>
+            <div className="imageCard w-40 h-56 min-[0px]:max-md:w-16 min-[0px]:max-md:h-32 hover:outline-2 hover:outline hover:outline-[rebeccapurple] outline-offset-2 rounded-[20px] absolute bottom-48 -right-10 -rotate-6">
               <Image className="object-fill" src='https://res.cloudinary.com/di8z1aufv/image/upload/v1727020999/page4b_wuwnie.jpg' alt='noImg found' width={0} height={0} sizes="100vw" style={{ width: '100%', height: '100%', objectFit: 'cover', borderRadius: '20px' }} />
             </div>
 
           </div>
           <div className="relative text-scroll mx-3">
-            <h1 className="text-black text-[40vw] relative">On</h1>
+            <h1 className="text-black text-[40vw] min-[0px]:max-md:text-[40vh] relative">On</h1>
           </div>
           <div className="relative text-scroll mx-3">
-            <h1 className="text-black text-[40vw] relative">Your</h1>
-            <div className="imageCard w-56 h-40 hover:outline-2 hover:outline hover:outline-gray-500 outline-offset-2 rounded-[20px] absolute top-48 left-[50%] -rotate-45">
+            <h1 className="text-black text-[40vw] min-[0px]:max-md:text-[40vh] relative">Your</h1>
+            <div className="imageCard w-56 h-40 min-[0px]:max-md:w-32 min-[0px]:max-md:h-16 hover:outline-2 hover:outline hover:outline-gray-500 outline-offset-2 rounded-[20px] absolute top-48 left-[50%] -rotate-45">
               <Image className="object-fill" src='https://res.cloudinary.com/di8z1aufv/image/upload/v1727021014/page4c_ylzf41.jpg' alt='noImg found' width={0} height={0} sizes="100vw" style={{ width: '100%', height: '100%', objectFit: 'cover', borderRadius: '20px' }} />
             </div>
 
           </div>
           <div className="relative text-scroll mx-3">
-            <h1 className="text-black text-[40vw] relative">Fingertips!!!</h1>
-            <div className="imageCard w-40 h-56 hover:outline-2 hover:outline hover:outline-yellow-200 outline-offset-2 rounded-[20px] absolute top-48 right-[50%] rotate-12">
+            <h1 className="text-black text-[40vw] min-[0px]:max-md:text-[40vh] relative">Fingertips!!!</h1>
+            <div className="imageCard w-40 h-56 min-[0px]:max-md:w-16 min-[0px]:max-md:h-32 hover:outline-2 hover:outline hover:outline-yellow-200 outline-offset-2 rounded-[20px] absolute top-48 right-[50%] rotate-12">
               <Image className="object-fill" src='https://res.cloudinary.com/di8z1aufv/image/upload/v1727021011/page4d_ndxtck.jpg' alt='noImg found' width={0} height={0} sizes="100vw" style={{ width: '100%', height: '100%', objectFit: 'cover', borderRadius: '20px' }} />
             </div>
           </div>
