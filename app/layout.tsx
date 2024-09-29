@@ -8,6 +8,7 @@ import Navbar from "@/components/Navbar";
 import SmoothScrolling from "@/components/SmoothScrolling";
 import ConditionalNavbar from "@/components/ConditionalNavbar";
 import Footer from "@/components/Footer";
+import { SpeedInsights } from "@vercel/speed-insights/next"
 
 export const metadata = {
   title: 'S-mart | Your Online Shopping Destination',
@@ -26,7 +27,9 @@ export default function RootLayout({
       <SessionWrapper>
         <body className={inter.className}>
         <ConditionalNavbar />
-          <SmoothScrolling> {children} </SmoothScrolling>
+          <SmoothScrolling> {children} 
+            <SpeedInsights/>
+          </SmoothScrolling>
         <Toaster />
         <Footer/>
         </body> 
