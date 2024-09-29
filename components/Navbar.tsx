@@ -94,9 +94,9 @@ const Navbar = () => {
     return (
         <div ref={navBar} className='top-3 rounded-lg absolute w-full z-50'>
             <div className='w-[90%] bg-white bg-opacity-40  backdrop-filter backdrop-blur-md  mx-auto rounded-full flex font-bold text-xl tracking-wide items-center justify-around h-12'>
-                <div className="rounded-full w-auto size-10  overflow-hidden">
+                <Link href='/' className="rounded-full w-auto size-10  overflow-hidden">
                     <img src='https://res.cloudinary.com/di8z1aufv/image/upload/v1727023012/S_-_Mart_lfvdl6.jpg' alt='noimagefound' className='rounded-full object-cover size-10' width={10} height={10}  />
-                </div>
+                </Link>
                 <div className='pages md:flex hidden gap-10'>
                     <Link href='/products' className='elements font-normal  hover:text-blue-500 transition-colors duration-500'>Products</Link>
                     <Link href='/categories' className='elements font-normal  hover:text-blue-500 transition-colors duration-500'>Categories</Link>
