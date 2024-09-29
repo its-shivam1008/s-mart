@@ -265,12 +265,16 @@ export default function Home() {
   const router = useRouter()
   const [flag, setFlag] = useState(false)
   const { data: session, status } = useSession()
+
+  const pageThreeRef = useRef<HTMLDivElement>(null)
+
   useEffect(() => {
     const checkPass = async () => {
       // alert('useeffect')
       if (session && !flag) {
         // console.log(session)
         const res = await axios.get(`/api/isVerified?email=${session.user.email}`);
+        
         // console.log(res.data.isVerified)
         setFlag(true)
         if (!res.data.isVerified) {
@@ -279,6 +283,7 @@ export default function Home() {
       }
     }
     checkPass();
+    console.log("heightofclient",pageThreeRef?.current?.clientHeight)
   }, [session, flag, router]) //You get undefined because the session hasn't been fetched yet. You can solve it by using useEffect and adding "session" to its dependencies
 
 
@@ -395,7 +400,7 @@ export default function Home() {
             </div>
           </div>
         </div>
-        <div onMouseEnter={mouseEnterPage3} onMouseLeave={mouseLeavePage3} className="page3 bg-purple-400 h-fit py-20 space-y-20">
+        <div onMouseEnter={mouseEnterPage3} onMouseLeave={mouseLeavePage3} ref={pageThreeRef} className="page3 bg-purple-400 h-fit py-20 space-y-20">
           <div className='parentProduct flex flex-col'>
             <div className="hidden"></div>
             <div className='productTitle electProducts px-2 py-3 ml-10 mb-10 text-3xl font-bold bg-slate-100 rounded-md text-purple-800 w-fit'>Electronics</div>
@@ -510,7 +515,7 @@ export default function Home() {
             {/* <button type='button' className="demo absolute bottom-[0%] py-[1.5vw] px-[3vw] bg-[#d1d1d1] text-[0.8vw] border-none rounded-xl">Demo</button> */}
           </div>
         </div>
-        <div className="page4 h-fit w-full overflow-x-hidden flex gap-10">
+        <div className="page4 h-fit w-full overflow-x-hidden flex gap-10 min-[0px]:max-md:hidden">
           <div className="relative text-scroll mx-3">
             <h1 className="text-black text-[40vw]">Global</h1>
             <div className="imageCard w-56 h-40 hover:outline-2 hover:outline hover:outline-red-500 outline-offset-2 rounded-[20px] absolute top-48 left-80 rotate-12">
