@@ -52,6 +52,8 @@ const CheckoutPage = () => {
     const [previousFormData, setPreviousFormData] = useState({ address: '', pincode: 0, state: '', street: '', city: '' })
 
     const router = useRouter();
+    // const { productId, paymentdone } = router.query;
+    // const { productId, paymentdone } = router.query;
 
     const removeCartItemAndOrderCreation = async (userEmail: string, prodId: any) => {
         var quantity = 0;
@@ -95,6 +97,7 @@ const CheckoutPage = () => {
             const searchParams = new URLSearchParams(url.search);
             if (session && !flag2 && cartItemsArray[0].images[0] !== '') {
                 if (searchParams.get('paymentdone') == "true") {
+                    // if (paymentdone === "true") {
                     toast({
                         title: 'Payment successful 💸',
                         description: "Placing your order .... 🚚"
@@ -228,46 +231,6 @@ const CheckoutPage = () => {
         }
     }
 
-
-    // const Pay = async (amount: number, productId:string, productName:string, userEmail:string) => {
-    //     const paymentForm = {
-    //         productId, productName, userEmail
-    //     }
-    //     const store = await findStoreByProduct(productId)
-    //     if(!store.storeId){
-    //         console.log(store.storeId)
-    //         return {message: 'no store found'}
-    //     }
-    //     let a = await initiate(amount, store.storeId as any , paymentForm);
-    //     if(!('id' in a)){
-    //         return {message:'nothing found'}
-    //     }
-    //     let order_id = a.id
-    //     console.log(store.storeId, store.razorpayId)
-    //     var options:any = {
-    //         "key": store.razorpayId , // Enter the Key ID generated from the Dashboard
-    //         "amount": amount, // Amount is in currency subunits. Default currency is INR. Hence, 50000 refers to 50000 paise
-    //         "currency": "INR",
-    //         "name": "S-mart", //your business name
-    //         "description": "Test Transaction",
-    //         "image": "https://example.com/your_logo",
-    //         "order_id": order_id, //This is a sample Order ID. Pass the `id` obtained in the response of Step 1
-    //         "callback_url": `${process.env.NEXT_PUBLIC_URL}/api/razorpay`,
-    //         "prefill": { //We recommend using the prefill parameter to auto-fill customer's contact information especially their phone number
-    //             "name": paymentForm.userEmail, //your customer's name
-    //             "email": "abc@example.com",
-    //             "contact": "9000090000" //Provide the customer's phone number for better conversion rates 
-    //         },
-    //         "notes": {
-    //             "address": "Razorpay Corporate Office"
-    //         },
-    //         "theme": {
-    //             "color": "#3399cc"
-    //         }
-    //     };
-    //     var rzp1:any = new Razorpay(options);
-    //     rzp1.open();
-    // }
 
     const handlePayment = async (amount: number, productId: string, productName: string, userEmail: string) => {
         // e.preventDefault();
