@@ -86,7 +86,7 @@ const VerifyPage = () => {
   const handleClick = async() =>{
     setToggleDisable(true);
     enableCount();
-    const res = await fetch('http://localhost:3000/api/generateOtp',{
+    const res = await fetch(`${process.env.NEXT_PUBLIC_URL}/api/generateOtp`,{
       method:'PUT',
       headers:{
         'Content-type': 'application/json'
@@ -164,7 +164,7 @@ const VerifyPage = () => {
       console.log('sessionobjectsent',sessionObjectSent)
     }
 
-    const res = await fetch('http://localhost:3000/api/verifyingCode', {
+    const res = await fetch(`${process.env.NEXT_PUBLIC_URL}/api/verifyingCode`, {
       method:'POST',
       headers:{
         'Content-type': 'application/json'

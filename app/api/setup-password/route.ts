@@ -2,6 +2,7 @@ import dbConnect from "@/Db/Db";
 import UserModel from "@/models/User";
 import { NextResponse } from "next/server";
 import { sendVerificationEmail } from "@/helpers/sendVerificationEmail";
+import { sendVerificationEmailNodeMailer } from "@/helpers/sendVerifyEmailNodeMailer";
 
 
 export async function POST(req:Request){
@@ -26,15 +27,22 @@ export async function POST(req:Request){
 
         await userByEmail.save();
 
-        //send verification email
-        const emailResponse = await sendVerificationEmail(data.session.user.email,data.session.user.username,verifyCode)
-        if(!emailResponse.success){
-            return NextResponse.json({message:emailResponse.message, success:false},{status:500})
-        }
-        return NextResponse.json({message:emailResponse.message, success:true},{status:201})
+        // //send verification email
+        // const emailResponse = await sendVerificationEmail(data.session.user.email,data.session.user.username,verifyCode)
+        // if(!emailResponse.success){
+        //     return NextResponse.json({message:emailResponse.message, success:false},{status:500})
+        // }
+        // return NextResponse.json({message:emailResponse.message, success:true},{status:201})
+
+        // send email using nodemailer
+       const emailResponse = await sendVerificationEmailNodeMailer(data.session.user.email,data.session.user.username,verifyCode)
+       if(!emailResponse.success){
+           return NextResponse.json({message:emailResponse.message, success:false},{status:500})
+       }
+       return NextResponse.json({message:emailResponse.message, success:true},{status:201})
 
     }catch(err){
-        console.error("Error saving the password", err);
+        // console.error("Error saving the password", err);
         return NextResponse.json({message: "Error saving the password", success:false},{ status:500});
     }
 }

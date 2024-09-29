@@ -22,6 +22,7 @@ import { zodResolver } from '@hookform/resolvers/zod';
 import { passwordSchema } from '@/schemas/passwordSchema';
 import { z } from 'zod';
 import { useToast } from "@/components/ui/use-toast"
+import Loading from '@/components/Loading';
 
 const SetupPasswordPage = () => {
     // const [textValue, setTextValue] = useState("");
@@ -47,7 +48,7 @@ const SetupPasswordPage = () => {
         setIsSubmitting(true);
         const roleFromStorage = localStorage.getItem('role');
         // fetch to password saving route to save the password
-        const res = await fetch('http://localhost:3000/api/setup-password',{
+        const res = await fetch(`${process.env.NEXT_PUBLIC_URL}/api/setup-password`,{
             method: 'POST',
             headers: {
                 'Content-type': 'application/json',
@@ -81,9 +82,17 @@ const SetupPasswordPage = () => {
         }
     });
 
-    if(!session){
-        router.push('/login')
-    }
+    useEffect(() => {
+        // Ensure this is only run on the client side
+        if (!session) {
+            router.push('/login');
+        }
+    }, [session, router]);
+
+    if(status === 'loading'){
+        return <div className='min-h-screen flex justify-center items-center'><Loading/></div>
+     }
+     
 
     // const handleClick = ():void =>{
     //     setUserRole('StoreOwner');
