@@ -266,7 +266,7 @@ export default function Home() {
   const [flag, setFlag] = useState(false)
   const { data: session, status } = useSession()
 
-  const pageThreeRef = useRef<HTMLDivElement>(null)
+  // const pageThreeRef = useRef<HTMLDivElement>(null)
 
   useEffect(() => {
     const checkPass = async () => {
@@ -283,7 +283,7 @@ export default function Home() {
       }
     }
     checkPass();
-    console.log("heightofclient",pageThreeRef?.current?.clientHeight)
+    // console.log("heightofclient",pageThreeRef?.current?.clientHeight)
   }, [session, flag, router]) //You get undefined because the session hasn't been fetched yet. You can solve it by using useEffect and adding "session" to its dependencies
 
 
@@ -400,7 +400,7 @@ export default function Home() {
             </div>
           </div>
         </div>
-        <div onMouseEnter={mouseEnterPage3} onMouseLeave={mouseLeavePage3} ref={pageThreeRef} className="page3 bg-purple-400 h-fit py-20 space-y-20">
+        <div onMouseEnter={mouseEnterPage3} onMouseLeave={mouseLeavePage3}  className="page3 bg-purple-400 h-fit py-20 space-y-20 min-[0px]:max-md:h-[3448px]">
           <div className='parentProduct flex flex-col'>
             <div className="hidden"></div>
             <div className='productTitle electProducts px-2 py-3 ml-10 mb-10 text-3xl font-bold bg-slate-100 rounded-md text-purple-800 w-fit'>Electronics</div>
