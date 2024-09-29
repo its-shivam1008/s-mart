@@ -56,7 +56,7 @@ const LoginPage = () => {
             toast({
                 variant: "destructive",
                 title:'Login failed',
-                description:result.error
+                description:"wrong password or username/email"
             })
         }
         if(result?.url){
