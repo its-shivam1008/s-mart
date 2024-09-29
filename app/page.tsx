@@ -311,14 +311,14 @@ export default function Home() {
         careProducts: JSON.parse(careProducts.product as string),
         sportProducts: JSON.parse(sportProducts.product as string),
       })
-      console.log({
-        electProducts: electProducts.product,
-        fashProducts: fashProducts.product,
-        homeProducts: homeProducts.product,
-        booksProducts: booksProducts.product,
-        careProducts: careProducts.product,
-        sportProducts: sportProducts.product,
-      }, 'fetched')
+      // console.log({
+      //   electProducts: electProducts.product,
+      //   fashProducts: fashProducts.product,
+      //   homeProducts: homeProducts.product,
+      //   booksProducts: booksProducts.product,
+      //   careProducts: careProducts.product,
+      //   sportProducts: sportProducts.product,
+      // }, 'fetched')
       console.log('fetched')
     } else {
       console.log("not fetched")
@@ -400,7 +400,7 @@ export default function Home() {
             </div>
           </div>
         </div>
-        <div onMouseEnter={mouseEnterPage3} onMouseLeave={mouseLeavePage3}  className="page3 bg-purple-400 h-fit py-20 space-y-20 min-[0px]:max-md:h-[3448px]">
+        <div onMouseEnter={mouseEnterPage3} onMouseLeave={mouseLeavePage3}  className="page3 bg-purple-400 h-fit py-20 space-y-20">
           <div className='parentProduct flex flex-col'>
             <div className="hidden"></div>
             <div className='productTitle electProducts px-2 py-3 ml-10 mb-10 text-3xl font-bold bg-slate-100 rounded-md text-purple-800 w-fit'>Electronics</div>
