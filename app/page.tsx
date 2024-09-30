@@ -406,7 +406,9 @@ export default function Home() {
             <div className='productTitle electProducts px-2 py-3 ml-10 mb-10 text-3xl font-bold bg-slate-100 rounded-md text-purple-800 w-fit'>Electronics</div>
             <div className="productCards flex items-center justify-around md:flex-row flex-col gap-10 md:gap-0">
               {
-                productsArray.electProducts.length === 0 ? <CardSkeletonLoading /> : productsArray.electProducts.map((element: any, index: number) => {
+                productsArray.electProducts.length === 0 ? [...Array(4)].map((items, idx) => {
+                  return (<div key={idx}><CardSkeletonLoading /></div>)
+                }) : productsArray.electProducts.map((element: any, index: number) => {
                   return (
                     <div key={index} className="eleProd product w-fit h-fit">
                       <ProductCards cardInfo={element} />
@@ -421,7 +423,9 @@ export default function Home() {
             <div className='productTitle fashionProducts px-2 py-3 m-10 text-3xl font-bold bg-slate-100 rounded-md text-purple-800 w-fit'>Fashion</div>
             <div className="productCards flex items-center justify-around md:flex-row flex-col gap-10 md:gap-0">
               {
-                productsArray.fashProducts.length === 0 ? <CardSkeletonLoading /> : productsArray.fashProducts.map((element: any, index: number) => {
+                productsArray.fashProducts.length === 0 ? [...Array(4)].map((items, idx) => {
+                  return (<div key={idx}><CardSkeletonLoading /></div>)
+                })  : productsArray.fashProducts.map((element: any, index: number) => {
                   return (
                     <div key={index} className="fashProd product w-fit h-fit">
                       <ProductCards cardInfo={element} />
@@ -436,7 +440,9 @@ export default function Home() {
             <div className='productTitle homeProduct px-2 py-3 m-10 text-3xl font-bold bg-slate-100 rounded-md text-purple-800 w-fit'>Home and Furniture</div>
             <div className="productCards flex items-center justify-around md:flex-row flex-col gap-10 md:gap-0">
               {
-                productsArray.homeProducts.length === 0 ? <CardSkeletonLoading /> : productsArray.homeProducts.map((element: any, index: number) => {
+                productsArray.homeProducts.length === 0 ? [...Array(4)].map((items, idx) => {
+                  return (<div key={idx}><CardSkeletonLoading /></div>)
+                })  : productsArray.homeProducts.map((element: any, index: number) => {
                   return (
                     <div key={index} className="homeProd product w-fit h-fit">
                       <ProductCards cardInfo={element} />
@@ -451,7 +457,9 @@ export default function Home() {
             <div className='productTitle booksProduct px-2 py-3 m-10 text-3xl font-bold bg-slate-100 rounded-md text-purple-800 w-fit'>Books</div>
             <div className="productCards flex items-center justify-around md:flex-row flex-col gap-10 md:gap-0">
               {
-                productsArray.booksProducts.length === 0 ? <CardSkeletonLoading /> : productsArray.booksProducts.map((element: any, index: number) => {
+                productsArray.booksProducts.length === 0 ? [...Array(4)].map((items, idx) => {
+                  return (<div key={idx}><CardSkeletonLoading /></div>)
+                })  : productsArray.booksProducts.map((element: any, index: number) => {
                   return (
                     <div key={index} className="fashProd product w-fit h-fit">
                       <ProductCards cardInfo={element} />
@@ -466,7 +474,9 @@ export default function Home() {
             <div className='productTitle personalProduct px-2 py-3 m-10 text-3xl font-bold bg-slate-100 rounded-md text-purple-800 w-fit'>Personal care</div>
             <div className="productCards flex items-center justify-around md:flex-row flex-col gap-10 md:gap-0">
               {
-                productsArray.careProducts.length === 0 ? <CardSkeletonLoading /> : productsArray.careProducts.map((element: any, index: number) => {
+                productsArray.careProducts.length === 0 ? [...Array(4)].map((items, idx) => {
+                  return (<div key={idx}><CardSkeletonLoading /></div>)
+                })  : productsArray.careProducts.map((element: any, index: number) => {
                   return (
                     <div key={index} className="fashProd product w-fit h-fit">
                       <ProductCards cardInfo={element} />
@@ -481,7 +491,9 @@ export default function Home() {
             <div className='productTitle sportsProduct px-2 py-3 m-10 text-3xl font-bold bg-slate-100 rounded-md text-purple-800 w-fit'>Sports and Outdoors</div>
             <div className="productCards flex items-center justify-around md:flex-row flex-col gap-10 md:gap-0">
               {
-                productsArray.sportProducts.length === 0 ? <CardSkeletonLoading /> : productsArray.sportProducts.map((element: any, index: number) => {
+                productsArray.sportProducts.length === 0 ? [...Array(4)].map((items, idx) => {
+                  return (<div key={idx}><CardSkeletonLoading /></div>)
+                })  : productsArray.sportProducts.map((element: any, index: number) => {
                   return (
                     <div key={index} className="fashProd product w-fit h-fit">
                       <ProductCards cardInfo={element} />
