@@ -42,7 +42,7 @@ const UserPage = () => {
         }
       })()
       setFlag(true)
-      console.log(session)
+      // console.log(session)
       // console.log((session?.user.image as string).split('//')[0])
     }
   }, [session, flag])

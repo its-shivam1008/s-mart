@@ -18,7 +18,7 @@ const WishlistPage = () => {
 
     const fetchProductsFromWishList = async (userEmail: string) => {
         const wishListItems = await getItemFromWishList(userEmail)
-        console.log('wisdhlist res',wishListItems)
+        // console.log('wisdhlist res',wishListItems)
         if (wishListItems.success) {
             const wishlistObject = JSON.parse(wishListItems.wishlist as string)
             // const productIds = wishlistObject.map((obj: any) => obj.productId)
@@ -33,16 +33,14 @@ const WishlistPage = () => {
                 //         }
                 //     }
                 // }
-                console.log('this is product',products)
+                // console.log('this is product',products)
                 setWishlistArray(products)
-            }else{
-                console.log(arrayOfProds.message)
             }
         }
     }
     useEffect(() => {
         if (session && !flag) {
-            console.log(session);
+            // console.log(session);
             fetchProductsFromWishList(session.user.email as string)
             setFlag(true)
         }

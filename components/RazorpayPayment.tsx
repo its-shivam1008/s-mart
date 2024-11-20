@@ -31,7 +31,7 @@ const useRazorpay = () => {
             };
             const store = await findStoreByProduct(productId);
             if (!store.storeId) {
-                console.log(store.storeId);
+                // console.log(store.storeId);
                 return { message: 'no store found' };
             }
             let a = await initiate(amount, store.storeId as any, paymentForm);
@@ -39,7 +39,7 @@ const useRazorpay = () => {
                 return { message: 'nothing found' };
             }
             let order_id = a.id;
-            console.log(store.storeId, store.razorpayId);
+            // console.log(store.storeId, store.razorpayId);
             
             const options: any = {
                 key: store.razorpayId, // Enter the Key ID generated from the Dashboard

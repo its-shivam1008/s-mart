@@ -27,7 +27,7 @@ const UserOrdersPage = () => {
       console.log("some error occured")
     }else{
       setArrayOfOrder(response.data.orders)
-      console.log(response.data.orders,"order data")
+      // console.log(response.data.orders,"order data")
     }
    }
 
@@ -36,7 +36,7 @@ const UserOrdersPage = () => {
       // console.log('hey there');
       fetchOrders(session.user.email as string)
       setFlag(true)
-      console.log(session)
+      // console.log(session)
       // console.log((session?.user.image as string).split('//')[0])
     }
   }, [session, flag])

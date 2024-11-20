@@ -59,7 +59,7 @@ export async function POST(req:Request){
         }
 
     }catch(err){
-        console.log(err);
+        // console.log(err);
         return NextResponse.json({message: "Internal server error", success:false},{ status:500});
     }
 }
@@ -114,7 +114,7 @@ export async function PUT(req:Request){
         return NextResponse.json({message:"Product Updated", product:updateProduct,  success:true}, {status:201})
         
     }catch(err){
-        console.log(err);
+        // console.log(err);
         return NextResponse.json({message: "Internal server error", success:false},{ status:500});
     }
 }
@@ -155,7 +155,7 @@ export async function GET(req:NextRequest){
             }
         }
     }catch(err){
-        console.log(err);
+        // console.log(err);
         return NextResponse.json({message: "Internal server error", success:false},{ status:500});
     }
 }
@@ -198,7 +198,7 @@ export async function DELETE(req:Request){
             return NextResponse.json({message:"CANNOT Delete the product successfully", success:false}, {status:400})
         }
     }catch(err){
-        console.log(err);
+        // console.log(err);
         return NextResponse.json({message: "Internal server error", success:false},{ status:500});
     }
 }

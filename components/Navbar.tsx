@@ -51,7 +51,7 @@ const Navbar = () => {
 
     const handleClick = contextSafe(() => {
 
-        console.log(menuClicked)
+        // console.log(menuClicked)
         if (menuClicked) {
 
             gsap.to('.menuElements', {

@@ -50,12 +50,12 @@ const ProductPage = ({ params }: any) => {
     (async () => {
       setIsLoading(true)
       const res: any = await fetchOneProduct(params.productId)
-      console.log(res, 'res')
+      // console.log(res, 'res')
       const productsJSONObjects = JSON.parse(res.product as string)
       if (res.success) {
         // setProductData(res.product)
         // console.log(res.product)
-        console.log(productsJSONObjects)
+        // console.log(productsJSONObjects)
         setProductData(productsJSONObjects)
         setIsLoading(false)
       }
@@ -64,7 +64,7 @@ const ProductPage = ({ params }: any) => {
 
   const fetchUserReview = async (productId: string, userEmail: string) => {
     const res2 = await showReviewOfProduct(productId, userEmail)
-    console.log(res2)
+    // console.log(res2)
     if (res2.success) {
       const reviewJSONObjects = JSON.parse(res2.review as string)
       setUserReview(reviewJSONObjects)
@@ -75,7 +75,7 @@ const ProductPage = ({ params }: any) => {
 
   useEffect(() => {
     if (session && !flag) {
-      console.log(session);
+      // console.log(session);
       fetchUserReview(params.productId, (session?.user.email as string))
       setFlag(true)
     }

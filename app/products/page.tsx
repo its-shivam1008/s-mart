@@ -74,7 +74,7 @@ const ProductsPage = () => {
     if(response.success){
       const productsOBJS = JSON.parse(response.product as string)
       setSearchProductsValue(productsOBJS)
-      console.log(productsOBJS,'prodobjs')
+      // console.log(productsOBJS,'prodobjs')
     }else{
       toast({
         title:'No products found'

@@ -51,7 +51,7 @@ const LoginPage = () => {
             password:data.password,
             redirect:false
         })
-        console.log(result);
+        // console.log(result);
         if(result?.error){
             toast({
                 variant: "destructive",
@@ -69,7 +69,7 @@ const LoginPage = () => {
 
     const fetchUserType = async (userEmail:string) =>{
         const response = await checkUserTypeWithStoreFormFilled(userEmail)
-        console.log(response)
+        // console.log(response)
         if(response?.userRole == 'User'){
             router.push('/')
         }else if(response?.userRole == 'StoreOwner'){
@@ -79,14 +79,14 @@ const LoginPage = () => {
                 router.push('/store-getting-started')
             }
         }else if(response?.userRole == 'Admin'){
-            console.log('ye chala hi nhi')
+            // console.log('ye chala hi nhi')
             router.push('/admin')
         }
     }
 
     useEffect(() => {
         if(session && !flag){
-            console.log(session);
+            // console.log(session);
             fetchUserType(session.user.email as string);
             setFlag(true);
         }

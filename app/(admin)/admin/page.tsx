@@ -32,18 +32,16 @@ const AdminPage = () => {
     }
     const stats = await getOrderStatsForAdmin()
     if(stats.success){
-      console.log(stats)
+      // console.log(stats)
       setStatsValueOrder({today:stats?.today?.count, month:stats?.month?.count, week:stats?.week?.count})
       setStatsValueRevenue({today:stats?.today?.revenue, month:stats?.month?.revenue, week:stats?.week?.revenue})
-    }else{
-      console.log(stats.message, JSON.parse(stats?.error as string))
     }
     setIsLoading(false)
   }
 
   useEffect(() => {
     if(session && !flag) {
-      console.log(session)
+      // console.log(session)
       fetchStats(session.user.email as string)
       setFlag(true)
     }

@@ -10,7 +10,7 @@ export const uploadImageToCloudinary = async (files:any) =>{
   files.forEach((file:any) => {
     dataTransfer.items.add(file);
   });
-  console.log('fileList', dataTransfer.files)
+  // console.log('fileList', dataTransfer.files)
   const uploadPromises = Array.from(files).map(async (file) => {
     const formData = new FormData();
     formData.append('file', (file as any));
@@ -22,7 +22,7 @@ export const uploadImageToCloudinary = async (files:any) =>{
         `https://api.cloudinary.com/v1_1/${process.env.NEXT_PUBLIC_CLOUDINARY_CLOUD_NAME}/image/upload`, // Replace  cloud name
         formData
       );
-      console.log(response.data)
+      // console.log(response.data)
       return response.data.secure_url; // This is the URL of the uploaded image
     } catch (error) {
       console.error('Error uploading to Cloudinary', error);
@@ -50,7 +50,7 @@ export const deleteImageFromCloudinary = async (imageUrl:any) => {
       data
     );
 
-    console.log('Delete response:', response.data);
+    // console.log('Delete response:', response.data);
     return response.data;
   } catch (error) {
     console.error('Error deleting image from Cloudinary:', error);

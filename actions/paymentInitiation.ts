@@ -57,8 +57,8 @@ export const findStoreByProduct = async (productId:string) => {
             'product.productId': productId
         });
         if(!store){
-            console.log({message:'Store not found', success:false})
-            console.log(store)
+            // console.log({message:'Store not found', success:false})
+            // console.log(store)
             return {message:'Store not found', success:false}
         }
         // console.log(store)

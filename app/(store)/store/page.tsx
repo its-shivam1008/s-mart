@@ -33,7 +33,7 @@ const StoreOwnerPage = () => {
     }
     const stats = await getOrderStatsForStore(userEmail)
     if(stats.success){
-      console.log(stats)
+      // console.log(stats)
       setStatsValueOrder({today:stats?.today?.count, month:stats?.month?.count, week:stats?.week?.count})
       setStatsValueRevenue({today:stats?.today?.revenue, month:stats?.month?.revenue, week:stats?.week?.revenue})
     }
@@ -43,7 +43,7 @@ const StoreOwnerPage = () => {
 
   useEffect(() => {
     if(session && !flag) {
-      console.log(session)
+      // console.log(session)
       fetchStats(session.user.email as string)
       setFlag(true)
     }

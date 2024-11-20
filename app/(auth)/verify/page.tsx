@@ -127,7 +127,7 @@ const VerifyPage = () => {
           setSessionObject({user:{email:sessionEmail, username:sessionUsername}});
           
         }
-        console.log('ye chal gya na iss liye')
+        // console.log('ye chal gya na iss liye')
         setFlag(true);
         setIsFetched(true);
       }
@@ -137,9 +137,9 @@ const VerifyPage = () => {
   useEffect(() => {
     if(session && !flag2){
       if(session.user.email){
-        console.log('session is ',session)
+        // console.log('session is ',session)
         setSessionObject2({user:{email:session.user.email, username:session.user.email.split('@')[0]}})
-        console.log(sessionObject)
+        // console.log(sessionObject)
         setFlag2(true);
         setIsFetched(true);
       }
@@ -158,10 +158,10 @@ const VerifyPage = () => {
     var sessionObjectSent = {}
     if(flag && sessionObject){
       sessionObjectSent = {... sessionObject}
-      console.log('sessionobjectsent',sessionObjectSent)
+      // console.log('sessionobjectsent',sessionObjectSent)
     }else if(flag2){
       sessionObjectSent = {... sessionObject2}
-      console.log('sessionobjectsent',sessionObjectSent)
+      // console.log('sessionobjectsent',sessionObjectSent)
     }
 
     const res = await fetch(`${process.env.NEXT_PUBLIC_URL}/api/verifyingCode`, {

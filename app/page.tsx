@@ -320,8 +320,6 @@ export default function Home() {
       //   sportProducts: sportProducts.product,
       // }, 'fetched')
       // console.log('fetched')
-    } else {
-      console.log("not fetched")
     }
   }
 

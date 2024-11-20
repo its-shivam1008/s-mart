@@ -43,7 +43,7 @@ const AdminCategory = () => {
     const parentCat = await fetchCategories()
     if(parentCat?.success){
       const parentCatObj = JSON.parse(parentCat?.categoriesArray as string)
-      console.log(parentCatObj,'parentCatObjs')
+      // console.log(parentCatObj,'parentCatObjs')
       setParentCategoriesList(parentCatObj)
     }
     setIsLoading(false)

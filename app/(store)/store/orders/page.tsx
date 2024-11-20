@@ -37,7 +37,7 @@ const OrdersPage = () => {
         }
         const orders = await axios.get(`/api/store/orders?role=${userType?.userRole}&userEmail=${userEmail}`)
         if (orders.data.success) {
-            console.log(orders.data.orders, "orders")
+            // console.log(orders.data.orders, "orders")
             setOrdersArray(orders.data.orders)
         }
         

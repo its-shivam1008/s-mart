@@ -49,10 +49,10 @@ const AllProductPage = () => {
 
   const fetchProducts = async () =>{
     setIsLoading(true)
-        console.log(session, 'session')
+        // console.log(session, 'session')
         const response = await axios.get(`/api/store/product?userEmail=${session?.user.email}&allProducts=true`);
         if (response.data.success) {
-          console.log(response.data)
+          // console.log(response.data)
           setProductArray(response.data.products)
         }
         setIsLoading(false)
@@ -113,7 +113,7 @@ const AllProductPage = () => {
     setProductIdEdit(productId)
     const response = await axios.get(`/api/store/product?productId=${productId}&userEmail=${session?.user.email}`)
     if (response.data.success) {
-      console.log('prv data', response.data.product)
+      // console.log('prv data', response.data.product)
       setPreviousFormData(response.data.product)
     }
     setIsEditButtonClicked(false);
@@ -140,7 +140,7 @@ const AllProductPage = () => {
         images: product?.images as string[]
       })
     }
-    console.log(resOfCloudinary, resOfDb)
+    // console.log(resOfCloudinary, resOfDb)
     setIsEditButtonClicked(false)
     toast({
       variant: "destructive",
@@ -165,7 +165,7 @@ const AllProductPage = () => {
             `https://api.cloudinary.com/v1_1/${process.env.NEXT_PUBLIC_CLOUDINARY_CLOUD_NAME}/image/upload`, // Replace  cloud name
             formData
           );
-          console.log(response.data)
+          // console.log(response.data)
           return response.data.secure_url; // This is the URL of the uploaded image
         } catch (error) {
           console.error('Error uploading to Cloudinary', error);

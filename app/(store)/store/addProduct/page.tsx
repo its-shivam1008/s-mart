@@ -44,13 +44,13 @@ function AddProductPage() {
   useEffect(() => {
     if (session && !flag) {
       (async () => {
-        console.log(session);
+        // console.log(session);  
         const userType = await checkUserType(session.user.email as string)
         if(userType?.userRole !== 'StoreOwner'){
           router.push('/')
         }
         const arrayOfSubCat = await productSubCategory(session.user.email as string)
-        console.log(arrayOfSubCat)
+        // console.log(arrayOfSubCat)
         if (arrayOfSubCat?.success){
           setParentCateg(arrayOfSubCat.parentCat)
           setSubCatArray(arrayOfSubCat.subCat)
@@ -94,7 +94,7 @@ function AddProductPage() {
   const onSubmit = async (addProdData: z.infer<typeof saveProduct>) => {
     setIsFormSubmitting(true)
 
-    console.log(addProdData)
+    // console.log(addProdData)
 
     const files = addProdData.images; // `addProdData.images` contains the list of files
     const uploadPromises = Array.from(files).map(async (file) => {
@@ -108,7 +108,7 @@ function AddProductPage() {
           `https://api.cloudinary.com/v1_1/${process.env.NEXT_PUBLIC_CLOUDINARY_CLOUD_NAME}/image/upload`, // Replace  cloud name
           formData
         );
-        console.log(response.data)
+        // console.log(response.data)
         return response.data.secure_url; // This is the URL of the uploaded image
       } catch (error) {
         console.error('Error uploading to Cloudinary', error);
@@ -118,7 +118,7 @@ function AddProductPage() {
     // Wait for all uploads to finish
     const uploadedImageUrls = await Promise.all(uploadPromises);
 
-    console.log('Uploaded image URLs:', uploadedImageUrls);
+    // console.log('Uploaded image URLs:', uploadedImageUrls);
 
     const data = {
       payload: {

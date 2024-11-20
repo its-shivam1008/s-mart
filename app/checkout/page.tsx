@@ -171,7 +171,7 @@ const CheckoutPage = () => {
     }
     useEffect(() => {
         if (session && !flag) {
-            console.log(session);
+            // console.log(session);
             isAddressFilled(session.user.email as string)
             fetchProductsFromCart(session.user.email as string)
             setFlag(true)

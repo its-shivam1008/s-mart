@@ -8,7 +8,7 @@ interface ProductData {
 }
 
 const ProductComponent:FunctionComponent<ProductData> = ({productData}) => {
-    console.log('yaha prod comp ' , productData)
+    // console.log('yaha prod comp ' , productData)
   return (
     <div className='container'>
         <div className="md:grid md:grid-cols-4 flex flex-col gap-5 justify-center mx-auto">

@@ -34,13 +34,13 @@ const CategoryPage = ({ params }: any) => {
     (async () => {
       setIsLoading(true);
       const decodedUri = decodeURIComponent(params.categoryName)
-      console.log(decodedUri)
+      // console.log(decodedUri)
       const categoryProduct = await fetchAllCategoryProduct(decodedUri)
       const category = await fetchCategory(decodedUri)
       if (categoryProduct?.success && category?.success) {
         const arrayOfObjs = JSON.parse(categoryProduct?.categoryProducts as string)
         const categoryObjs = JSON.parse(category?.categoriesObj as string)
-        console.log('le pothe ki', categoryObjs)
+        // console.log('le pothe ki', categoryObjs)
         setProducts(arrayOfObjs)
         setFilterCategory(categoryObjs)
       }
@@ -51,7 +51,7 @@ const CategoryPage = ({ params }: any) => {
   const handleOnChangeOfSubCategory = async (value: any) => {
     const findObj = filterCategory?.subCategory?.find((item: any) => item.name === value);
     setSelectedSubCategory(findObj)
-    console.log('findObj', findObj)
+    // console.log('findObj', findObj)
     setFlagSubCategory(true)
     const filteredProducts = await filterProducts('name', 'asc', findObj.name)
     if (filteredProducts && filteredProducts.success) {
@@ -66,8 +66,8 @@ const CategoryPage = ({ params }: any) => {
       return keys.some((key: any) => key === value);
     });
     setFlagProperty(true);
-    console.log(findObj, 'property')
-    console.log(value, 'property value')
+    // console.log(findObj, 'property')
+    // console.log(value, 'property value')
     setSelectProperties(findObj);
     setSelectedProperty(findObj.name)
   }

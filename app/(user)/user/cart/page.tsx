@@ -38,7 +38,7 @@ const UserCartPage = () => {
     }
     useEffect(() => {
         if (session && !flag) {
-            console.log(session);
+            // console.log(session);
             fetchProductsFromCart(session.user.email as string)
             setFlag(true)
         }

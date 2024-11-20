@@ -82,9 +82,9 @@ const SignUpStore = () => {
     const onSubmit = async (data: z.infer<typeof signUpSchema>) =>{
         setIsSubmitting(true);
         try{
-            console.log(data);
+            // console.log(data);
             const response = await axios.post('/api/signup', data);
-            console.log(response)
+            // console.log(response)
             if(!response.data.success){
                 toast({
                     variant: "destructive",

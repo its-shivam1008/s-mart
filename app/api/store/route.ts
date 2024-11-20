@@ -27,7 +27,7 @@ export async function POST(req:Request){
             data.payload.storeLogo = data.session.user.image ? data.session.user.image : 'no Url Found As user Signed up With Creds'
         }
         // saving the store information 
-        console.log(data)
+        // console.log(data)
         const newData = {...data.payload, associatedUser:{userEmail:userByEmail.email, userId:userByEmail._id}}
         const newStore = new StoreModel(newData);
         await newStore.save();
@@ -36,7 +36,7 @@ export async function POST(req:Request){
         // todo :
         return NextResponse.json({message:"Saved the store data", success:true},{status:201})
     }catch(err){
-        console.log(err);
+        // console.log(err);
         return NextResponse.json({message: "Internal server error", success:false, error:err},{ status:500});
     }
 }
@@ -45,8 +45,8 @@ export async function PUT(req:Request){
     await dbConnect();
     try{
         const data = await req.json();
-        console.log(data)
-        console.log(data.session.user)
+        // console.log(data)
+        // console.log(data.session.user)
         const userByEmail = await UserModel.findOne({email:data.session.user.email});
         // checking the user is present in the db or not, if yes is he signed up as a store oner of not 
         if(!userByEmail){
@@ -97,7 +97,7 @@ export async function GET(req:NextRequest){
         const getStoreData = await StoreModel.findOne({associatedUser:associatedUser});
         return NextResponse.json({getUser, getStoreData, success:true},{status:201})
     }catch(err){
-        console.log(err)
+        // console.log(err)
         return NextResponse.json({message: "Internal server error", success:false, err},{ status:500});
     }
 }
