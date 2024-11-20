@@ -38,6 +38,6 @@ export async function continueConversation(history: Message[]) {
       success: true
     };
   } catch (err) {
-    return { message: 'Some error occured', error: JSON.stringify(err), success: false }
+    return { message: 'An error occured', error: JSON.stringify(err), success: false }
   }
 }
