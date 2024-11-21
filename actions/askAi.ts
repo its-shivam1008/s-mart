@@ -20,7 +20,7 @@ export async function continueConversation(history: Message[]) {
 
     (async () => {
       const { textStream } = await streamText({
-        model: google('gemini-1.5-flash-latest'),
+        model: google('gemini-1.5-pro'),
         // system: ,
         messages: history,
       });
