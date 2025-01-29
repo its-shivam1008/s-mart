@@ -12,25 +12,37 @@ export interface Message {
 
 
 export async function continueConversation(history: Message[]) {
-  'use server';
   try {
     
 
     const stream = createStreamableValue();
 
-    (async () => {
-      const { textStream } = await streamText({
-        model: google('gemini-1.5-pro'),
-        // system: ,
+    try {
+      const {textStream} = await streamText({
+        model: google('gemini-1.5-flash-latest'),
         messages: history,
+        temperature : 1
       });
-
+  
       for await (const text of textStream) {
         stream.update(text);
       }
+      // stream.update(textStream.toDataStreamResponse());
+  
+      stream.done(); 
+    } catch (error) {
+      console.error('Error streaming text:', error);
+      stream.done(); 
+    }
+    // (async () => {
+    // })();
+    
 
-      stream.done();
-    })();
+    console.log({
+      messages: history,
+      newMessage: stream.value,
+      success: true
+    })
 
     return {
       messages: history,
