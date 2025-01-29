@@ -1,6 +1,6 @@
 'use server';
 
-import { streamText } from 'ai';
+import { LanguageModelV1, streamText } from 'ai';
 import { google } from '@ai-sdk/google';
 import { createStreamableValue } from 'ai/rsc';
 import type { LanguageModelV1CallWarning } from "@ai-sdk/provider";
@@ -20,7 +20,7 @@ export async function continueConversation(history: Message[]) {
 
     try {
       const {textStream} = await streamText({
-        model: google('gemini-1.5-flash-latest'),
+        model: google('gemini-1.5-flash-latest') as LanguageModelV1,
         messages: history,
         temperature : 1
       });
