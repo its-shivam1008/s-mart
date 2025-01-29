@@ -3,6 +3,7 @@
 import { streamText } from 'ai';
 import { google } from '@ai-sdk/google';
 import { createStreamableValue } from 'ai/rsc';
+import type { LanguageModelV1CallWarning } from "@ai-sdk/provider";
 import { fetchAllCategoryProduct, filterProducts } from './categories';
 
 export interface Message {
